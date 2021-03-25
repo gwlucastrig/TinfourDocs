@@ -2,6 +2,8 @@
 
 This repository is intended to store documentation for the [Tinfour Software Project](https://github.com/gwlucastrig/Tinfour).
 
+You may access the Tinfour documentation at [https://gwlucastrig.github.io/TinfourDocs/](https://gwlucastrig.github.io/TinfourDocs/).
+
 We are using this repository in conjunction with Github pages to support HTML formatted
 documentation. This project is intended to supplement the [Tinfour Wiki](https://github.com/gwlucastrig/Tinfour/wiki).
 While the Wiki will be focused on topics specific to the Tinfour software,
