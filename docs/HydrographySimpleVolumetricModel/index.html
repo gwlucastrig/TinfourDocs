@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="G.W. Lucas">
+        <title>Sample Title</title>
+        <link rel="stylesheet" href="../css/text.css" />
+        <link rel="stylesheet" href="../css/layout.css" />
+    </head>
+
+
+    <body>
+        <div id="notescontainer">
+            <div id="notesheader">
+                <ul class="link-bar">
+                    <li> <a href="https://gwlucastrig.github.io/TinfourDocs/">Home</a> </li>
+                    <li>|</li>
+                    <li><a href="https://github.com/gwlucastrig/Tinfour">Code (Github)</a></li>
+                    <li>|</li>
+                    <li><a href="https://gwlucastrig.github.io/TinfourDocs/notes/index.html">User Notes</a></li>
+                    <li>|</li>
+                </ul>
+                <p>&nbsp;</p>
+            </div>
+
+            <div id="notescontent">
+
+                <div class="titleblock">
+                    <p class="title">
+                        A Typical Boring Sample Title
+                    </p>
+                    <p class="author">by G.W. Lucas</p>
+                </div>
+
+
+                <h1 id="Introduction">Introduction</h1>
+
+                <p>The previous article in this series introduced the Simple Volumetric Model (SVM),
+                    an application that computes the capacity, volume, and surface area for a lake or reservoir
+                    based on variations in water level (see <a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Create-a-Reservoir-Volume-Model" >Lucas, 2019</a>.
+                    That article focused on the general principles and algorithms used in the model.
+                    This article will offer practical guidance on how to configure and use the application
+                    for your own data analysis purposes. If you are interested in running the SVM, this
+                    article will show you how.</p>
+
+                <h2 id="SVMProcess">The SVM Process</h2>
+
+                <p>During a drought, the most readily apparent indicator of a shrinking water volume
+                    for a lake or reservoir is the elevation of the surface and shoreline.
+                    The Simple Volumetric Model provides a tool for translating the observed
+                    water level to an estimated volume and capacity. SVM computes these values
+                    by using established spatial analysis techniques to process hydrographic
+                    survey data and create a digital model of the lake or reservoir structure.
+                    That model can relate changes in water level to changes
+                    in the overall volume of the water mass.</p>
+
+                <p>The hydrographic data that SVM uses is most commonly collected
+                    by survey vessels using sonar-based fathometers coupled to GPS systems.
+                    In this article, I use the _soundings_ collected by one such survey
+                    to demonstrate the procedures for operating SVM. The data I use was
+                    obtained from a 2016 survey of the Lake of the Arbuckles which is
+                    located in Murray County, Oklahoma. The data was downloaded
+                    from the Oklahoma Water Resource Board [OWRB]
+                    <a href="https://www.owrb.ok.gov/studies/surface/bathymetry.php" >Surface Water Studies</a> website.</p>
+
+                <p>The results from the SVM model are illustrated in the figure below.</p>
+
+                <img src="images/ArbuckleVolume.png" alt="SVM Results for Lake of the Arbuckles" />
+
+                <p>One feature that is apparent in the graph above is that the relationship between
+                    surface level and volume goes both ways. Given the level of the water's surface,
+                    we can estimate volume. Given the volume of the water mass, we can predict
+                    the surface level. SVM also provides a similar result for surface area
+                    with a similar relationship to water level.</p>
+
+                <p>The output products for SVM are a text-based summary of overall metadata for the
+                    body of water being studied and a table of water-level versus volume/area computations
+                    suitable for use in Excel, R, or other mainstream analysis tools.</p>
+
+                <p class="blockquote">The Simple Volumetric Model (SVM) was written as a demonstration application
+                    for the Tinfour Software library. At present, it is implemented as a text-only
+                    application that does not provide a Graphical User Interface (GUI).
+                    If there is sufficient interest from potential users, the Tinfour project will
+                    develop a truly interactive application with a mature GUI in the future.</p>
+
+                <p class="blockquote">Until then, operating the SVM does require some knowledge of computer
+                    concepts and using a command-window interface. Information about setting up Tinfour
+                    and launching a command-window is given in our companion wiki articles
+                    <a href="https://github.com/gwlucastrig/Tinfour/wiki/Tinfour-Execution-from-the-Command-Line" >Tinfour Execution from the Command Line</a>
+                    and <a href="https://github.com/gwlucastrig/Tinfour/wiki/Tinfour-Execution-Shortcut-for-Windows" >Tinfour Execution Shortcut for Windows</a>.</p>
+
+                <h2 id="GettingStarted">Getting Started</h2>
+
+                <p>Once Tinfour is set up, you should be able to launch the Simple Volumetric Model using the
+                    "fat jar" file _TinfourSvm-2.1.1-jar-with-dependencies.jar_ (making appropriate adjustments
+                    for the Tinfour release you are using). This Jar file is bundled with all the dependencies
+                    and resources required for SVM. You may launch it from the command window by changing
+                    the directory to the folder where the Jar file is located and typing the following command:</p>
+
+                <pre>
+    java -jar TinfourSvm-2.1.1-jar-with-dependencies.jar -help
+                </pre>
+
+                <p>If your installation is set up correctly, this command will result in the application printing
+                    a short set of help information to the command window:</p>
+
+                <pre>
+    Usage information for Simple Volumetric Model (SVM)
+
+      -properties &lt;file&gt; Specifies the path for the input properties file
+
+      -template Prints an example properties file to the console
+
+      -inspect &lt;file or directory&gt;
+                          Inspects and reports on the content
+                          of the specified Shapefile and its associated
+                          DBF file. If a directory is specified, reports
+                          the content of every Shapefile in the directory
+                </pre>
+
+                <p>Often, it is convenient to rename the SVM Jar file to something shorter. To save typing,
+                    I also like to temporarily copy the Jar file to the folder where I am working. For the rest
+                    of the examples in the text to follow, we will assume that is what we've done and we will use
+                    the name "SVM.jar" in all our command example. So, in the example above, the command becomes</p>
+
+                <pre>
+    java -jar SVM.jar -help
+                </pre>
+
+                <h2 id="SVMPropertiesFile">The SVM Properties File</h2>
+
+                <p>SVM uses the specifications in a properties file to determine where to obtain
+                    input bathymetry data and options for performing its analysis. The -properties
+                    option should be followed by a file-specification providing a valid path for the
+                    input properties file. For example, if the specifications for analysis were given
+                    in a file named _SVM_example.properties_, the command to process the problem it
+                    specifies would be:</p>
+
+                <pre>
+    java -jar SVM.jar -properties SVM_example.properties
+                </pre>
+
+                <p>The properties file is a simple text file formatted in a syntax based on the conventions
+                    used in many Java applications. To see what one looks like, you could type the following
+                    command</p>
+
+                <pre>
+    java -jar SVM.jar -template
+                </pre>
+
+                <p>This command prints the text of an example SVM properties file to the command window. If you
+                    wish, you can redirect the output to a file and then edit that file for your particular
+                    input data and desired results. The template file includes quite a bit of documentation describing
+                    the properties that SVM supports. It also provides, as an example, the settings that were used for the
+                    Alan Henry Reservoir analysis described in the previous article.</p>
+
+                <p>The third option, -inspect, provides a way to print the metadata for files giving
+                    data in the industry-standard Shapefile format. I used this option when I was first
+                    trying to understand the content of the Shapefiles that were used for
+                    the previous articles. If you have access to a conventional GIS tools such as ArcGIS or QGIS,
+                    you may use them to inspect (and edit) the content of your data sources. If not, you
+                    may find the SVM -inspect option helpful, particularly since it prints its results in a
+                    format that was designed specifically for the needs of users setting up SVM properties files.
+                    The -inspect option can be used to process either an individual Shapefile
+                    or an entire folder containing multiple Shapefiles. For example, if you had a
+                    folder named ReservoirData that contained several Shapefiles you could use one
+                    of the following commands:</p>
+
+                <pre>
+    java -jar SVM.jar -inspect ReservoirData/Sample1.shp &gt; Sample1.txt
+    java -jar SVM.jar -inspect ReservoirData &gt; AllShapefiles.txt
+                </pre>
+
+                <p>For the example above, I redirected the output to a text files to be written to
+                    the current directory. Redirection is a good way to preserve text for
+                    future review or incorporating it into documents for printing. We will use the
+                    inspection results in our discussion below to help configure a properties file
+                    for processing.</p>
+
+                <h2 id="ConfiguringTheSVMPropertiesFileNdashStepByStep">Configuring the SVM Properties File &ndash; Step-by-Step</h2>
+
+                <p>Now that we've introduced the basic operation of the Simple Volumetric Model,
+                    let's trace through the steps of configuring a properties file for processing data.</p>
+
+                <p>Of course, before we can use SVM, we need some data to work with. For this article,
+                    we will use Shapefiles for the Lake of the Arbuckes which was mentioned above.
+                    The lake will serve as an interesting example because it is the principle water supply
+                    reservoir for the city of Ardmore, Oklahoma.</p>
+
+                <p>The Arbuckle data includes two primary Shapefiles. The file named "Arbuckle_Collected_Points.shp" gives sounding
+                    data (elevation points) collected during the bathymetric survey of 2016. The file named "Arbuckle_Boundary.shp"
+                    gives polygon features that trace the shoreline of the lake. In order to provide an accurate assessment
+                    of lake volume and surface area, SVM needs both. Boundary files are required because they
+                    provide "modeling constraints" that restrict the region processed by the analysis logic to the
+                    actual the limits of the body of water being studied. Without them, the SVM model would have to
+                    assume that it was operating over a region defined by a convex polygon. This concept was discussed at length
+                    in my earlier article <a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Compute-Lake-Volume-Part-1" >Using-the-Delaunay-to-Compute Lake Volume</a>.
+                    It is illustrated by the figure below. Its images offer constrasting depictions of how the Delaunay Triangulation
+                    (and the SVM) treats the data without the constraint polygons, and how that changes when
+                    shoreline constraints are added. The figure also provides us our first look at a map of the Lake of the Arbuckles:</p>
+
+                <img src="images/ArbuckleBathymetry.jpg" alt="Map of Lake of the Arbuckles" />
+
+                <p>When processing data in SVM, it is critical that the input data use consistent horizontal and vertical
+                    coordinate systems. Both the Arbuckle Shapefiles use the Oklahoma State Plan Coordinate System (South)
+                    which gives elevations and position data in feet.</p>
+
+                <p class="blockquote"><b>Note:</b> SVM assumes that the constraint Shapefile defines polygons bounding bodies of water. In the case
+                    where the lake or reservoir includes islands, you may include the islands as "holes" in the polygons
+                    following the standard Shapefile conventions. If you are using a GIS tool, this action should be one
+                    of the standard operations for authoring or editing water features. SVM supports Shapefiles with multiple features.</p>
+
+                <p>The text below shows the content of a file named "SvmArbuckle.properties" that provides specifications
+                    for analyzing the Arbuckle data. We will see where these settings came from in the discussion below.
+                    The main input properties are _samples_, _bounds_, and the _input folder_ settings.
+                    The _samples_ specification indicates the name of the data file containing input soundings (data samples).
+                    The _bounds_ specification indicates the name of the file that provides polygon constraints.
+                    The optional input and output folder specifications are a convenience feature that tells SVM where to
+                    look for input files and where to write its output. Using the optional folder setting
+                    eliminates the need to supply a complete path specifications for input and output files.
+                    If the optional folder settings are supplied, a simple filename will suffice for these specifications.</p>
+
+                <p>For this example, we will assume that the Arbuckle Shapefiles were downloaded and stored
+                    in a folder named "C:/SvmExamples/Arbuckle/Shapefiles" and that we wish to write the
+                    output reports to a folder named "C:/SvmExamples/Arbuckle/Analysis". In your own work,
+                    you may adjust these settings as necessary.</p>
+
+                <pre>
+    inputFolder = C:/SvmExamples/Arbuckle/Shapefiles
+    outputFolder = C:/SvmExamples/Arbuckle/Analysis
+
+    samples = Arbuckle_Collected_Points.shp | Elevation
+    bounds = Arbuckle_Boundary.shp | Elevation
+
+    #shorelineReferenceElevation = 872.2
+
+    remediateFlatTriangles = true
+
+    unitOfDistance = ft
+    unitOfArea = acres | 43560
+    unitOfVolume = acre-ft | 43560
+
+    report = SvmArbuckle.txt
+    table = SvmArbuckle.csv
+    tableInterval = 0.5
+                </pre>
+
+                <h2 id="Step1Inspection">Step 1: Inspection</h2>
+
+                <p>The first step in setting up an SVM specification for a set of Shapefiles is to understand
+                    the structure of the input data. To gain some insight into the content we can review
+                    then using the -inspect option introduced above. The text below shows the output from
+                    the -inspect command. For clarity, I have removed some less important elements from the example.</p>
+
+                <pre>
+    java -jar SVM.jar -inspect Arbuckle_Collected_Points.shp
+
+    Shapefile Name: Arbuckle_Collected_Points.shp
+    Shapefiile Type: Point
+    Bounds
+       X Min,Max: 2254348.039955, 2277391.420049
+       Y Min,Max: 395668.459932, 420245.939977
+
+    Analysis of DBF file
+    N Records: 100593
+    N Fields: 4
+                          width min max
+      0. XCoord F 19.11 2254348.040000 2277391.420000
+      1. YCoord F 19.11 395668.460000 420245.940000
+      2. Elevation F 19.11 786.560000 871.200000
+      3. Depth F 19.11 -84.880000 -0.240000
+                </pre>
+
+                <p>A Shapefile is not actually a single file, but rather a set of multiple data files.
+                    The Shapefile data set includes a main shape/geometry file which is assigned the extension ".shp".
+                    It also includes a "database" file (.dbf extension) that supplies the metadata for each geospatial
+                    feature described in the geometry file.</p>
+
+                <p>The content of the DBF data file is established by whoever creates the Shapefile product,
+                    but it usually includes several named data fields. In the case of the Arbuckle points
+                    file, it gives both the depth of the sounding data as well as the elevation of the
+                    lake bottom at the indicated positions. SVM depends on the "lake bottom elevation"
+                    data for its analysis, so the SVM properties file for Arbuckle specifically
+                    indicates the Elevation attribute in the line:</p>
+
+                <pre>
+    samples = Arbuckle_Collected_Points.shp | Elevation
+                </pre>
+
+                <p>Java properties files are written using "key-value pairs" separated by equal signs.
+                    In the text above, the word "samples" is the key that indicates that the line
+                    gives a specification for data sample points (a.k.a. "soundings" or "bathymetry points").
+                    The value "Arbuckle_Collected_Points.shp" gives the name of the Shapefile to be
+                    used to obtain sample points. It could optionally be a full-path but, because the input-folder
+                    setting is provided, only the file name is required.</p>
+
+                <p>In the example, the vertical-bar (or "pipe") character is used as a separator for sub-elements of the properties value.
+                    That usage is a slight departure from the conventional Java key-value pair syntax. SVM uses it
+                    to introduce supplemental specifications. In this case, it tells SVM should to the DBF data field
+                    "Elevation" from the Shapefile "Arbuckle_Collected_Points.shp" to provide the vertical coordinates
+                    for its sample points.</p>
+
+                <p>Now let's look at the inspection results for the Arbuckle boundary file:</p>
+
+                <pre>
+    Shapefile Name: Arbuckle_Boundary.shp
+    Shapefiile Type: Polygon
+    Bounds
+       X Min,Max: 2253906.643200, 2278570.735276
+       Y Min,Max: 395248.015563, 420612.212538
+
+    Analysis of DBF file
+    N Records: 1
+    N Fields: 4
+                          width min max
+      0. Shape_Leng F 19.11 260839.217946 260839.217946
+      1. Shape_Area F 19.11 102727022.065000 102727022.065000
+      2. Elevation F 19.11 872.200000 872.200000
+      3. Acres F 19.11 2358.297359 2358.297359
+                </pre>
+
+                <p>The bounds file contains only a single polygon for the entire lake. As with the soundings data,
+                    the boundary polygon has an associated Elevation attribute. SVM uses this elevation data
+                    as the upper limit of the water level for modeling. In effect, it assumes that when the
+                    water raises to the elevation of the bounding polygons, the lake or reservoir is filled to capacity.
+                    SVM refers to this elevation parameter as the "shoreline reference elevation."
+                    Some data issuing authorities refer to it as the "conservation pool elevation."</p>
+
+                <p>Not all data sets provide a convenient elevation attribute for the bounding polygons.
+                    In some cases, it is necessary for the properties file to specify an explicit value
+                    to be used for modeling. In the example properties above, the specification is
+                    provided as a comment.</p>
+
+                <pre>
+    #shorelineReferenceElevation = 872.2
+                </pre>
+
+                <h2 id="Step2CorrectForFlatTriangles">Step 2: Correct for Flat Triangles</h2>
+
+                <p>The next elements we will look at is the remediation setting for flat triangles.
+                    This setting tells SVM to make adjustments for the near-shore areas where
+                    data collection is incomplete and sometimes leads to the creation of flat triangles.
+                    This issue was discussed at length in <a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Create-a-Reservoir-Volume-Model" >Using-the-Delaunay-to-Create-a-Reservoir-Volume-Model</a>.
+                    Except for testing purposes, it should always be set to true.</p>
+
+                <h2 id="Step3OutputSettings">Step 3: Output Settings</h2>
+
+                <h3 id="Step3ASpecifyUnitsOfMeasure">Step 3.a: Specify Units of Measure</h3>
+
+                <p>The raw data for the Lake of the Arbuckles is given in feet. While this unit system is
+                    convenient for measuring depth (at least if you happen to be an American),
+                    it is less useful for the very large magnitude values that would be computed for
+                    surface area and volume. By convention, American water management authorities often
+                    use acres and acre-feet for these values. To format the output from SVM to Imperial units,
+                    the Arbuckle properties file uses the following settings:</p>
+
+                <pre>
+    unitOfDistance = ft
+    unitOfArea = acres | 43560
+    unitOfVolume = acre-ft | 43560
+                </pre>
+
+                <p>Note the use of the vertical-bar character to separate sub-elements in the specification.
+                    There are 43560 square feet in an acre. So these settings convert square feet to acres
+                    and cubic-feet to acre-feet. The conversion is performed by dividing the original
+                    units (in this case, feet) by the factor (in this case, 43560). As an alternate example,
+                    consider the case where the unit of distance were in meters. Without a conversion factor,
+                    SVM would normally interpret the "meters" specification to indicate that area computations
+                    should be displayed in square meters. If we wished to display area values
+                    in hectares, we would specify a conversion factor of 10000.</p>
+
+                <p>Incidentally, you may be thinking that the number 43560 is a rather odd choice.
+                    Why not a round number like 50000? Well, the origins of the acre may be lost to history,
+                    but I like to think that a long time ago a clever person realized that the number
+                    43560 had a lot of integer factors. 43560 = 3 &#215; 3 &#215; 5 &#215; 8 &#215; 11 &#215; 11.
+                    The fact that it has so many integer factors makes it easy to parcel an acre out into
+                    smaller pieces, whether it be thirds, halves, quarters, tenths, or even elevenths (okay, the last
+                    one is a bit unlikely).</p>
+
+                <h3 id="Step3BSpecifyOutputFiles">Step 3.b: Specify Output Files</h3>
+
+                <p>By default, SVM will write its results to standard output. However, if we wish, we can instruct it
+                    to write its output to permanent data files such as SvmArbuckle.txt and SvmArbuckle.csv.
+                    The _report_ file just the text output during analysis and a summary of the results.
+                    The _table_ file is a text file giving the computed volume and surface area values as a function
+                    of surface level. The output from the table setting is written in a comma-separated-value (CSV)
+                    format that can be imported into Excel or other general-purpose analysis tools.
+                    The _tableInterval_ setting just tells SVM what interval to use when selecting water levels
+                    for modeling.</p>
+
+                <pre>
+    report = SvmArbuckle.txt
+    table = SvmArbuckle.csv
+    tableInterval = 0.5
+                </pre>
+
+                <h2 id="Results">The Results</h2>
+
+                <p>Here's a look at the results from SVM's analysis of the Lake of the Arbuckles using the
+                    settings described above:</p>
+
+                <pre>
+    Data from Shapefiles
+      Lake area 2.35917126e+03 2,359 acres
+      Island area 8.83329872e-01 1 acres
+      Net area (water) 2.35828793e+03 2,358 acres
+      Lake shoreline 2.58312828e+05 258,313 ft
+      Island shoreline 2.52638984e+03 2,526 ft
+      Total shoreline 2.60839218e+05 260,839 ft
+      N Islands 5
+      N Soundings 100593
+      N Supplements 0
+      Bounds
+         x: 2253906.643, 2278570.735, (24664.092)
+         y: 395248.016, 420612.213, (25364.197)
+         z: 786.560, 871.200, (84.640)
+      Mean sounding spacing: 9.691 ft
+      Median sounding spacing: 7.365 ft
+
+
+    Computations from Constrained Delaunay Triangulation
+      Volume 7.17991898e+04 71,799 acre-ft
+      Surface Area 2.35828793e+03 2,358 acres
+      Flat Area 0.00000000e+00 0 acres
+      Avg depth 30.45 ft
+      N Triangles 226075
+      N Flat Triangles 0
+      Mean Vertex Spacing 92.95
+
+
+
+    Time to load data 314.1 ms
+    Time to build TIN 2376.5 ms
+    Time to remedy flat triangles: 9455.3 ms
+    Time to compute lake volume 4138.7 ms
+    Time for all analysis 15970.7 ms
+    Time for all operations 16284.8 ms
+                </pre>
+
+                <p>The text above is taken from the metadata written to the _report_ file "SvmArbuckle.txt".
+                    An additional collection of text in comma-separated-value form was written
+                    to the _table_ file "SvmArbuckle.csv".</p>
+
+                <h2 id="AnAlternateApproachUsingDepthInsteadOfElevation">An Alternate Approach: Using Depth Instead of Elevation</h2>
+
+                <p>Not all bathymetry data sets supply the elevations of the lake bottom. Some provide
+                    depth values instead. One of the reasons that I selected the Arbuckle data
+                    as an example is that supplies both. This feature will allow us to explore
+                    an alternate approach to handling bathymetry sample that give depth values.</p>
+
+                <pre>
+                          width min max
+      2. Elevation F 19.11 786.560000 871.200000
+      3. Depth F 19.11 -84.880000 -0.240000
+                </pre>
+
+                <p>SVM operates on the assumption that the elevations given for the lake bottom are less than
+                    the elevation given for the shore. Because depth values are given as negative numbers,
+                    they are consistent with this assumption. So its easy to use them as a source of "relative
+                    bottom elevation" measurements. We can simply set the shoreline-reference-value to
+                    zero. As a precaution, I also "hard-wire" the boundary depth value to zero as shown below:</p>
+
+                <pre>
+    samples = Arbuckle_Collected_Points.shp | Depth
+    bounds = Arbuckle_Boundary.shp | 0
+    shorelineReferenceElevation = 0
+                </pre>
+
+                <p>Again, these settings work because the Arbuckle data gives depth as negative numbers.
+                    Some data sets give depth values as positive numbers. For example, the Lake Victoria Shapefile
+                    discussed in <a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Compute-Lake-Volume-Part-1" >Using-the-Delaunay-to-Compute Lake Volume</a>
+                    records depth values as a positive number in meters stored in a data field named "Z".
+                    Because of that, the SVM provides a syntax for scaling and adjusting the input values from a file.
+                    For the Lake Victoria Shapefile, the following settings would apply:</p>
+
+                <pre>
+    samples = LV_Bathymetry_Points_V7.shp | Z | -1 0
+    bounds = LakeVictoriaShoreline.shp | 0
+                </pre>
+
+                <p>The numeric values following the metadata for the samples setting specify parameters for
+                    adjustments to the input values. The first value, -1, is a multiplicative
+                    factor. The second value, 0, is an offset. These two adjustments are applied
+                    in the order specified and have the net effect of negating the Z values and
+                    putting them into a form suitable for SVM.</p>
+
+                <p>Documentation for this feature is included in the properties template that was described above.</p>
+
+                <h2 id="AdditionalOutputProducts">Additional Output Products</h2>
+
+                <p>As of release 2.1.2, two additional output products are available form the SVM: a capacity graph,
+                    and a contour graph. Both of these produce image files.</p>
+
+                <p>The following text provides an example of output settings for the Lake of the Arbuckles data.
+                    Note that both setting provide the ability to add custom text to the output images.
+                    The capacity graph setting allows you to specify an image title and the contour
+                    graph setting allows you to specify a title.</p>
+
+                <pre>
+    capacityGraphFileName = SvmArbuckle.png
+    capacityGraphSize = 650x400
+    capacityGraphTitle = SVM Analysis for Lake of the Arbuckles
+
+    contourGraphFileName = SvmArbuckleContour.png
+    contourGraphSize = 650x650
+    contourGraphLegendText = Elevation in feet above mean sea level (MSL)
+                </pre>
+
+                <p>The capacity graph features a single curve relating water level to both
+                    percent overall capacity and volume.</p>
+
+                <img src="images/SvmArbuckleCapacity.png" alt="SVM Capacity for Lake of the Arbuckles" />
+
+                <p>The contour graph features a color-fill contour plot.</p>
+
+                <img src="images/SvmArbuckleContour.png" alt="SVM Capacity for Lake of the Arbuckles" />
+
+                <h1 id="FutureWork">Future Work</h1>
+
+                <p>Future work on the Simple Volumetric Model will focus on improving the application's
+                    ability to integrate with a conventional GIS workflow. SVM already includes
+                    the ability to export raster data in Esri's ASCII grid file format. Because this feature
+                    is still in the testing and refinement phase, it was not included in these notes.
+                    The grid-export feature is documented in the properties-file
+                    template (see above). Currently, I am working on the implementation of a contouring-module that
+                    will allow SVM to create Shapefile output files giving contours for various water levels.
+                    Additionally, there are several small improvements in the works.</p>
+
+                <p>Finally, development of a graphical user interface for SVM will be considered if
+                    there is enough user interest.</p>
+
+                <p>As always, I welcome suggestions for improvements or new features.</p>
+
+                <h1 id="References">References</h1>
+
+                <p>Lucas, G. (2019). Using the Delaunay to Create a Reservoir Volume Model. Accessed July, 2019 from https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Create-a-Reservoir-Volume-Model</p>
+
+                <p>Oklahoma Water Resource Board [OWRB]. (2016). Lake of the Arbuckles, Collected Bathymetric Survey Points. Accessed July, 2019 from https://www.owrb.ok.gov/studies/surface/bathymetry.php</p>
+
+                <p>Texas Water Development Board &ndash; Hydrographic Survey Program [TWDB]. (2018). Volumetric and Sedimentation Survey of Alan Henry Reservoir, August 2017 Survey. Austin, TX. Retrieved May, 2019 from http://www.twdb.texas.gov/hydro_survey/alanhenry/2017-08/AlanHenry2017_FinalReport.pdf</p>
+
+            </div>
+        </div>
+    </body>
+
+</html>

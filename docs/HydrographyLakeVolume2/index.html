@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="G.W. Lucas">
+        <title>Lake Volume Part 2</title>
+        <link rel="stylesheet" href="../css/text.css" />
+        <link rel="stylesheet" href="../css/layout.css" />
+    </head>
+
+
+    <body>
+        <div id="notescontainer">
+            <div id="notesheader">
+                <ul class="link-bar">
+                    <li> <a href="https://gwlucastrig.github.io/TinfourDocs/">Home</a> </li>
+                    <li>|</li>
+                    <li><a href="https://github.com/gwlucastrig/Tinfour">Code (Github)</a></li>
+                    <li>|</li>
+                    <li><a href="../HydrographyLakeVolume1/index.html">Part 1</a></li>
+                    <li>|</li>
+                </ul>
+                <p>&nbsp;</p>
+            </div>
+
+            <div id="notescontent">
+
+                <div class="titleblock">
+                    <p class="title">
+                        Using the Delaunay to Compute Lake Volume &ndash; Part 2
+                    </p>
+                    <p class="author">by G.W. Lucas</p>
+                </div>
+
+
+                <h1 id="Introduction">Introduction</h1>
+
+                <p>In Part 1 of this turtorial, I introduced a technique for computing lake volume using
+                    the Constrained Delaunay Triangulation. In that article, I tried to focus on the
+                    ideas underlying the technique, and to avoid giving too much attention to Tinfour itself.
+                    That being said, the reason that I investigated the technique in the first place
+                    is that it provided an excellent opportunity for illustrating some of the
+                    less obvious aspects of the Tinfour implementation.</p>
+
+                <p>In Part 2 of the tutorial, I will walk through the details of the LakeVolumeExample class
+                    and explain the most important design elements of the code. In particular, I will show
+                    how the Tinfour implementation supports adding and accessing constraints in the
+                    Delaunay Triangulation.</p>
+
+                <p class="blockquote"><b>Note:</b> In the text below, I will sometimes use the acronymn TIN for Triangulated
+                    Irregular Network. The Delaunay Triangulation is a specific kind of TIN
+                    that has important geometrical properties.</p>
+
+                <h1 id="GettingTheData">Getting the data</h1>
+
+                <p>The first step to performing the lake-volume calculation was to acquire data that could be
+                    read in and processed by the existing Tinfour code. Fortunately, I found a source of
+                    Shapefile data posted by Greg Silsbe (Silsbe, 2015) at the website
+                    <a href="https://figshare.com/articles/Lake_Victoria_Shapefiles/1494839/1" >Lake Victoria Shapefiles</a>.</p>
+
+                <p>Tinfour is not a Geographical Information System (GIS). The fact that so many of the
+                    examples that show up in the Tinfour documentation are geophysical in nature is mainly
+                    a matter of convenience and the availability of data. To access some of that data, Tinfour
+                    does partially implement a Shapefile reader. Shapefiles are a GIS industry standard for
+                    storing information about geographic features such as lakes, islands, roads, geopolitical
+                    borders, etc. A Shapefile product is packaged in a
+                    set of closely coupled files that all share the same root name, but use different extensions.
+                    Geometry information for the entities in the data set are given in a file with the
+                    extension "SHP". Metadata information for each entity in the geometry file is given
+                    in a file with the extension "DBF".</p>
+
+                <p>In the case of the Silsbe data, the soundings were given in a Shapefile named "finbath".
+                    The geometry file indicated the position of the soundings and the metadata file indicated
+                    the depth. This information was extracted directly from the Shapefiles using the
+                    Tinfour ShapefileReader class. Both position and depth data were given in meters.
+                    The lake outline data and island polygons were also read directly from the Shapefiles.
+                    Again, the position data was specified in meters using the same coordinate system
+                    as the soundings.</p>
+
+                <p>The logic for these operations is implemented in the class BathymetryData in
+                    the Tinfour example code.</p>
+
+                <h1 id="Process">The Process</h1>
+
+                <p>As described in Part 1 of this tutorial, the calculation used the outline of the lake and
+                    the island polygons as constraints on the Delaunay Triangulation. These elements were needed
+                    so that when the triangular mesh was processed, the application code would have a way
+                    of knowing which triangles were water and which were land.</p>
+
+                <p>To establish this information, the first thing the LakeVolumeExample application does is
+                    to loop through the constraints and populate them with a boolean value indicating which
+                    constraints are what. The lake-outline Shapefile gives a single polygon that encloses
+                    the water area. Any triangles outside that polygon would be land. With the exception of
+                    islands, the area (and triangles) inside that polygon would be water. The constraint classes
+                    in the Tinfour package allow an application to add "application data" in the form of a
+                    Java Object using the setApplicationData() method as shown below.</p>
+
+                <pre>
+    List&lt;IConstraint&gt; lakeConstraints = data.getLakeConstraints();
+    List&lt;IConstraint&gt; islandConstraints = data.getIslandConstraints();
+    for (IConstraint con : lakeConstraints) {
+      con.setApplicationData(true);
+    }
+    for (IConstraint con : islandConstraints) {
+      con.setApplicationData(false);
+    }
+                </pre>
+
+                <h2 id="BundlingTheConstraints">Bundling the constraints</h2>
+
+                <p>In its present implementation, Tinfour has a limitation. Constraints can only be
+                    added to the TIN structure once. And, since we have two separate
+                    lists of constraints, we need to combine them into one.</p>
+
+                <pre>
+    List&lt;IConstraint&gt; allConstraints = new ArrayList&lt;&gt;();
+    allConstraints.addAll(lakeConstraints);
+    allConstraints.addAll(islandConstraints);
+                </pre>
+
+                <p>This shortcoming will be addressed in future releases of the Tinfour code.
+                    But for now, it is a necessary step.</p>
+
+                <h2 id="InitializingTheTIN">Initializing the TIN</h2>
+
+                <p>With the input data in place, the example code initializes the TIN. There are
+                    two different incremental-TIN implementations in Tinfour. The IncrementalTin class
+                    and the SemiVirtualIncrementalTin class. The standard IncrementalTin class is
+                    the faster of the two, but it uses more memory for each edge. The semi-virtual
+                    implementation is slower than its counterpart, but it uses about half the memory.
+                    So for sample sets exceeding a certain size, the example code uses the
+                    semi-virtual version. The cut-off value, 500 thousand, is arbitary.</p>
+
+                <pre>
+    IIncrementalTin tin;
+    if (soundings.size() &lt; 500000) {
+      tin = new IncrementalTin(1.0);
+    } else {
+      tin = new SemiVirtualIncrementalTin(1.0);
+    }
+    tin.add(soundings, null);
+    tin.addConstraints(allConstraints, true);
+                </pre>
+
+                <h2 id="LoopingThroughTheTriangles">Looping through the triangles</h2>
+
+                <p>The LakeData class is a class for storing the results of the analysis.
+                    It also implements a Java Consumer that is designed to process triangles.
+                    The Tinfour TriangleCollector class was originally contributed to the
+                    Tinfour project by a user, Martin Janda, and it is one of my favorite
+                    tools for processing data in Tinfour. The visitSimpleTriangles() method
+                    loops through the triangles in the TIN structure, passing them to the
+                    Consumer (LakeData) on at a time.</p>
+
+                <pre>
+    LakeData results = new LakeData(tin);
+    TriangleCollector.visitSimpleTriangles(tin, results);
+                </pre>
+
+                <h2 id="LakeData">Lake Data</h2>
+
+                <p>Now we come to the heart of the calculation. As you can see in the
+                    code below, LakeData implements a Java Consumer that accepts objects
+                    of type SimpleTriangle. The SimpleTriangle consists of three
+                    Tinfour edges. The first thing that LakeData does when it receives
+                    a triangle from Tinfour is to extract the edges and see if they
+                    are enclosed in a constraint that defines "water". If at least one of the three edges
+                    is unambiguously in the interior of the constraint, then the code knows that the
+                    whole triangle lies within the polygon defining the lake outline. If that condition
+                    is met, the triangle is used to make a contribution to the volume calculation.
+                    If not, it is ignored. The word <i>unambiguous</i> is important here. If an edge
+                    lies on the boundary of a constraint polygon, it does not provide enough information
+                    for the process to know if if the triangle is inside or outside the constraint.
+                    So the process looks for edges that are inside the polygon and not touching
+                    the border except, perhaps, at an endpoint.</p>
+
+                <p>Here's most of the code for LakeData. If you'd like, you can give it
+                    a quick scan. I will break it out into parts in the discussion
+                    below.</p>
+
+                <pre>
+    class LakeData implements Consumer&lt;SimpleTriangle&gt; {
+                </pre>
+
+                <pre>
+    boolean []water;
+    final GeometricOperations geoOp;
+    int nTriangles;
+                </pre>
+
+                <pre>
+    KahanSummation volumeSum = new KahanSummation();
+    KahanSummation areaSum = new KahanSummation();
+                </pre>
+
+                <pre>
+    LakeData(IIncrementalTin tin) {
+      List&lt;IConstraint&gt; constraintsFromTin = tin.getConstraints();
+      water = new boolean[constraintsFromTin.size()];
+      for(IConstraint con: constraintsFromTin){
+        water[con.getConstraintIndex()] = (Boolean)con.getApplicationData();
+      }
+      Thresholds thresholds = tin.getThresholds();
+      geoOp = new GeometricOperations(thresholds);
+    }
+                </pre>
+
+                <pre>
+    @Override
+    public void accept(SimpleTriangle t) {
+      IQuadEdge a = t.getEdgeA();
+      IQuadEdge b = t.getEdgeB();
+      IQuadEdge c = t.getEdgeC();
+      if (isWater(a) || isWater(b) || isWater(c)) {
+        Vertex vA = a.getA();
+        Vertex vB = b.getA();
+        Vertex vC = c.getA();
+        double zA = -vA.getZ();
+        double zB = -vB.getZ();
+        double zC = -vC.getZ();
+        double zMean = (zA + zB + zC) / 3;
+        double area = geoOp.area(vA, vB, vC);
+                </pre>
+
+                <pre>
+        nTriangles++;
+        volumeSum.add(zMean*area);
+        areaSum.add(area);
+      }
+    }
+                </pre>
+
+                <h2 id="EstablishingTheBooleanWaterArray">Establishing the boolean water array</h2>
+
+                <p>Here's a fragment of the LakeData constructor. When it is called,
+                    it gets the list of constraints from the TIN structure and loops
+                    through them checking their application data to see whether they
+                    are water or land. Each constraint has a unique integer index
+                    in the range 0 to N-1 where N is the number of constraints.
+                    Later on, these indices will be used to access the water array.</p>
+
+                <pre>
+    boolean []water;
+                </pre>
+
+                <pre>
+    LakeData(IIncrementalTin tin) {
+      List&lt;IConstraint&gt; constraintsFromTin = tin.getConstraints();
+      water = new boolean[constraintsFromTin.size()];
+      for(IConstraint con: constraintsFromTin){
+        water[con.getConstraintIndex()] = (Boolean)con.getApplicationData();
+      }
+    }
+                </pre>
+
+                <h2 id="OtherConstructorElements">Other constructor elements</h2>
+
+                <p>The other constructor elements that are worth review are the two Kahan summations
+                    and the GeometricOperations object. The KahanSummation class provides an extended
+                    precision tool for adding up the surface area and volume contributions of the
+                    triangles. The total volume of the lake is so large that using the summations
+                    seemed like a good idea. In practice, they turned out to not be strictly necessary
+                    for the small number of soundings in the Silsbe data set. But I kept them in the
+                    application in case future data sets required extra precision. The GeometricOperations
+                    object is used to compute triangle area. The thresholds obtained from the
+                    TIN are used by the class to decide whether the slower extended precision math
+                    is needed for calculations or whether standard floating-point operations will
+                    suffice.</p>
+
+                <pre>
+    KahanSummation volumeSum = new KahanSummation();
+    KahanSummation areaSum = new KahanSummation();
+    Thresholds thresholds = tin.getThresholds();
+    GeometricOperations geoOp = new GeometricOperations(thresholds);
+                </pre>
+
+                <h2 id="InsideTheAcceptMethod">Inside the accept method</h2>
+
+                <p>Inside the accept method, the code extracts the edges from the triangle and checks to
+                    see if they indicate that they are contained within a water polygon. If they are,
+                    it uses them to compute the area and volume contribution of the triangle.
+                    As mentioned in Part 1 of this turtorial, the volume is just the average of the
+                    three water depths times the area of the triangle (area based on its x/y
+                    coordinates, ignoring its z coordinates). The accept method was given above and
+                    I won't repeat it, except to show the structure of the conditional block</p>
+
+                <pre>
+    if (isWater(a) || isWater(b) || isWater(c)) {
+      // compute area and volume and add it to the sums
+    }
+                </pre>
+
+                <h2 id="IsWaterMethod">The isWater() method</h2>
+
+                <p>One of the challenges in the design of Tinfour is that it had to be able to
+                    process a very large number of sample points (10 million samples is not uncommon).
+                    A Delaunay Triangulation containing N vertices has, on average, 3 times N edges.
+                    So the memory footprint of the Tinfour edge implementation had to be as small as possible.
+                    Ideally, when an edge is associated with a constraint, it would carry a
+                    reference to that constraint. And in cases where an edge served as the border between two
+                    constrained regions (such as land and water), it would need to carry two references.
+                    Unfortunately, in the current Tinfour architecture, adding such reference to the
+                    edge class definition would increase the size of a single edge by 16 bytes
+                    for the standard IncrementalTin and 8 bytes for the semi-virtual implementation.
+                    However, when the IQuadEdges were created, there was room to add an integer
+                    without increasing the in-memory size of the objects. So instead of carrying a reference
+                    to the constraints, the Tinfour IQuadEdge classes carry their integer index.</p>
+
+                <p>When a polygon constraint is added to the Tin, all the edges that lie in
+                    its interior are populated with the index of the constraint. The edges also
+                    know whether they are the border of the polygon, or unambiguously in
+                    its interior. If an edge lies on the border of the polygon, it doesn't
+                    give us sufficient information to know whether the triangle it belongs to
+                    is a water triangle or a land triangle. But if it is in the interior
+                    of a water polygon, the isWater() method returns true.</p>
+
+                <p>A triangle will be a water triangle if at least one of its
+                    edges returns true for the isWater() method. The other two
+                    edges might be borders, but if at least one is in the
+                    interior, then the entire area of the triangle is in
+                    the interior.</p>
+
+                <pre>
+    boolean isWater(IQuadEdge edge) {
+      if (edge.isConstrainedRegionBorder()) {
+        return false;
+      }
+      if (edge.isConstrainedRegionInterior()) {
+        int index = edge.getConstraintIndex();
+         return water[index];
+      }
+      return false;
+    }
+                </pre>
+
+                <p>The isWater() method also comes in handy when estimating the distance between soundings.
+                    The Delaunay triangulation structure organizes the input data so that each
+                    sample vertex is connected to its nearby neighbors. So the triangulation provides
+                    a meaningful way of knowing which pairs of vertices to consider when tabulating
+                    the average distance between soundings. We simply look at the lengths of the
+                    connecting edges. But, we only want to consider those edges that lie in water
+                    areas and connect pairs of soundings. The isWater() method will help us exclude edges
+                    that lie outside the constrained areas or on their borders. It turns out that for the
+                    Lake Victoria sample data, the sample spacing measured using the Delaunay triangulation
+                    and restricting the tally to "water edges" is about two thirds of the value estimated
+                    from the raw data using simple arithmetic.</p>
+
+                <h1 id="WrappingItUp">Wrapping it up</h1>
+
+                <p>That's about it. Here's the output from the LakeVolumeExample application.
+                    Since the Shapefiles for the lake and island areas define polygons,
+                    it is possible to compute their area using simple methods. Those calculations
+                    are included in the output as a reference. At first I was puzzled by the fact
+                    that the Net Area from the Shapefiles does not exactly match the Surface Area computed using the
+                    triangulation. It turns out that some of the polygon features in the source data are simple triangles
+                    that do not contain soundings. Because triangles don't contain internal edges (all edges are constraint borders),
+                    the isWater() method does not detect that they are water features and they are not added to the tally.</p>
+
+                <pre>
+    Input Data
+      Soundings
+         Count: 12679
+         Min (x,y,z): 345486.7, -332106.7, -79.50 (feature 2197)
+         Max (x,y,z): 705660.9, 54640.2, -0.50 (feature 5276)
+         width,height: 360174.2, 386746.9
+         Nominal Spacing: 3561.7
+                </pre>
+
+                <pre>
+    Data from Shapefiles
+      Lake area 6.93840107e+10 69,384,010,673 m2 69384.0 km2
+      Island area 2.61629720e+09 2,616,297,199 m2 2616.3 km2
+      Net area (water) 6.67677135e+10 66,767,713,474 m2 66767.7 km2
+      Lake shoreline 3.84310964e+06 3,843,110 m 3843.1 km
+      Island shoreline 3.23382902e+06 3,233,829 m 3233.8 km
+      Total shoreline 7.07693866e+06 7,076,939 m 7076.9 km
+      N Islands 741
+                </pre>
+
+                <pre>
+    Computations from Constrained Delaunay Triangulation
+      Volume 2.66773715e+12 2,667,737,147,208 m3 2667.7 km3
+      Surface Area 6.67677170e+10 66,767,717,048 m2 66767.7 km2
+      Avg depth 39.96 m
+      N Triangles 69717
+      Est. Sample Spacing 2361.11 m
+                </pre>
+
+                <pre>
+    Time to load data 148.3 ms
+    Time to build TIN 259.2 ms
+    Time to compute lake volume 54.2 ms
+    Time for all analysis 313.4 ms
+    Time for all operations 461.7 ms
+                </pre>
+
+                <h1 id="References">References</h1>
+
+                <p>Silsbe, G. (2015). <i>Lake Victoria Shapefiles.</i> Data downloaded October, 2018 from
+                    https://figshare.com/articles/Lake_Victoria_Shapefiles/1494839/1</p>
+
+
+            </div>
+        </div>
+    </body>
+
+</html>

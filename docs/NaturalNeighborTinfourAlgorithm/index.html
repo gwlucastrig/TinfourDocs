@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="G.W. Lucas">
+        <title>A Fast Algorithm for Natural Neighbor Interpolation</title>
+        <link rel="stylesheet" href="../css/text.css" />
+        <link rel="stylesheet" href="../css/layout.css" />
+    </head>
+
+
+    <body>
+        <div id="notescontainer">
+            <div id="notesheader">
+                <ul class="link-bar">
+                    <li> <a href="https://gwlucastrig.github.io/TinfourDocs/">Home</a> </li>
+                    <li>|</li>
+                    <li><a href="https://github.com/gwlucastrig/Tinfour">Code (Github)</a></li>
+                    <li>|</li>
+                </ul>
+                <p>&nbsp;</p>
+            </div>
+
+            <div id="notescontent">
+
+                <div class="titleblock">
+                    <p class="title">
+                        A Fast, Accurate, and Efficient Algorithm<br>for Natural Neighbor Interpolation
+                    </p>
+                    <p class="author">by G.W. Lucas</p>
+                </div>
+
+
+                <h1>Introduction</h1>
+
+                <p>The Tinfour open-source software library implements a fast,
+                    accurate, and efficient algorithm for Natural Neighbor Interpolation. These
+                    notes describe that algorithm. They are provided here to assist investigators
+                    who wish to understand how the implementation works, to extend its
+                    functionality, or to implement their own versions of the Natural Neighbor
+                    technique.</p>
+
+                <p style='margin-left:.5in'><b>Note:</b> Readers seeking
+                    background information on the ideas underlying the Natural Neighbor
+                    Interpolation technique may find it useful to review the web article
+                    <a href="https://github.com/gwlucastrig/Tinfour/wiki/Introduction-to-Natural-Neighbor-Interpolation">
+                        An Introduction to Natural Neighbor Interpolation</a>. The discussion below draws
+                    heavily on the concepts, terminology, and conventions introduced in that
+                    article.</p>
+
+                <h2>About Natural Neighbor Interpolation</h2>
+
+                <p>Natural Neighbor Interpolation (NNI) estimates values for a
+                    surface constructed from a collection of irregularly distributed sample points.
+                    Because such sample sets have no readily identifiable pattern or organization,
+                    they are often referred to as <i>unstructured data</i>. Unstructured data sets are
+                    common in geophysical and scientific applications including elevation surveys, ocean-depth soundings, weather observations,
+                    and electric potential measurements over a surface. NNI has the advantage of constructing a smooth and
+                    visually pleasing representation of a surface that faithfully preserves data
+                    values at sample points.</p>
+
+                <h2>How Natural Neighbor Interpolation Works</h2>
+
+                <p>The Natural Neighbor concept was introduced by Robin Sibson
+                    in 1981 (see Sibson, 1981). At the time, Sibson was exploring the properties of
+                    the Voronoi diagram (or the Dirichlet tessellation, as it is also known). A Voronoi
+                    diagram is a structure which is studied in the branch of mathematics known as graph
+                    theory. It is formed from a set of unstructured data sample points that lie on
+                    a coordinate plane. The plane is partitioned into a collection of polygons,
+                    each containing a single sample point. These polygons represent the set of all
+                    points that are closer to the defining sample point than any other sample. The
+                    resulting structure covers the entire plane. The polygons in the interior
+                    region of the Voronoi are closed and have finite area. Those to the outside of
+                    the structure are unbounded and have an infinite area. The figure below shows
+                    an example of a Voronoi diagram formed from a set of unstructured data
+                    points.</p>
+
+                <img border=0 width=780 height=521 src="images/image001.png">
+
+                <p> </p>
+
+                <h3>Sibson's Technique</h3>
+
+                <p>In his paper, Sibson considers what happens when a new point
+                    is inserted into the Voronoi diagram at the position where one wishes to obtain
+                    an interpolated value. As the figure below shows, when a point is added to the
+                    set of unstructured samples, it leads to the creation of a new containing polygon.
+                    The new polygon captures some of the area that was previously covered by its
+                    neighbors. In Sibson's terminology, these neighboring polygons and their
+                    associated sample points are the <i>natural neighbors</i> of the interpolation
+                    point. The process is illustrated in the figure below.</p>
+
+                <img border=0 width=780 height=196  src="images/image002.png">
+
+                <p>Sibson's technique estimates a value for the interpolation point
+                    by considering the relative area contributed by each polygon associated with the
+                    natural neighbors. The proportion of the new cell that was taken from each neighbor
+                    is used as a factor in a weighted average. The value <img class="imageInText" width=20 height=27 src="images/image003.png"> for
+                    each neighbor is combined with its associated weight to compute an estimated
+                    value for <img class="imageInText" width=10 height=27 src="images/image004.png"> at
+                    the interpolation coordinates. This calculation is shown in the expression
+                    below.</p>
+
+                <p class="mathtext"><img width=418 height=69 src="images/image005.png"></p>
+
+                <h3>Challenges of the Voronoi diagram</h3>
+
+                <p>One of the drawbacks of Sibson's original proposal was the
+                    large computational overhead required to perform an interpolation. The
+                    operation required modifying the Voronoi to introduce a new polygon, and then
+                    removing that polygon when the interpolation was complete. At the time, the
+                    processing cost of this operation was a significant obstacle to the adoption of
+                    Natural Neighbor Interpolation.</p>
+
+                <p>In the decades since Sibson's original paper, a number of
+                    authors have published techniques for streamlining the interpolation by
+                    replacing the Voronoi diagram with a related structure, the Delaunay
+                    triangulation.</p>
+
+                <h3>A Solution Using the Delaunay Triangulation</h3>
+
+                <p>Because of its relative simplicity and ease of
+                    implementation, the Delaunay provides an attractive alternative to the Voronoi
+                    diagram. The property that allows it to be used as an alternative is the fact
+                    that the planar forms of the Delaunay triangulation and the Voronoi diagram are
+                    <i>dual graphs</i> of each other. Informally speaking, the fact that these two
+                    structures are dual graphs means that any set of sample points that produces a
+                    unique Delaunay triangulation will also produce a corresponding Voronoi
+                    diagram.</p>
+
+                <p>It turns out that there are deep connections between the two
+                    structures (see <a
+                        href="https://en.wikipedia.org/wiki/Delaunay_triangulation#Relationship_with_the_Voronoi_diagram">Wikipedia,
+                        2021</a>). These connections allow software implementations to model the
+                    behavior of the Voronoi diagram without actually constructing one. This
+                    modeling technique does require the construction of an initial triangulation.
+                    But once it is established, a process can then use it to perform as many
+                    interpolations as desired without ever needing to modify the underlying
+                    structure. This approach eliminates a great deal of computational overhead and
+                    expedites the interpolation process. Furthermore, since the software accesses
+                    the underlying graph on a read-only basis, it can be used in multi-threaded
+                    applications to perform multiple interpolations as parallel processes.</p>
+
+                <p style='margin-left:.5in'><b>Note: </b>The use of the
+                    Delaunay triangulation as the basis of a Natural Neighbor algorithm is not
+                    unique to Tinfour. Earlier works that used this approach include Bourke (1989),
+                    Sambridge (1995), Watson (1997, 2001), Liang &amp; Hale (2010), and others. In
+                    particular, Liang &amp; Hale anticipated many of the elements and computations
+                    used in the Tinfour implementation. Their paper, <a
+                        href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.174.2191&amp;rep=rep1&amp;type=pdf">A
+                        stable and fast implementation of natural neighbor interpolation</a> also offers
+                    a good historical overview a number of different implementations of the Natural
+                    Neighbor concept.</p>
+
+                <h3>How the Delaunay Models the Voronoi </h3>
+
+                <p>To show how the Delaunay is used to model the Voronoi, it is
+                    necessary to introduce the concept of a circumcircle. For any properly formed
+                    triangle, there exists a unique circle called the <i>circumcircle</i> that
+                    passes through its three vertices. The center of the circumcircle is referred
+                    to as its <i>circumcenter</i>. The figure below illustrates two characteristics
+                    of a circumcircle that will be relevant later in these notes. First, the
+                    circumcenter can lie outside the bounds of its defining triangle. And, second,
+                    the circumcenter lies at the intersection of the three perpendicular bisectors
+                    of the triangle edges (Weisstein, 2021).</p>
+
+                <p><img border=0 width=780 height=390 src="images/image006.jpg"></p>
+
+                <p>Circumcircles play an essential role in the creation of a
+                    Delaunay triangulation. The characteristic that distinguishes the Delaunay from
+                    other, arbitrary triangular networks is the <i>empty-circle property</i>. The
+                    empty-circle property requires that no circumcircle formed by the triangles in
+                    the Delaunay contains any vertex other than the three that define it. This
+                    property, which is also known as the <i>Delaunay criterion</i>, leads to a
+                    triangulated mesh with several desirable characteristics (Lucas, 2017). For
+                    interpolation purposes, the most important of these is that it is the basis of
+                    the dual-graph relationship between the Delaunay triangulation and the Voronoi
+                    diagram.</p>
+
+                <p>If a triangulation is properly Delaunay, then the
+                    circumcenters defined by its members correspond directly to the vertices that
+                    form the Voronoi diagram. The images below illustrate the relationships between
+                    two representative graphs.</p>
+
+                <img border=0 width=780 height=521 src="images/image007.png">
+
+                <img border=0 width=410 height=514 src="images/image008.png">
+
+                <h3>Modeling a Voronoi Insertion</h3>
+
+                <p>Having introduced the relationship between the Voronoi and
+                    Delaunay, we can now consider how the Delaunay triangulation can be usd to model
+                    the effects of inserting the interpolation point into the Voronoi diagram. A Voronoi can be
+                    constructed using the circumcircles from the Delaunay. If a new vertex is
+                    inserted into the dual-graph Delaunay, that collection of circumcircles will
+                    change and the resulting Voronoi will feature a polygon based on the inserted
+                    point. A brief consideration of the algorithm the Tinfour software package
+                    inserts a point into a Delaunay triangulation provides a conceptual basis for
+                    the modeling process.</p>
+
+                <p>Tinfour's Delaunay insertion operation uses an algorithm
+                    based on two well-known papers that were published simulataneously in issue 24(2) of <i>The Compute Journal</i> in 1981
+                    by Bowyer and Watson. The key feature in this algorithm is the construction of a
+                    structure that Tinfour calls the <i>Bowyer-Watson envelope.</i> The process is
+                    illustrated in the figure below. If a new vertex were introduced at the
+                    interpolation point (shown as crosshairs in panel A), it would fall within the
+                    bounds of one or more existing circumcircles. Because this situation would
+                    violate the empty-circle property, edges are removed to create a cavity around
+                    the insertion point. The polygon bounding this cavity is the Bowyer-Watson
+                    envelope. Panel B shows that the remaining circumcircles no longer overlap the
+                    insertion point. Finally, the cavity is filled by adding new edges that tie the
+                    inserted vertex to the vertices in the Bowyer-Watson envelope as shown in panel
+                    C. The empty-circle property is restored and the triangulation is, once again,
+                    properly Delaunay.</p>
+
+                <p><img border=0 width=770 height=313 src="images/image009.png"></p>
+
+                <p>To model the effects of the insertion process, the Natural
+                    Neighbor Interpolator does not need to perform an actual insertion. All it
+                    needs is a list of the edges that comprise the Bowyer-Watson envelope. The
+                    triangulation is not modified. The geometry of these edges is used in
+                    conjunction with the coordinates of the interpolation point to construct the
+                    triangles and circumcircles that would give rise to the new polygon in the
+                    Voronoi diagram. This construction becomes a short-persistent data object that
+                    is used for the Natural Neighbor calculation and then discarded.</p>
+
+                <p>The figure below shows the Bowyer-Watson envelope overlaid
+                    on the depiction of the triangulation. The area in blue is the new polygon. The
+                    region in pink covers the parts of the neighboring Voronoi cells that fall
+                    within the envelope. Since the region of the Delaunay that lies outside the
+                    envelope does not change, neither does the corresponding region of the
+                    dual-graph Voronoi. Thus the model is only required to process that region that
+                    is contained within the envelope. And because the unbounded regions of the
+                    Voronoi diagram are always outside the envelope, the interpolation code never
+                    has to deal with infinite quantities (something that is often cumbersome in
+                    software implementations).</p>
+
+                <p><img border=0 width=770 height=313 src="images/image010.png"></p>
+
+                <p>With the underlying concepts in place, the interpolation
+                    process can now be summarized as follows:</p>
+
+                <ol>
+                    <li> Given an interpolation point, find the Bowyer-Watson envelope for the insertion.
+                        Each vertex in this polygon is a natural neighbor to the interpolation point.</li>
+                    <li> Compute an unadjusted captured-area factor for each vertex in the Bowyer-Watson envelope:
+                        <ol class="innerList">
+                            <li>Compute the area of the enclosed part of its associated Voronoi cell using the original Delaunay structure</li>
+                            <li> Compute the area of the enclosed part of the modified Voronoi cell using the
+                                edges and circumcircles that would be constructed by inserting the new vertex into the Delaunay.</li>
+                            <li>Find the difference from the two computations. This is the unadjusted value for
+                                the area captured from the polygon containing the vertex of interest.</li>
+                        </ol>
+                    </li>
+                    <li>When all captured-area factors are computed, normalize them so that the sum of the factors is one.
+                        The results are the weight factors for the set of vertices designated as the natural neighbors of the interpolation point.</li>
+                    <li>Compute a weighted sum of the data value (z value) for each vertex.  The result is the estimated value z ^ computed at the interpolation coordinates.</li>
+                </ol>
+
+
+                <h3>The Area Calculations</h3>
+
+                <p>For each vertex in the in the Bowyer-Watson envelope, we
+                    compute area values for the pre-insertion and post-insertion states of the Voronoi
+                    diagram using the <i>shoelace</i> formula which is also known as Gauss's area
+                    formula. Given the Cartesian coordinates for a potentially irregular, but non
+                    self-intersecting polygon consisting of 3 or more vertices, the area is
+                    computed as:</p>
+
+                <p class="mathtext"><img width=286 height=80 src="images/image011.png"></p>
+
+                <p>The area computation is a piecewise sum of area
+                    contributions specified by the terms in the summation. Each summand represents
+                    the contribution of a single line segment. In the case of the last segment in
+                    the polygon, where <i>i</i> equals <i>n</i>, the index wraps around to 1.</p>
+
+                <h3>Calculating the Pre-Insertion Area Component</h3>
+
+                <p>The figure below illustrates the geometry for a calculation
+                    of the pre-insertion area. We label the vertices from the Bowyer Watson
+                    envelope using the uppercase letter B. A vertex <i>B<sub>2 </sub></i>connects
+                    to four other vertices within the bounds of the Bowyer-Watson envelope <i>B<sub>1</sub></i>,
+                    <i>B<sub>3</sub></i>, <i>V<sub>1</sub></i>, and <i>V<sub>2</sub></i>. The
+                    circumcenters are labeled with the uppercase letter C. <i>C<sub>1</sub></i> designates
+                    the circumcenter for triangle <i>B<sub>1</sub>B<sub>2</sub>V<sub>1</sub></i>
+                    and, in general, <i>C<sub>i</sub></i> designates the circumcenter for the
+                    triangles formed as the algorithm traverses through the connecting triangles in
+                    a clockwise order. The variables <i>M<sub>1</sub> </i>and <i>M<sub>2</sub></i>
+                    are used to indicate the midpoints of edges <i>B<sub>1</sub>B<sub>2</sub></i>
+                    and <i>B<sub>2</sub>B<sub>3</sub></i> respectively.</p>
+
+                <p>Again we note that although there is a complete Voronoi cell
+                    associated with vertex <i>B<sub>2</sub></i> we only need to compute the
+                    contributing terms that are unique to the pre-insertion area calculation. Those
+                    that would also be included in the post-insertion calculation (those that lie
+                    outside or on the edges of the Bowyer-Watson polygon) would drop out in when we
+                    compute the difference between the pre-insertion and post-insertion areas.</p>
+
+                <p class="mathtext"><img border=0 width=780 height=519 src="images/image012.png"></p>
+
+                <p>With these specifications, the components of the pre-insertion
+                    area is computed for the vertex of interest is specified as</p>
+
+                <p class="mathtext"><img width=674 height=71 src="images/image013.png"></p>
+
+                <p>Where n is the number of circumcenters from interior
+                    triangles associated with vertex <i>B<sub>2</sub></i>. In the special case
+                    where there is only a single interior triangle, the summation term is omitted.</p>
+
+                <p>The geometry shown in the figure above illustrates the
+                    computation for the Voronoi cell containing vertex B<sub>2</sub>. With the appropriate
+                    assignment of indices, the computation can be applied for each of the vertices
+                    in the Bowyer-Watson envelope.</p>
+
+                <h3>Calculating the Post-Insertion Area Component</h3>
+
+                <p>The figure below illustrates the geometry for a calculation
+                    of the post-insertion area for vertex <i>B<sub>2</sub></i>. Again, we note that
+                    Delaunay mesh is not actually modified. The computations are based on the
+                    geometry that would result if vertex <i>U</i> were inserted at the
+                    interpolation point <i>(x,y)</i>. When computing the post-insertion area for
+                    vertex <i>B<sub>2</sub></i>, we construct two new circumcenters, <i>G<sub>1</sub>
+                    </i>and <i>G<sub>2</sub></i>, for the adjacent triangles. The coordinates of
+                    these circumcenters is a function of the coordinates of <i>U = (x,y).</i></p>
+
+                <p class="mathtext"><img border=0 width=780 height=519 src="images/image014.png"></p>
+
+                <p>The post-insertion area component is computed as:</p>
+
+                <p class="mathtext"><img width=617 height=48 src="images/image015.png"></p>
+
+                <p>Again, a value for each vertex in the envelope can be
+                    computed by applying the appropriate indices. The total captured area for the Voronoi
+                    cell associated with the vertex of interest, <i>B<sub>K</sub>,</i> is just</p>
+
+                <p class="mathtext"><img width=122 height=27 src="images/image016.png"></p>
+
+                <p>To compute the full set of weights, the implementation
+                    visits each vertex in the Bowyer-Watson polygon and performs the computations
+                    described above. Incidentally, the equation shown in the text includes
+                    parentheses that are not necessarily required from a mathematical point of
+                    view. In practice, however, it turns out that collecting the terms as shown in
+                    the expression results in a small but measureable improvement in the accuracy
+                    of the arithmetic calculations performed by the interpolator.</p>
+
+                <h3>The Interpolated Result</h3>
+
+                <p>When the weights for all vertices in the Bowyer-Watson envelope
+                    are computed, then the weights for each vertex can be normalized as:</p>
+
+                <p class="mathtext"><img width=112 height=50 src="images/image017.png"></p>
+
+                <p>The use of the Greek letter lambda is taken from the
+                    Sibson's original description of the Natural Neighbor Interpolation method.
+                    They can be combined with the z values from each of the vertices from the
+                    Bowyer-Watson envelope to compute an interpolated value for the surface at the
+                    interpolation coordinates:</p>
+
+                <p class="mathtext"><img width=129 height=69 src="images/image018.png"></p>
+
+                <h3>Handling Circumcenters that are Outside the Envelope</h3>
+
+                <p>The figures shown above illustrate a case where all the
+                    circumcenters required for the area calculations were inside the envelope. In
+                    cases where they lie outside the envelope, the same formulation applies. The
+                    fact that the edges of the Voronoi are perpendicular bisectors of the Delaunay
+                    edges means that circumcenters lying to the outside of the envelope will be
+                    collinear with the other vertices that form an area computation segment. Algebraically,
+                    part of the piecewise components that lie outside the envelope cancel out of
+                    the area computation and make no contribution to the overall sum. No special
+                    handling is required.</p>
+
+                <h1>Does it Work?</h1>
+
+                <p>To assess whether the Tinfour interpolator works requires
+                    the answers to two questions. Does it get Sibson's technique right? And is it
+                    fast enough to be useful?</p>
+
+                <h3>Correctness of Implementation</h3>
+
+                <p>Given a set of unstructured sample points collected at
+                    arbitrary positions over a surface (elevation, temperature, electric potential,
+                    etc.), it is natural to wonder how well an interpolator predicts the value of
+                    that surface at a specific pair of coordinates. That is an interesting and
+                    important question. But, before we can investigate it, we need to be sure that
+                    the interpolator itself is correctly implemented. The Natural Neighbor
+                    Interpolation is relatively complex and it would be easy for a weak
+                    implementation to dilute the accuracy of its results.</p>
+
+                <p>Fortunately, Sibson's original work leads to a
+                    straightforward and unambiguous test that allows us to judge whether an implementation
+                    is correct. Although this test has been largely overlooked in the published
+                    literature, it provides a single numerical value that indicates the accuracy of
+                    an implementation.</p>
+
+                <p>Sibson identified what he called the <i>Local Coordinates
+                        Property</i> (Sibson, 1980, p. 152) which leads to the following
+                    relationships.</p>
+
+                <p class="mathtext"><img  width=132 height=69  src="images/image019.png"></p>
+
+                <p class="mathtext"><img  width=132 height=69   src="images/image020.png"></p>
+
+                <p>Mathematically, these expressions tell us that the lambda
+                    values produced in the course of an interpolation can be used to map the coordinates
+                    of the natural neighbor points back to the <b>exact</b> coordinates of the interpolation
+                    point. And, if the Tinfour implementation computes its lambda values
+                    correctly, a backward computation of the interpolation coordinates should
+                    produce just the values that were supplied as its inputs.</p>
+
+                <p>In practice, of course, the backward computation will seldom
+                    be perfect. Round off errors and the limits of floating-point precision
+                    inevitably lead to small deviations in the computed values. But if those
+                    deviations are small enough, it seems reasonable to say that the interpolation
+                    is implemented correctly. Tinfour's Natural Neighbor Interpolator includes a
+                    method called getBarycentricDeviation() that calculates the distance between
+                    the input coordinates and their computed counterparts. This deviation value
+                    provides a numeric quality score that can be used to assess how well the
+                    interpolator works.</p>
+
+                <p>During development of the Tinfour Natural Neighbor
+                    Interpolator, the deviation value proved useful as a way of comparing the
+                    advantages of alternate approaches or experimental changes to the software. A
+                    number of code refinements in the interpolator were verified using the
+                    deviation value.</p>
+
+                <h3>Test Data</h3>
+
+                <p>The correctness of implementation for the Tinfour Natural
+                    Neighbor Interpolator was tested using a Lidar-based elevation survey
+                    (Pennsylvania, 2006, file 15001220PAS.las). This file contained a set of 1873220
+                    unstructured sample points collected over the Southwest corner of
+                    Pennsylvania. The samples were spaced at roughly 6 feet (2 meters) apart.
+                    Values were interpolated for a grid with a cell spacing of 6 feet, resulting in
+                    1667-by-1667 grid consisting of about 2.8 million grid cells.</p>
+
+                <h3>Deviation Test Results</h3>
+
+                <p>The average deviation for about 2.8 million interpolations
+                    was 1.73x10<sup>-15</sup> feet. The maximum deviation was 2.26x10<sup>-13</sup>
+                    feet. The small magnitude of these deviations indicates a successful
+                    implementation.</p>
+
+                <h1>Runtime Performance</h1>
+
+                <p> The Tinfour interpolator
+                    operates over a Delaunay triangulation. So in order to perform interpolations,
+                    it was necessary to first create an instance of Tinfour's Delaunay
+                    triangulation class and populate it with the 1.8 million samples from the
+                    Pennsylvania Lidar sample. This initialization step required 1.44 seconds on a
+                    commodity laptop. Once the Delaunay structure was complete, the performance of
+                    the Natural Neighbor Interpolator was assessed by building the 1667-by-1667
+                    grid described above. The test was repeated multiple times. For the 2.8 million
+                    grid points interpolated for Pennsylvania sample, the average processing time
+                    was an average of 2.4 seconds per test run, or about 1.16 million
+                    interpolations per second.</p>
+
+                <p>Because the Tinfour interpolator
+                    accesses the underlying Delaunay triangulation data structure on a read-only
+                    basis, it was possible to perform the interpolations using a multi-threaded
+                    application that shared the work across 4 interpolators running in parallel.
+                    The multi-threaded approach achieved processing rates of 3.3 million
+                    interpolations per second.</p>
+
+                <p>The relatively small run times
+                    required to perform a large number of interpolations suggests that the
+                    interpolator is sufficiently fast for many geospatial and geophysical analysis
+                    applications.</p>
+
+                <h1>Future Work</h1>
+
+                <p>Although the Tinfour Natural
+                    Neighbor Interpolator is useful as implemented, there are opportunities for
+                    future work.</p>
+
+                <p> One shortcoming in the
+                    current work is the lack of a rigorous mathematical analysis of the
+                    implementation. The derivation of the technique was conducted without formal
+                    proofs or a deep study of the numerical issues related to its implementation. A
+                    thorough mathematical review of the algorithm used by Tinfour would establish a
+                    solid foundation for the technique.</p>
+
+                <p>Additionally, the current
+                    implementation does not address techniques for computing surface derivatives.
+                    Sibson showed that the surface produced by the Natural Neighbor Interpolation
+                    has first-derivative continuity at all points except at the positions of the
+                    sample vertices themselves. The  <img class="imageInText" width=24 height=27 src="images/image021.png">
+                    coefficients described above are differentiable functions
+                    of the interpolation coordinates <i>(x,y).</i> Surface derivatives could be computed
+                    using the coefficients. However, the number of terms involved in the
+                    calculation is large and the coding effort substantial. So the implementation
+                    of surface derivatives for the Natural Neighbor Interpolator remains a project
+                    for future work.</p>
+
+                <p>Sibson himself explored ways
+                    of producing a surface that had true first-derivative continuity at all points.
+                    Other authors have described approaches to continuity. Even so, a good solution
+                    for this issue is an open problem in the investigation of Natural Neighbor
+                    Interpolation.</p>
+
+                <h1>Conclusion</h1>
+
+                <p>These notes covered the major elements of the algorithm used
+                    by the Tinfour software library. Additional details are described by the
+                    comments embedded in the source code for the Tinfour Natural Neighbor Interpolator
+                    class. All source code for the interpolator, including the supporting software
+                    library and example applications is provided by the Tinfour Software Project at
+                    <a href="http://tinfour.org">http://tinfour.org</a></p>
+
+
+                <h1>References</h1>
+
+                <p>Bourke, P. (1989). Triangulate &mdash; Efficient triangulation algorithm suitable for terrain modeling.<br>
+                    Accessed February 2021 from <a href="http://paulbourke.net/papers/triangulate/">
+                        http://paulbourke.net/papers/triangulate/</a></p>
+
+                <p>Bowyer, Adrian (1981). Computing Dirichlet tessellations. <i>The Compute Journal 24(2)</i> pp. 162-166.
+
+                <p>Liang, L. &amp; Hale, D. (2010). A stable and fast implementation of natural neighbor interpolation.<br>
+                    Accessed March 2021 from <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.174.2191&amp;rep=rep1&amp;type=pdf">
+                        https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.174.2191&amp;rep=rep1&amp;type=pdf</a></p>
+
+                <p>Lucas, G.W. (2017). About delaunay triangulations.<br>
+                    Accessed March 2021 from <a href="https://github.com/gwlucastrig/Tinfour/wiki/About-Delaunay-Triangulations">
+                        https://github.com/gwlucastrig/Tinfour/wiki/About-Delaunay-Triangulations</a></p>
+
+                <p>Lucas, G. W. (2021). Data elements and algorithms for the Tinfour library.<br>
+                    Accessed March 2021 from
+                    <a href="http://gwlucastrig.github.io/Tinfour/doc/TinfourAlgorithmsAndDataElements.pdf">
+                        http://gwlucastrig.github.io/Tinfour/doc/TinfourAlgorithmsAndDataElements.pdf</a></p>
+
+                <p>Pennsylvania, Commonwealth of, Department of Conservation and
+                    Natural Resources, Bureau of Topographic and Geologic Survey (2006).
+                    <i>PAMAP Program LAS Files (LiDAR Data of Pennsylvania)</i>.<br>
+                    Accessed March 2021 from
+                    <a href="http://www.pasda.psu.edu">http://www.pasda.psu.edu</a></p>
+
+                <p>Sambridge, M., Braun, J. &amp; McQueen H. (1995). "Geophysical
+                    parametrization and interpolation of irregular data using natural neighbors".
+                    <i>Geophysical Journal International  Volume 122, Issue 3,</i>  December 1995, pg. 837-857. <br>
+                    Accessed March 2021 from
+                    <a href="https://academic.oup.com/gji/article/122/3/837/718634">https://academic.oup.com/gji/article/122/3/837/718634</a></p>
+
+                <p>Sibson, R. (1980). A vector identity for the Dirichlet tessellation.
+                    <i>Mathematical Proceedings of the Cambridge Philosophical Society, 87(1),</i> pp.151-155.
+                    doi:10.1017/S0305004100056589.
+
+                <p>Sibson, R. (1981), A brief description of natural neighbor interpolation.
+                    <i>Interpolating multivariate data</i>, John Wiley&amp;Sons, New York, 1981, pp. 21-36.
+
+                <p>Watson, David F. (1981). Computing the n-dimensional
+                    Delaunay tessellation with application to Voronoi polytropes,
+                    <i>The Compute Journal 24(2)</i>, pp. 167-173.</p>
+
+                <p>Weisstein, Eric W.(2021). Circumcircle. From <i>MathWorld &mdash; A Wolfram Web Resource</i><br>
+                    Accessed March 2021 from <a href="https://mathworld.wolfram.com/Circumcircle.html"> https://mathworld.wolfram.com/Circumcircle.html</a></p>
+
+                <p>Wikipedia (2021). Delaunay triangulation, Relationship with the Voronoi diagram .<br>
+                    Accessed February 2021 from
+                    <a href="https://en.wikipedia.org/wiki/Delaunay_triangulation#Relationship_with_the_Voronoi_diagram">
+                        https://en.wikipedia.org/wiki/Delaunay_triangulation#Relationship_with_the_Voronoi_diagram</a>
+
+
+            </div>
+        </div>
+    </body>
+
+</html>
