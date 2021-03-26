@@ -44,9 +44,8 @@
                 <p style='margin-left:.5in'><b>Note:</b> Readers seeking
                     background information on the ideas underlying the Natural Neighbor
                     Interpolation technique may find it useful to review the web article
-                    <a href="https://github.com/gwlucastrig/Tinfour/wiki/Introduction-to-Natural-Neighbor-Interpolation">
-                        An Introduction to Natural Neighbor Interpolation</a>. The discussion below draws
-                    heavily on the concepts, terminology, and conventions introduced in that
+                    <a href="../NaturalNeighborIntro/index.html">An Introduction to Natural Neighbor Interpolation</a>.
+                    The discussion below draws heavily on the concepts, terminology, and conventions introduced in that
                     article.</p>
 
                 <h2>About Natural Neighbor Interpolation</h2>
@@ -76,7 +75,7 @@
                     an example of a Voronoi diagram formed from a set of unstructured data
                     points.</p>
 
-                <img border=0 width=780 height=521 src="images/image001.png">
+                <img border=0 width=780 height=521 src="images/VoronoiAndSamples.png">
 
                 <p> </p>
 
@@ -183,14 +182,16 @@
                     form the Voronoi diagram. The images below illustrate the relationships between
                     two representative graphs.</p>
 
-                <img border=0 width=780 height=521 src="images/image007.png">
+                <img border=0 width=830 height=554 src="images/VoronoiAndDelaunay.png">
 
-                <img border=0 width=410 height=514 src="images/image008.png">
+                <p>These relationships become even more apparent when the two structures are
+                   overlaid in a composite image as shown below.<p>
+                <img border=0  width=410 height=514 src="images/VoronoiAndDelaunayOverlay.png">
 
                 <h3>Modeling a Voronoi Insertion</h3>
 
                 <p>Having introduced the relationship between the Voronoi and
-                    Delaunay, we can now consider how the Delaunay triangulation can be usd to model
+                    Delaunay, we can now consider how the Delaunay triangulation can be used to model
                     the effects of inserting the interpolation point into the Voronoi diagram. A Voronoi can be
                     constructed using the circumcircles from the Delaunay. If a new vertex is
                     inserted into the dual-graph Delaunay, that collection of circumcircles will
