@@ -155,8 +155,8 @@
                 <h3>How the Delaunay Models the Voronoi </h3>
 
                 <p>To show how the Delaunay is used to model the Voronoi, it is
-                    necessary to introduce the concept of a circumcircle. For any properly formed
-                    triangle, there exists a unique circle called the <i>circumcircle</i> that
+                    necessary to introduce the concept of a <i>circumcircle</i>. For any properly formed
+                    triangle, there exists a unique circle called the circumcircle that
                     passes through its three vertices. The center of the circumcircle is referred
                     to as its <i>circumcenter</i>. The figure below illustrates two characteristics
                     of a circumcircle that will be relevant later in these notes. First, the
@@ -256,7 +256,8 @@
                     </li>
                     <li>When all captured-area factors are computed, normalize them so that the sum of the factors is one.
                         The results are the weight factors for the set of vertices designated as the natural neighbors of the interpolation point.</li>
-                    <li>Compute a weighted sum of the data value (z value) for each vertex.  The result is the estimated value z ^ computed at the interpolation coordinates.</li>
+                    <li>Compute a weighted sum of the data value (z value) for each vertex.  The result is the estimated value
+                        <img class="imageInText" width=10 height=27 src="images/image004.png"> computed at the interpolation coordinates.</li>
                 </ol>
 
 
@@ -265,8 +266,8 @@
                 <p>For each vertex in the in the Bowyer-Watson envelope, we
                     compute area values for the pre-insertion and post-insertion states of the Voronoi
                     diagram using the <i>shoelace</i> formula which is also known as Gauss's area
-                    formula. Given the Cartesian coordinates for a potentially irregular, but non
-                    self-intersecting polygon consisting of 3 or more vertices, the area is
+                    formula. Given the Cartesian coordinates for a potentially irregular but 
+                    not self-intersecting polygon consisting of 3 or more vertices, the area is
                     computed as:</p>
 
                 <p class="mathtext"><img width=286 height=80 src="images/image011.png"></p>
