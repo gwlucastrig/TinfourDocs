@@ -201,9 +201,9 @@
                     the modeling process.</p>
 
                 <p>Tinfour's Delaunay insertion operation uses an algorithm
-                    based on two well-known papers that were published simulataneously in issue 24(2) of <i>The Compute Journal</i> in 1981
-                    by Bowyer and Watson. The key feature in this algorithm is the construction of a
-                    structure that Tinfour calls the <i>Bowyer-Watson envelope.</i> The process is
+                    based on two well-known papers that were published simulataneously in issue 24(2) of <i>The Compute Journal</i> 
+                    by Bowyer (1981) and Watson (1981). The key feature in this algorithm is the construction of a
+                    structure that the Tinfour implementation calls the <i>Bowyer-Watson envelope.</i> The process is
                     illustrated in the figure below. If a new vertex were introduced at the
                     interpolation point (shown as crosshairs in panel A), it would fall within the
                     bounds of one or more existing circumcircles. Because this situation would
@@ -298,8 +298,8 @@
                     outside or on the edges of the Bowyer-Watson polygon) would drop out in when we
                     compute the difference between the pre-insertion and post-insertion areas.</p>
 
-                <p class="mathtext"><img border=0 width=780 height=519 src="images/image012.png"></p>
-
+                 <img border=0 width=840 height=559 src="images/PreInsertionArea.png"> 
+				 
                 <p>With these specifications, the components of the pre-insertion
                     area is computed for the vertex of interest is specified as</p>
 
@@ -325,7 +325,7 @@
                     </i>and <i>G<sub>2</sub></i>, for the adjacent triangles. The coordinates of
                     these circumcenters is a function of the coordinates of <i>U = (x,y).</i></p>
 
-                <p class="mathtext"><img border=0 width=780 height=519 src="images/image014.png"></p>
+                <img border=0 width=840 height=559 src="images/PostInsertionArea.png"></ 
 
                 <p>The post-insertion area component is computed as:</p>
 
