@@ -114,8 +114,8 @@
 
                 <p>In the decades since Sibson's original paper, a number of
                     authors have published techniques for streamlining the interpolation by
-                    replacing the Voronoi diagram with a related structure, the 
-					<a href="../DelaunayIntro/index.html">Delaunay triangulation</a>.</p>
+                    replacing the Voronoi diagram with a related structure, the
+                    <a href="../DelaunayIntro/index.html">Delaunay triangulation</a>.</p>
 
                 <h3>A Solution Using the Delaunay Triangulation</h3>
 
@@ -146,9 +146,9 @@
                     unique to Tinfour. Earlier works that used this approach include Bourke (1989),
                     Sambridge (1995), Watson (1997, 2001), Liang &amp; Hale (2010), and others. In
                     particular, Liang &amp; Hale anticipated many of the elements and computations
-                    used in the Tinfour implementation. Their paper, 
-                     <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.174.2191&amp;rep=rep1&amp;type=pdf">
-                     A stable and fast implementation of natural neighbor interpolation</a> also offers
+                    used in the Tinfour implementation. Their paper,
+                    <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.174.2191&amp;rep=rep1&amp;type=pdf">
+                        A stable and fast implementation of natural neighbor interpolation</a> also offers
                     a good historical overview a number of different implementations of the Natural
                     Neighbor concept.</p>
 
@@ -185,8 +185,8 @@
                 <img border=0 width=830 height=554 src="images/VoronoiAndDelaunay.png">
 
                 <p>These relationships become even more apparent when the two structures are
-                   overlaid in a composite image as shown below.<p>
-                <img border=0  width=410 height=514 src="images/VoronoiAndDelaunayOverlay.png">
+                    overlaid in a composite image as shown below.<p>
+                    <img border=0  width=410 height=514 src="images/VoronoiAndDelaunayOverlay.png">
 
                 <h3>Modeling a Voronoi Insertion</h3>
 
@@ -201,7 +201,7 @@
                     the modeling process.</p>
 
                 <p>Tinfour's Delaunay insertion operation uses an algorithm
-                    based on two well-known papers that were published simulataneously in issue 24(2) of <i>The Compute Journal</i> 
+                    based on two well-known papers that were published simulataneously in issue 24(2) of <i>The Compute Journal</i>
                     by Bowyer (1981) and Watson (1981). The key feature in this algorithm is the construction of a
                     structure that the Tinfour implementation calls the <i>Bowyer-Watson envelope.</i> The process is
                     illustrated in the figure below. If a new vertex were introduced at the
@@ -266,7 +266,7 @@
                 <p>For each vertex in the in the Bowyer-Watson envelope, we
                     compute area values for the pre-insertion and post-insertion states of the Voronoi
                     diagram using the <i>shoelace</i> formula which is also known as Gauss's area
-                    formula. Given the Cartesian coordinates for a potentially irregular but 
+                    formula. Given the Cartesian coordinates for a potentially irregular but
                     not self-intersecting polygon consisting of 3 or more vertices, the area is
                     computed as:</p>
 
@@ -299,8 +299,8 @@
                     outside or on the edges of the Bowyer-Watson polygon) would drop out in when we
                     compute the difference between the pre-insertion and post-insertion areas.</p>
 
-                 <img border=0 width=840 height=559 src="images/PreInsertionArea.png"> 
-				 
+                <img border=0 width=840 height=559 src="images/PreInsertionArea.png">
+
                 <p>With these specifications, the components of the pre-insertion
                     area is computed for the vertex of interest is specified as</p>
 
@@ -326,9 +326,9 @@
                     </i>and <i>G<sub>2</sub></i>, for the adjacent triangles. The coordinates of
                     these circumcenters is a function of the coordinates of <i>U = (x,y).</i></p>
 
-                <img border=0 width=840 height=559 src="images/PostInsertionArea.png"></ 
+                <img border=0 width=840 height=559 src="images/PostInsertionArea.png">
 
-                <p>The post-insertion area component is computed as:</p>
+                <p>The post-insertion area component is computed as: </p>
 
                 <p class="mathtext"><img width=617 height=48 src="images/image015.png"></p>
 
@@ -376,21 +376,21 @@
                 <h1>Does it Work?</h1>
 
                 <p>At the beginning of this article, I claimed that the algorithm it presents is fast and accurate
-					Let's see if the implementation is as good as the boast.</p>
-				
-				<h2>Is it Fast?</h2>
-				<p>We can test the speed of the implementation by taking a substantial input data set
-				and performing a large number of interpolations. For these notes, I used a Lidar-based elevation survey
+                    Let's see if the implementation is as good as the boast.</p>
+
+                <h2>Is it Fast?</h2>
+                <p>We can test the speed of the implementation by taking a substantial input data set
+                    and performing a large number of interpolations. For these notes, I used a Lidar-based elevation survey
                     (Pennsylvania, 2006, file 15001220PAS.las). This file contained a set of 1873220
                     unstructured sample points collected over the Southwest corner of
                     Pennsylvania. The samples were spaced at roughly 6 feet (2 meters) apart.
                     Values were interpolated for a raster (grid) with a cell spacing of 6 feet.
-					This configuration resulted in a 1667-by-1667 an output raster consisting of about 2.8 million cells.
-					Thus, the test required 2.8 million interpolations for completion.</p>
-					
-					<p>Test were performed using both a single thread and multiple concurrent threads for processing.
-					Timing results are shown in the table below.</p>
-					<table>
+                    This configuration resulted in a 1667-by-1667 an output raster consisting of about 2.8 million cells.
+                    Thus, the test required 2.8 million interpolations for completion.</p>
+
+                <p>Test were performed using both a single thread and multiple concurrent threads for processing.
+                    Timing results are shown in the table below.</p>
+                <table>
                     <thead>
                         <tr>
                             <th># Threads</th>
@@ -411,16 +411,16 @@
                         </tr>
                     </tbody>
                 </table>
-				
-				<p>In addition to the time required to process the grid points, the Natural Neighbor Interpolation
-					does have one significant overhead item. Before processing can begin, it is necessary
-					to construct an instance of a Delaunay triangulation from the sample points. So in addition
-					to the times shown in the table above, both tests required an average of 1.44 seconds to
-					initialize the triangulation. Because the interpolator accesses the Delaunay triangulation
-					on a read-only basis, the multi-threaded test was able to share a single instance
-					of the triangulation across threads.</p>
-					
-					     <p>The relatively small run times
+
+                <p>In addition to the time required to process the grid points, the Natural Neighbor Interpolation
+                    does have one significant overhead item. Before processing can begin, it is necessary
+                    to construct an instance of a Delaunay triangulation from the sample points. So in addition
+                    to the times shown in the table above, both tests required an average of 1.44 seconds to
+                    initialize the triangulation. Because the interpolator accesses the Delaunay triangulation
+                    on a read-only basis, the multi-threaded test was able to share a single instance
+                    of the triangulation across threads.</p>
+
+                <p>The relatively small run times
                     required to perform a large number of interpolations suggests that the
                     interpolator is sufficiently fast for many geospatial and geophysical analysis
                     applications.</p>
@@ -482,9 +482,9 @@
                     was 1.73x10<sup>-15</sup> feet. The maximum deviation was 2.26x10<sup>-13</sup>
                     feet. The small magnitude of these deviations indicates a successful
                     implementation.</p>
- 
 
-           
+
+
 
                 <h1>Future Work</h1>
 
