@@ -34,8 +34,8 @@
 
                 <h1>Introduction</h1>
 
-                <p>The Tinfour open-source software library implements a fast,
-                    accurate, and efficient algorithm for Natural Neighbor Interpolation. These
+                <p>The Tinfour open-source software library implements a fast and accurate  algorithm
+                    for Natural Neighbor Interpolation. These
                     notes describe that algorithm. They are provided here to assist investigators
                     who wish to understand how the implementation works, to extend its
                     functionality, or to implement their own versions of the Natural Neighbor
@@ -146,9 +146,9 @@
                     unique to Tinfour. Earlier works that used this approach include Bourke (1989),
                     Sambridge (1995), Watson (1997, 2001), Liang &amp; Hale (2010), and others. In
                     particular, Liang &amp; Hale anticipated many of the elements and computations
-                    used in the Tinfour implementation. Their paper, <a
-                        href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.174.2191&amp;rep=rep1&amp;type=pdf">A
-                        stable and fast implementation of natural neighbor interpolation</a> also offers
+                    used in the Tinfour implementation. Their paper, 
+                     <a href="https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.174.2191&amp;rep=rep1&amp;type=pdf">
+                     A stable and fast implementation of natural neighbor interpolation</a> also offers
                     a good historical overview a number of different implementations of the Natural
                     Neighbor concept.</p>
 
@@ -375,11 +375,57 @@
 
                 <h1>Does it Work?</h1>
 
-                <p>To assess whether the Tinfour interpolator works requires
-                    the answers to two questions. Does it get Sibson's technique right? And is it
-                    fast enough to be useful?</p>
+                <p>At the beginning of this article, I claimed that the algorithm it presents is fast and accurate
+					Let's see if the implementation is as good as the boast.</p>
+				
+				<h2>Is it Fast?</h2>
+				<p>We can test the speed of the implementation by taking a substantial input data set
+				and performing a large number of interpolations. For these notes, I used a Lidar-based elevation survey
+                    (Pennsylvania, 2006, file 15001220PAS.las). This file contained a set of 1873220
+                    unstructured sample points collected over the Southwest corner of
+                    Pennsylvania. The samples were spaced at roughly 6 feet (2 meters) apart.
+                    Values were interpolated for a raster (grid) with a cell spacing of 6 feet.
+					This configuration resulted in a 1667-by-1667 an output raster consisting of about 2.8 million cells.
+					Thus, the test required 2.8 million interpolations for completion.</p>
+					
+					<p>Test were performed using both a single thread and multiple concurrent threads for processing.
+					Timing results are shown in the table below.</p>
+					<table>
+                    <thead>
+                        <tr>
+                            <th># Threads</th>
+                            <th>Processing Time</th>
+                            <th>Interpolations/Sec</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>2.4 sec.</td>
+                            <td>1.16 million</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>0.85 sec.</td>
+                            <td>3.3 million</td>
+                        </tr>
+                    </tbody>
+                </table>
+				
+				<p>In addition to the time required to process the grid points, the Natural Neighbor Interpolation
+					does have one significant overhead item. Before processing can begin, it is necessary
+					to construct an instance of a Delaunay triangulation from the sample points. So in addition
+					to the times shown in the table above, both tests required an average of 1.44 seconds to
+					initialize the triangulation. Because the interpolator accesses the Delaunay triangulation
+					on a read-only basis, the multi-threaded test was able to share a single instance
+					of the triangulation across threads.</p>
+					
+					     <p>The relatively small run times
+                    required to perform a large number of interpolations suggests that the
+                    interpolator is sufficiently fast for many geospatial and geophysical analysis
+                    applications.</p>
 
-                <h3>Correctness of Implementation</h3>
+                <h2>Is it Accurate?</h2>
 
                 <p>Given a set of unstructured sample points collected at
                     arbitrary positions over a surface (elevation, temperature, electric potential,
@@ -432,48 +478,13 @@
                     number of code refinements in the interpolator were verified using the
                     deviation value.</p>
 
-                <h3>Test Data</h3>
-
-                <p>The correctness of implementation for the Tinfour Natural
-                    Neighbor Interpolator was tested using a Lidar-based elevation survey
-                    (Pennsylvania, 2006, file 15001220PAS.las). This file contained a set of 1873220
-                    unstructured sample points collected over the Southwest corner of
-                    Pennsylvania. The samples were spaced at roughly 6 feet (2 meters) apart.
-                    Values were interpolated for a grid with a cell spacing of 6 feet, resulting in
-                    1667-by-1667 grid consisting of about 2.8 million grid cells.</p>
-
-                <h3>Deviation Test Results</h3>
-
                 <p>The average deviation for about 2.8 million interpolations
                     was 1.73x10<sup>-15</sup> feet. The maximum deviation was 2.26x10<sup>-13</sup>
                     feet. The small magnitude of these deviations indicates a successful
                     implementation.</p>
+ 
 
-                <h1>Runtime Performance</h1>
-
-                <p> The Tinfour interpolator
-                    operates over a Delaunay triangulation. So in order to perform interpolations,
-                    it was necessary to first create an instance of Tinfour's Delaunay
-                    triangulation class and populate it with the 1.8 million samples from the
-                    Pennsylvania Lidar sample. This initialization step required 1.44 seconds on a
-                    commodity laptop. Once the Delaunay structure was complete, the performance of
-                    the Natural Neighbor Interpolator was assessed by building the 1667-by-1667
-                    grid described above. The test was repeated multiple times. For the 2.8 million
-                    grid points interpolated for Pennsylvania sample, the average processing time
-                    was an average of 2.4 seconds per test run, or about 1.16 million
-                    interpolations per second.</p>
-
-                <p>Because the Tinfour interpolator
-                    accesses the underlying Delaunay triangulation data structure on a read-only
-                    basis, it was possible to perform the interpolations using a multi-threaded
-                    application that shared the work across 4 interpolators running in parallel.
-                    The multi-threaded approach achieved processing rates of 3.3 million
-                    interpolations per second.</p>
-
-                <p>The relatively small run times
-                    required to perform a large number of interpolations suggests that the
-                    interpolator is sufficiently fast for many geospatial and geophysical analysis
-                    applications.</p>
+           
 
                 <h1>Future Work</h1>
 
