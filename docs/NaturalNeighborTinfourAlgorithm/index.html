@@ -26,7 +26,7 @@
 
                 <div class="titleblock">
                     <p class="title">
-                        A Fast, Accurate, and Efficient Algorithm<br>for Natural Neighbor Interpolation
+                        A Fast and Accurate Algorithm<br>for Natural Neighbor Interpolation
                     </p>
                     <p class="author">by G.W. Lucas</p>
                 </div>
@@ -114,8 +114,8 @@
 
                 <p>In the decades since Sibson's original paper, a number of
                     authors have published techniques for streamlining the interpolation by
-                    replacing the Voronoi diagram with a related structure, the Delaunay
-                    triangulation.</p>
+                    replacing the Voronoi diagram with a related structure, the 
+					<a href="../DelaunayIntro/index.html">Delaunay triangulation</a>.</p>
 
                 <h3>A Solution Using the Delaunay Triangulation</h3>
 
@@ -275,7 +275,7 @@
                 <p>The area computation is a piecewise sum of area
                     contributions specified by the terms in the summation. Each summand represents
                     the contribution of a single line segment. In the case of the last segment in
-                    the polygon, where <i>i</i> equals <i>n</i>, the index wraps around to 1.</p>
+                    the polygon, where <i>i</i> equals <i>n</i>, the index <i>n+1</i> wraps around to 1.</p>
 
                 <h3>Calculating the Pre-Insertion Area Component</h3>
 
@@ -369,8 +369,8 @@
                     fact that the edges of the Voronoi are perpendicular bisectors of the Delaunay
                     edges means that circumcenters lying to the outside of the envelope will be
                     collinear with the other vertices that form an area computation segment. Algebraically,
-                    part of the piecewise components that lie outside the envelope cancel out of
-                    the area computation and make no contribution to the overall sum. No special
+                    the parts of the piecewise components that lie outside the envelope cancel out of
+                    the area computation. Thus, they make no contribution to the overall sum. No special
                     handling is required.</p>
 
                 <h1>Does it Work?</h1>
@@ -404,10 +404,15 @@
 
                 <p class="mathtext"><img  width=132 height=69   src="images/image020.png"></p>
 
-                <p>Mathematically, these expressions tell us that the lambda
-                    values produced in the course of an interpolation can be used to map the coordinates
-                    of the natural neighbor points back to the <b>exact</b> coordinates of the interpolation
-                    point. And, if the Tinfour implementation computes its lambda values
+                <p>Although the equations for <img class="imageInText" width=11 height=27 src="images/image024.png"> and
+                    <img class="imageInText" width=12 height=27 src="images/image025.png"> resemble
+                    the equation for the estimator <img class="imageInText" width=10 height=27 src="images/image004.png"> that
+                    was given above, <img class="imageInText" width=11 height=27 src="images/image024.png"> and
+                    <img class="imageInText" width=12 height=27 src="images/image025.png"> are <i>not</i> estimators.
+                    Through his demonstration of the local coordinates property, Sibson showed that the lambda values computed
+                    in the course of an interpolation could be used to map the Cartesian coordinates of the natural neighbor
+                    points back to the <b>exact</b> coordinates of the interpolation point. This fact tells us that,
+                    if the Tinfour implementation calculates its lambda values
                     correctly, a backward computation of the interpolation coordinates should
                     produce just the values that were supplied as its inputs.</p>
 
