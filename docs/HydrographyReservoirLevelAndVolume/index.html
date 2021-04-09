@@ -38,7 +38,7 @@
 
                 <p>The previous article in this series described a technique for using the Delaunay Triangulation
                     to estimate the volume of Lake Victoria in Africa
-                    (<a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Compute-Lake-Volume-Part-1" >Lucas, 2018</a>.
+                    (<a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html" >Lucas, 2018</a>).
                     In this article, I will extend that technique to an application that has more immediate and practical uses:
                     estimating changes in the volume and surface area of a reservoir or public water supply based on observed changes in water level.</p>
 
@@ -64,7 +64,7 @@
                     will be developed for a future release of the Tinfour software.</p>
 
                 <p class="blockquote">Information on running the Simple Volumetric Model is provided in the sequel to this article
-                    <a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Simple-Volumetric-Model" >Using the Simple Volumetric Model</a>.</p>
+                    <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographySimpleVolumetricModel/index.html" >Using the Simple Volumetric Model</a>.</p>
 
                 <h2 id="Problem">The Problem</h2>
 
@@ -103,7 +103,8 @@
 
                 <h2 id="Procedure">The Procedure</h2>
 
-                <p>In addition to the bathymetry sample, the Simple Volumetric Model requires a specification for the boundaries of the water mass. Typically, this information is obtained from an industry-standard Shapefile that supplies polygons based on the geometry of the shoreline when the reservoir is filled to capacity. The model uses the enclosing polygons to restrict the analysis to the part of the triangle mesh that covers the body of water (see Lucas 2018,<a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Compute-Lake-Volume-Part-1#why_we_need_constraints" >Why we need constraints</a>.</p>
+                <p>In addition to the bathymetry sample, the Simple Volumetric Model requires a specification for the boundaries of the water mass.
+				Typically, this information is obtained from an industry-standard Shapefile that supplies polygons based on the geometry of the shoreline when the reservoir is filled to capacity. The model uses the enclosing polygons to restrict the analysis to the part of the triangle mesh that covers the body of water (see Lucas 2018,<a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html#WhyWeNeedConstraints" >Why we need constraints</a>.</p>
 
                 <p>As the reservoir volume declines, the shoreline elevation follows. The amount of water in the column
                     above each triangular facet also decreases. Gradually, the reduced water volume uncovers triangular sections
