@@ -482,6 +482,7 @@
                     zero. As a precaution, I also "hard-wire" the boundary depth value to zero as shown below:</p>
 
                 <pre>
+    bathymetryModel = DepthNegative
     samples = Arbuckle_Collected_Points.shp | Depth
     bounds = Arbuckle_Boundary.shp | 0
     shorelineReferenceElevation = 0
@@ -491,21 +492,13 @@
                     Some data sets give depth values as positive numbers. For example, the Lake Victoria Shapefile
                     discussed in <a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Compute-Lake-Volume-Part-1" >Using-the-Delaunay-to-Compute Lake Volume</a>
                     records depth values as a positive number in meters stored in a data field named "Z".
-                    Because of that, the SVM provides a syntax for scaling and adjusting the input values from a file.
-                    For the Lake Victoria Shapefile, the following settings would apply:</p>
+                    To handle different approaches to recording depth values, the SVM provides two selections for depth parameters:</p>
 
                 <pre>
-    samples = LV_Bathymetry_Points_V7.shp | Z | -1 0
+    bathymetryModel = Depth
+    samples = LV_Bathymetry_Points_V7.shp | Z 
     bounds = LakeVictoriaShoreline.shp | 0
                 </pre>
-
-                <p>The numeric values following the metadata for the samples setting specify parameters for
-                    adjustments to the input values. The first value, -1, is a multiplicative
-                    factor. The second value, 0, is an offset. These two adjustments are applied
-                    in the order specified and have the net effect of negating the Z values and
-                    putting them into a form suitable for SVM.</p>
-
-                <p>Documentation for this feature is included in the properties template that was described above.</p>
 
                 <h2 id="AdditionalOutputProducts">Additional Output Products</h2>
 
