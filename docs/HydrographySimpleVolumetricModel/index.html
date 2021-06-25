@@ -228,6 +228,8 @@
                     you may adjust these settings as necessary.</p>
 
                 <pre>
+
+    bathymetryModel = elevation
     inputFolder = C:/SvmExamples/Arbuckle/Shapefiles
     outputFolder = C:/SvmExamples/Arbuckle/Analysis
 
@@ -281,12 +283,29 @@
                 <p>The content of the DBF data file is established by whoever creates the Shapefile product,
                     but it usually includes several named data fields. In the case of the Arbuckle points
                     file, it gives both the depth of the sounding data as well as the elevation of the
-                    lake bottom at the indicated positions. SVM depends on the "lake bottom elevation"
-                    data for its analysis, so the SVM properties file for Arbuckle specifically
-                    indicates the Elevation attribute in the line:</p>
+                    lake bottom at the indicated positions. The choice of elevation or depth as an input
+                    to the model depends on the nature of the source data. Some shapefiles provide only
+                    elevation data, some provide only depth data and some, like Arbuckle, provide both.</p>
+                    
+                <p>For this example, we will use Elevation. To use elevation, we must specify to elements
+                    in the properties file. First, we need to indicate that we are using an Elevation bathymetry
+                    model. And second, we need to tell SVM which field from the Shapefile metadata
+                    it should use.</p>
 
                 <pre>
+    bathymetryModel = Elevation
     samples = Arbuckle_Collected_Points.shp | Elevation
+                </pre>
+
+                <p>If we wanted, we could have used depth values. You'll notice that depth values given
+                in the Arbuckle sample are given as negative numbers.  Some shapefiles use positive values.
+                So for the bathymetryModel, we can specify either <i>Depth</i> or <i>DepthNegative</i>.
+                For the Arbuckle sample, we would specify negative depths for the model and the name "Depth"
+                for the metadata field from the Shapefile:</p>
+
+               <pre>
+    bathymetryModel = DepthNegative
+    samples = Arbuckle_Collected_Points.shp | Depth
                 </pre>
 
                 <p>Java properties files are written using "key-value pairs" separated by equal signs.
@@ -306,7 +325,7 @@
 
                 <pre>
     Shapefile Name: Arbuckle_Boundary.shp
-    Shapefiile Type: Polygon
+    Shapefile Type: Polygon
     Bounds
        X Min,Max: 2253906.643200, 2278570.735276
        Y Min,Max: 395248.015563, 420612.212538
@@ -536,7 +555,7 @@
                 <h1 id="References">References</h1>
 
                 <p>Lucas, G. (2019). Using the Delaunay to Create a Reservoir Volume Model. Accessed July, 2019 from
-				<a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html">https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html</a></p>
+                <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html">https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html</a></p>
 
                 <p>Oklahoma Water Resource Board [OWRB]. (2016). Lake of the Arbuckles, Collected Bathymetric Survey Points. Accessed July, 2019 from https://www.owrb.ok.gov/studies/surface/bathymetry.php</p>
 
