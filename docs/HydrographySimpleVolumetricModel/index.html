@@ -58,7 +58,7 @@
 
                 <p>The hydrographic data that SVM uses is most commonly collected
                     by survey vessels using sonar-based fathometers coupled to GPS systems.
-                    In this article, I use the _soundings_ collected by one such survey
+                    In this article, I use the <i>soundings</i> collected by one such survey
                     to demonstrate the procedures for operating SVM. The data I use was
                     obtained from a 2016 survey of the Lake of the Arbuckles which is
                     located in Murray County, Oklahoma. The data was downloaded
@@ -75,12 +75,86 @@
                     the surface level. SVM also provides a similar result for surface area
                     with a similar relationship to water level.</p>
 
-                <p>The output products for SVM are a text-based summary of overall metadata for the
+                <h2 id="OutputAndAnalysisProducts">Analysis Products and Exporting Data to GIS Applications</h2>
+
+                <p>The main analysis product for SVM is a text-based summary of overall metadata for the
                     body of water being studied and a table of water-level versus volume/area computations
                     suitable for use in Excel, R, or other mainstream analysis tools.</p>
 
-                <p class="blockquote">The Simple Volumetric Model (SVM) was written as a demonstration application
-                    for the Tinfour Software library. At present, it is implemented as a text-only
+                <p>SVM also supports a number of other output products. Some of these are
+                    intended for analysis or verification purposes. Others allow users to export
+                    the results of a SVM model run to mainstream GIS tools such as QGIS and ArcGIS.
+                    A summary of output options is given in the table below.</p>
+
+                <table border=0 cellspacing=0 cellpadding=0>
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Format</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Report File</td>
+                            <td>Text File</td>
+                            <td>A record of the processing and summary of the analysis results.
+                                Includes computed volumes, surface area, metadata for input sources,
+                                and run-time information.</td>
+                        <tr>
+                        <tr>
+                            <td>Water-Level Table</td>
+                            <td>Comma Separated Value (CSV)</td>
+                            <td>Tabular data giving volume and surface area as a function of water level.
+                                Suitable for export into spreadsheet applications such as Excel</td>
+                        </tr>
+                        <tr>
+                            <td>Contour Graph</td>
+                            <td>Image File (PNG, JPEG, etc.)</td>
+                            <td>A simple plot of contours created from bathymetry (non-georeferenced)</td>
+                        </tr>
+                        <tr>
+                            <td>Capacity Graph</td>
+                            <td>Image File (PNG, JPEG, etc.)</td>
+                            <td>A graph showing water level versus capacity and volume (shown above)</td>
+                        </tr>
+                        <tr>
+                            <td>Contour Region Shapefile</td>
+                            <td>Polygon Shapefile</td>
+                            <td>A shapefile of the regions produced by contouring the data. Georeferenced and
+                                suitable for export to GIS applications</td>
+                        </tr>
+                        <tr>
+                            <td>Contour Line Shapefile</td>
+                            <td>Polyline Shapefile</td>
+                            <td>A shapefile of the contour lines produced by contouring the data. Georeferenced and
+                                suitable for export to GIS applications</td>
+                        </tr>
+
+                        <tr>
+                            <td>Raster Image</td>
+                            <td>Image File (PNG, JPEG, etc.)</td>
+                            <td>An image file created by constructing an interpolated raster (grid) from the
+                                elevation data. Georeferenced using an "aux.xml" file and a "world" file (.pgw or jpw).
+                                Suitable for export to GIS applications</td>
+                        </tr>
+
+                        <tr>
+                            <td>Numerical Raster Data</td>
+                            <td><a href="https://pro.arcgis.com/en/pro-app/latest/help/data/imagery/supported-raster-dataset-file-formats.htm">ESRI Floating-Point File</a></td>
+                            <td>A numerical raster file created by constructing an interpolated raster (grid) from the
+                                elevation data. Stored in ESRI's floating-point (binary grid) file format.
+                                Georeferenced using an "aux.xml" file and suitable for export to many GIS applications.
+                                Intended to support integration with Map Algebra and raster calculation operations.
+                                Data in this format may also be used to produce shaded-relief imagery and to support other data
+                                rendering operations.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+                <p class="blockquote">At present, the Simple Volumetric Model (SVM) is implemented as a command-line and scripting
                     application that does not provide a Graphical User Interface (GUI).
                     If there is sufficient interest from potential users, the Tinfour project will
                     develop a truly interactive application with a mature GUI in the future.</p>
@@ -94,13 +168,13 @@
                 <h2 id="GettingStarted">Getting Started</h2>
 
                 <p>Once Tinfour is set up, you should be able to launch the Simple Volumetric Model using the
-                    "fat jar" file _TinfourSvm-2.1.1-jar-with-dependencies.jar_ (making appropriate adjustments
+                    "fat jar" file _TinfourSvm-2.1.7-jar-with-dependencies.jar_ (making appropriate adjustments
                     for the Tinfour release you are using). This Jar file is bundled with all the dependencies
                     and resources required for SVM. You may launch it from the command window by changing
                     the directory to the folder where the Jar file is located and typing the following command:</p>
 
                 <pre>
-    java -jar TinfourSvm-2.1.1-jar-with-dependencies.jar -help
+    java -jar TinfourSvm-2.1.7-jar-with-dependencies.jar -help
                 </pre>
 
                 <p>If your installation is set up correctly, this command will result in the application printing
@@ -286,7 +360,7 @@
                     lake bottom at the indicated positions. The choice of elevation or depth as an input
                     to the model depends on the nature of the source data. Some shapefiles provide only
                     elevation data, some provide only depth data and some, like Arbuckle, provide both.</p>
-                    
+
                 <p>For this example, we will use Elevation. To use elevation, we must specify to elements
                     in the properties file. First, we need to indicate that we are using an Elevation bathymetry
                     model. And second, we need to tell SVM which field from the Shapefile metadata
@@ -298,12 +372,12 @@
                 </pre>
 
                 <p>If we wanted, we could have used depth values. You'll notice that depth values given
-                in the Arbuckle sample are given as negative numbers.  Some shapefiles use positive values.
-                So for the bathymetryModel, we can specify either <i>Depth</i> or <i>DepthNegative</i>.
-                For the Arbuckle sample, we would specify negative depths for the model and the name "Depth"
-                for the metadata field from the Shapefile:</p>
+                    in the Arbuckle sample are given as negative numbers.  Some shapefiles use positive values.
+                    So for the bathymetryModel, we can specify either <i>Depth</i> or <i>DepthNegative</i>.
+                    For the Arbuckle sample, we would specify negative depths for the model and the name "Depth"
+                    for the metadata field from the Shapefile:</p>
 
-               <pre>
+                <pre>
     bathymetryModel = DepthNegative
     samples = Arbuckle_Collected_Points.shp | Depth
                 </pre>
@@ -496,7 +570,7 @@
 
                 <pre>
     bathymetryModel = Depth
-    samples = LV_Bathymetry_Points_V7.shp | Z 
+    samples = LV_Bathymetry_Points_V7.shp | Z
     bounds = LakeVictoriaShoreline.shp | 0
                 </pre>
 
@@ -531,24 +605,19 @@
 
                 <h1 id="FutureWork">Future Work</h1>
 
-                <p>Future work on the Simple Volumetric Model will focus on improving the application's
-                    ability to integrate with a conventional GIS workflow. SVM already includes
-                    the ability to export raster data in Esri's ASCII grid file format. Because this feature
-                    is still in the testing and refinement phase, it was not included in these notes.
-                    The grid-export feature is documented in the properties-file
-                    template (see above). Currently, I am working on the implementation of a contouring-module that
-                    will allow SVM to create Shapefile output files giving contours for various water levels.
-                    Additionally, there are several small improvements in the works.</p>
+                <p>Future work on the Simple Volumetric Model will focus on performing additional
+				interpolation and statistical analysis operation. Future work may also expand the range
+				of hydrologic analysis functions performed by the model.</p>
 
                 <p>Finally, development of a graphical user interface for SVM will be considered if
-                    there is enough user interest.</p>
+                    there is sufficient user interest.</p>
 
                 <p>As always, I welcome suggestions for improvements or new features.</p>
 
                 <h1 id="References">References</h1>
 
                 <p>Lucas, G. (2019). Using the Delaunay to Create a Reservoir Volume Model. Accessed July, 2019 from
-                <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html">https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html</a></p>
+                    <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html">https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html</a></p>
 
                 <p>Oklahoma Water Resource Board [OWRB]. (2016). Lake of the Arbuckles, Collected Bathymetric Survey Points. Accessed July, 2019 from https://www.owrb.ok.gov/studies/surface/bathymetry.php</p>
 
