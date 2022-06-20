@@ -220,7 +220,7 @@
                 <p>Given a query point at coordinates (x,y), we can represent those
                     coordinates using the vector <b>u</b> and letting</p>
 
-                <img src="images/image004.png"/>
+                <img src="images/image004.png" alt="u=(x,y)"/>
 
                 <p>We use the vector <b>u</b> as a convenience. It gives coordinates
                     of the query point in a compact form (all variables which are shown in bold
@@ -231,20 +231,20 @@
                     We number the neighboring samples from one to N using the index variable <i>i</i> to
                     distinguish them. The fractional contribution of each polygon can be written as</p>
 
-                <img src="images/image005.png"/>
+                <img src="images/image005.png" alt="lambda(u)"/>
 
                 <p>Note that the sum of all the lambda parameters will be one.</p>
 
                 <p>Finally, the weighted average for computing the natural-neighbor
                     interpolation is just</p>
 
-                <img src="images/image006.png"/>
+                <img src="images/image006.png" alt="estimator z(u)" />
 
-                <p>Where <img class="imageInText" src="images/image008.png"/> is an estimated value
+                <p>Where <img class="imageInText" src="images/image008.png" alt="estimator z(u)" /> is an estimated value
                     for the surface at the query position given by <b>u</b> .</p>
 
                 <p>To make this abstract expression of the natural-neighbor interpolation a bit more concrete,
-                    let's attach some numbers to the equation for <img class="imageInText" src="images/image008.png"/>.
+                    let's attach some numbers to the equation for <img class="imageInText" src="images/image008.png" alt="estimator z(u)" />.
                     The values in the figure below show the intermediate products obtained when
                     performing an interpolation for the query point used in this example. The
                     fractional weights for each sample are taken in clockwise order starting at the
@@ -254,7 +254,7 @@
                     the products gives us the interpolated temperature of 12.720 degrees, which is
                     the natural-neighbor interpolant at the query points shown in the figure.</p>
 
-                <img src="images/image009.png"/>
+                <img src="images/image009.png alt="natural neighbor interpolant" />
 
                 <p>Understanding something about the weighted average used in the natural-neighbor
                     calculation gives us insight into how the interpolation will behave.
@@ -304,7 +304,7 @@
                     picture below illustrates the area-based process used by the Natural Neighbor
                     Interpolator, which results in a somewhat lower temperature of 12.96 degrees.</p>
 
-                <img src="images/image010.png"/>
+                <img src="images/image010.png" alt="auto-correlating samples" />
 
                 <h2 id="WeaknessesInTheNaturalNeighborInterpolation">Weaknesses in the Natural-Neighbor Interpolation</h2>
 
@@ -357,14 +357,14 @@
                     be used to produce the <i>exact</i> coordinates of the query point. Sibson
                     showed that for query position</p>
 
-                <img src="images/image011.png"/>
+                <img src="images/image011.png" alt="u=(x,y") />
 
                 <p>The following relationships hold.</p>
 
-                <img src="images/image012.png"/>
+                <img src="images/image012.png" alt="summations for x and y" />
 
                 <p>It is no accident that these equations so closely resemble to computation
-                    for <img class="imageInText" src="images/image008.png"/>.
+                    for <img class="imageInText" src="images/image008.png" alt="" />.
                     They are the justification for the natural-neighbor interpolation.
                     What the equations tell us is that the lambda factors quantify
                     the <i>spatial configuration</i> of the sample points and query position.
@@ -372,7 +372,7 @@
                     to the exact Cartesian coordinates of the query. The natural-neighbor technique
                     extends ths idea to an interpolation by using the lambdas to approximate
                     the <i>value configuration</i> of the samples and query. Thus, in the weighted sum
-                    for <img class="imageInText" src="images/image008.png"/>, the lambda weights
+                    for <img class="imageInText" src="images/image008.png" alt="" />, the lambda weights
                     transform the values of the samples to an estimated value at the query position.</p>
 
                 <h2 id="NaturalNeighborsAndGeneralizedBarycentricCoordinates">Natural Neighbors and Generalized Barycentric Coordinates</h2>
