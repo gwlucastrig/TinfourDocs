@@ -325,9 +325,9 @@
                     vertex <i>B<sub>2</sub></i>, we construct two new circumcenters, <i>G<sub>1</sub>
                     </i>and <i>G<sub>2</sub></i>, for the adjacent triangles. The coordinates of
                     these circumcenters is a function of the coordinates of <i>U = (x,y)</i>.
-					<i>G<sub>1</sub> = circumcenter(U, B<sub>1</sub>, B<sub>2</sub>)</i> and 
-					<i>G<sub>2</sub> = circumcenter(U, B<sub>2</sub>, B<sub>3</sub>)</i>. 
-					</p>
+                    <i>G<sub>1</sub> = circumcenter(U, B<sub>1</sub>, B<sub>2</sub>)</i> and 
+                    <i>G<sub>2</sub> = circumcenter(U, B<sub>2</sub>, B<sub>3</sub>)</i>. 
+                    </p>
 
                 <img border=0 width=840 height=559 src="images/PostInsertionArea.png">
 
@@ -448,8 +448,11 @@
                     important question. But, before we can investigate it, we need to be sure that
                     the interpolator itself is correctly implemented. The Natural Neighbor
                     Interpolation is relatively complex and it would be easy for a weak
-                    implementation to dilute the accuracy of its results.</p>
+                    implementation to dilute the accuracy of its results. So, in using any version
+                    of a Natural Neighbor Interpolation software system, we require some means to verify
+                    the correctness of the implementation.</p>
 
+                <h3 id="test-for-correctness">A Test for Correctness of Implementation</h3>
                 <p>Fortunately, Sibson's original work leads to a
                     straightforward and unambiguous test that allows us to judge whether an implementation
                     is correct. Although this test has been largely overlooked in the published
@@ -508,7 +511,9 @@
                     of the data samples. Based on that, it seems safe to say that the implementation
                     is correct and free of significant numerical issues.</p>
 
-
+                <p style='margin-left:.5in'><b>Note:</b> The Tinfour correctness-of-implementation technique would be a valid test
+                   for any Natural Neighbor Interpolation software module. To the best of my knowledge,
+                   it has not been applied elsewhere. But it has the potential for use beyond the Tinfour project.</p>
 
 
                 <h1>Future Work</h1>
