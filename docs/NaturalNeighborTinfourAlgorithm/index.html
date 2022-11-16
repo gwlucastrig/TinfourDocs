@@ -293,11 +293,13 @@
                     and <i>B<sub>2</sub>B<sub>3</sub></i> respectively.</p>
 
                 <p>Again we note that although there is a complete Voronoi cell
-                    associated with vertex <i>B<sub>2</sub></i> we only need to compute the
-                    contributing terms that are unique to the pre-insertion area calculation. Those
-                    that would also be included in the post-insertion calculation (those that lie
-                    outside or on the edges of the Bowyer-Watson polygon) would drop out in when we
-                    compute the difference between the pre-insertion and post-insertion areas.</p>
+                    associated with vertex <i>B<sub>2</sub></i>&thinsp;, we only need to compute the
+                    contributing terms that are unique to the pre-insertion area calculation. The area
+					that lies outside the edges of the Bowyer-Watson polygon would not change if the query
+                    point were inserted into the Voronoi diagram. It would remain constant across both
+					the pre-insertion and post-insertion area computations. When we take
+					differences of the pre and post-insertion areas, the constant values
+					drop out of the calculations.</p>
 
                 <img border=0 width=840 height=559 src="images/PreInsertionArea.png">
 
@@ -324,7 +326,7 @@
                     interpolation point <i>(x,y)</i>. When computing the post-insertion area for
                     vertex <i>B<sub>2</sub></i>, we construct two new circumcenters, <i>G<sub>1</sub>
                     </i>and <i>G<sub>2</sub></i>, for the adjacent triangles. The coordinates of
-                    these circumcenters is a function of the coordinates of <i>U = (x,y)</i>.
+                    these circumcenters are functions of the coordinates of <i>U = (x,y)</i>.
                     <i>G<sub>1</sub> = circumcenter(U, B<sub>1</sub>, B<sub>2</sub>)</i> and 
                     <i>G<sub>2</sub> = circumcenter(U, B<sub>2</sub>, B<sub>3</sub>)</i>. 
                     </p>
