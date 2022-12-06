@@ -61,8 +61,8 @@
 
                 <h2>How Natural Neighbor Interpolation Works</h2>
 
-                <p>The Natural Neighbor concept was introduced by Robin Sibson
-                    in 1981 (see Sibson, 1981). At the time, Sibson was exploring the properties of
+                <p>The Natural Neighbor concept was introduced by Robin Sibson in an article published
+                    in 1981 (Sibson, 1981). At the time, Sibson was exploring the properties of
                     the Voronoi diagram (or the Dirichlet tessellation, as it is also known). A Voronoi
                     diagram is a structure which is studied in the branch of mathematics known as graph
                     theory. It is formed from a set of unstructured data-sample points that lie on
@@ -81,7 +81,7 @@
 
                 <h3>Sibson's Technique</h3>
 
-                <p>In his paper, Sibson considers what happens when a new point
+                <p>In his 1981 article, Sibson considers what happens when a new point
                     is inserted into the Voronoi diagram at the position where one wishes to obtain
                     an interpolated value. As the figure below shows, when a point is added to the
                     set of unstructured samples, it leads to the creation of a new containing polygon.
@@ -112,7 +112,7 @@
                     processing cost of this operation was a significant obstacle to the adoption of
                     Natural Neighbor Interpolation.</p>
 
-                <p>In the decades since Sibson's original paper, a number of
+                <p>In the decades since Sibson's original article, a number of
                     authors have published techniques for streamlining the interpolation by
                     replacing the Voronoi diagram with a related structure, the
                     <a href="../DelaunayIntro/index.html">Delaunay triangulation</a>.</p>
@@ -295,11 +295,11 @@
                 <p>Again we note that although there is a complete Voronoi cell
                     associated with vertex <i>B<sub>2</sub></i>&thinsp;, we only need to compute the
                     contributing terms that are unique to the pre-insertion area calculation. The area
-					that lies outside the edges of the Bowyer-Watson polygon would not change if the query
+                    that lies outside the edges of the Bowyer-Watson polygon would not change if the query
                     point were inserted into the Voronoi diagram. It would remain constant across both
-					the pre-insertion and post-insertion area computations. When we take
-					differences of the pre and post-insertion areas, the constant values
-					drop out of the calculations.</p>
+                    the pre-insertion and post-insertion area computations. When we take
+                    differences of the pre and post-insertion areas, the constant values
+                    drop out of the calculations.</p>
 
                 <img border=0 width=840 height=559 src="images/PreInsertionArea.png">
 
@@ -327,9 +327,9 @@
                     vertex <i>B<sub>2</sub></i>, we construct two new circumcenters, <i>G<sub>1</sub>
                     </i>and <i>G<sub>2</sub></i>, for the adjacent triangles. The coordinates of
                     these circumcenters are functions of the coordinates of <i>U = (x,y)</i>.
-                    <i>G<sub>1</sub> = circumcenter(U, B<sub>1</sub>, B<sub>2</sub>)</i> and 
-                    <i>G<sub>2</sub> = circumcenter(U, B<sub>2</sub>, B<sub>3</sub>)</i>. 
-                    </p>
+                    <i>G<sub>1</sub> = circumcenter(U, B<sub>1</sub>, B<sub>2</sub>)</i> and
+                    <i>G<sub>2</sub> = circumcenter(U, B<sub>2</sub>, B<sub>3</sub>)</i>.
+                </p>
 
                 <img border=0 width=840 height=559 src="images/PostInsertionArea.png">
 
@@ -462,17 +462,19 @@
                     an implementation.</p>
 
                 <p>To describe the Natural Neighbor test criteria, we add a little detail to the interpolator equation.
-                Recall that the lambda weight factors are a function of the interpolation coordinates.
-                So, taking the interpolation point as</p>
+                    Recall that the lambda weight factors are a function of the interpolation coordinates.
+                    So, taking the interpolation point as</p>
 
-                 <p class="mathtext"><img  width=84 height=27 src="images/image031.png"></p>
-                
+                <p class="mathtext"><img  width=84 height=27 src="images/image031.png"></p>
+
                 <p>the interpolation equation can be written as</p>
 
                 <p class="mathtext"><img  width=189 height=69 src="images/image032.png"></p>
 
-                <p>Sibson identified what he called the <i>Local Coordinates Property</i> (Sibson, 1980, p. 152)
-                which leads to the following relationships.</p>
+                <p>Prior to his 1981 article, Sibson published a paper that provides the mathematical
+                    basis for the Natural Neighbors technique (Sibson 1980).  In that paper, he identified what he called
+                    the <i>Local Coordinates Property</i> (ibid. p. 152)
+                    which leads to the following relationships.</p>
 
                 <p class="mathtext"><img  width=191 height=69  src="images/image033.png"></p>
 
@@ -514,8 +516,8 @@
                     is correct and free of significant numerical issues.</p>
 
                 <p style='margin-left:.5in'><b>Note:</b> The Tinfour correctness-of-implementation technique would be a valid test
-                   for any Natural Neighbor Interpolation software module. To the best of my knowledge,
-                   it has not been applied elsewhere. But it has the potential for use beyond the Tinfour project.</p>
+                    for any Natural Neighbor Interpolation software module. To the best of my knowledge,
+                    it has not been applied elsewhere. But it has the potential for use beyond the Tinfour project.</p>
 
 
                 <h1>Future Work</h1>
@@ -611,14 +613,14 @@
                     <a href="https://en.wikipedia.org/wiki/Delaunay_triangulation#Relationship_with_the_Voronoi_diagram">
                         https://en.wikipedia.org/wiki/Delaunay_triangulation#Relationship_with_the_Voronoi_diagram</a>
 
-                <br>
-                <br>
+                    <br>
+                    <br>
                 <p>Copyright &#169;2021 &nbsp; G.W. Lucas</p>
-                <p>This is an open access article distributed under the terms of the Creative Commons Attribution License, 
-                which permits unrestricted use, distribution, reproduction and adaptation in any medium 
-                and for any purpose provided that it is properly attributed. For attribution, the original 
-                author(s), title, publication source (<a href="https://gwlucastrig.github.io/TinfourDocs/">Tinfour Software Project</a>) and either DOI or 
-                URL of the article must be cited.</p>
+                <p>This is an open access article distributed under the terms of the Creative Commons Attribution License,
+                    which permits unrestricted use, distribution, reproduction and adaptation in any medium
+                    and for any purpose provided that it is properly attributed. For attribution, the original
+                    author(s), title, publication source (<a href="https://gwlucastrig.github.io/TinfourDocs/">Tinfour Software Project</a>) and either DOI or
+                    URL of the article must be cited.</p>
             </div>
         </div>
     </body>
