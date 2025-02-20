@@ -119,6 +119,11 @@
                             <td>A graph showing water level versus capacity and volume (shown above)</td>
                         </tr>
                         <tr>
+                            <td>Drawdown Graph</td>
+                            <td>Image File (PNG, JPEG, etc.)</td>
+                            <td>A graph showing the reponse of capacity and volume to drawdown events</td>
+                        </tr>
+                        <tr>
                             <td>Contour Region Shapefile</td>
                             <td>Polygon Shapefile</td>
                             <td>A shapefile of the regions produced by contouring the data. Georeferenced and
@@ -585,23 +590,36 @@
                     graph setting allows you to specify a title.</p>
 
                 <pre>
-    capacityGraphFileName = SvmArbuckle.png
+    capacityGraphFileName = SvmArbuckleCapacity.png
     capacityGraphSize = 650x400
     capacityGraphTitle = SVM Analysis for Lake of the Arbuckles
 
     contourGraphFileName = SvmArbuckleContour.png
     contourGraphSize = 650x650
     contourGraphLegendText = Elevation in feet above mean sea level (MSL)
+
+    drawdownGraphFileName = SvmArbuckleDrawdown.png
+    drawdownGraphSize     = 650x400
+    drawdownGraphTitle    = Drawdown response for the Lake of the Arbuckles
                 </pre>
 
                 <p>The capacity graph features a single curve relating water level to both
-                    percent overall capacity and volume.</p>
+                    percent overall capacity and volume.
+                 </p>
 
                 <img src="images/SvmArbuckleCapacity.png" alt="SVM Capacity for Lake of the Arbuckles" />
 
                 <p>The contour graph features a color-fill contour plot.</p>
 
                 <img src="images/SvmArbuckleContour.png" alt="SVM Capacity for Lake of the Arbuckles" />
+
+
+                <p>The drawdown graph provides a variation on the capacity graph. It features a single curve showing the response
+                  of volume and capacity to a drawdown of the surface level.
+                 </p>
+
+                <img src="images/SvmArbuckleDrawdown.png" alt="Drawdown response for Lake of the Arbuckles" />
+
 
                 <h1 id="FutureWork">Future Work</h1>
 
