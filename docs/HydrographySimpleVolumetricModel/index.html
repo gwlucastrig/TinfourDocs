@@ -347,11 +347,11 @@
     Analysis of DBF file
     N Records: 100593
     N Fields: 4
-                          width min max
-      0. XCoord F 19.11 2254348.040000 2277391.420000
-      1. YCoord F 19.11 395668.460000 420245.940000
-      2. Elevation F 19.11 786.560000 871.200000
-      3. Depth F 19.11 -84.880000 -0.240000
+                type width     min           max
+      0. XCoord    F 19.11 2254348.040000 2277391.420000
+      1. YCoord    F 19.11  395668.460000  420245.940000
+      2. Elevation F 19.11     786.560000     871.200000
+      3. Depth     F 19.11     -84.880000      -0.240000
                 </pre>
 
                 <p>A Shapefile is not actually a single file, but rather a set of multiple data files.
@@ -378,12 +378,13 @@
 
                 <p>If we wanted, we could have used depth values. You'll notice that depth values given
                     in the Arbuckle sample are given as negative numbers.  Some shapefiles use positive values.
-                    So for the bathymetryModel, we can specify either <i>Depth</i> or <i>DepthNegative</i>.
-                    For the Arbuckle sample, we would specify negative depths for the model and the name "Depth"
-                    for the metadata field from the Shapefile:</p>
+                    The depth model works for either approach and give a correct interpretation as long as the
+                    input does not mix <i>both</i> positive and negative values.
+                    So for the Arbuckle shapefiles we can use the attribute named "Depth" with bathymetryModel set to Depth
+                    as shown below:</p>
 
                 <pre>
-    bathymetryModel = DepthNegative
+    bathymetryModel = Depth
     samples = Arbuckle_Collected_Points.shp | Depth
                 </pre>
 
@@ -412,11 +413,11 @@
     Analysis of DBF file
     N Records: 1
     N Fields: 4
-                          width min max
-      0. Shape_Leng F 19.11 260839.217946 260839.217946
+                 type width       min              max
+      0. Shape_Leng F 19.11    260839.217946    260839.217946
       1. Shape_Area F 19.11 102727022.065000 102727022.065000
-      2. Elevation F 19.11 872.200000 872.200000
-      3. Acres F 19.11 2358.297359 2358.297359
+      2. Elevation  F 19.11       872.200000       872.200000
+      3. Acres      F 19.11      2358.297359      2358.297359
                 </pre>
 
                 <p>The bounds file contains only a single polygon for the entire lake. As with the soundings data,
@@ -456,8 +457,8 @@
 
                 <pre>
     unitOfDistance = ft
-    unitOfArea = acres | 43560
-    unitOfVolume = acre-ft | 43560
+    unitOfArea     = acres   | 43560
+    unitOfVolume   = acre-ft | 43560
                 </pre>
 
                 <p>Note the use of the vertical-bar character to separate sub-elements in the specification.
@@ -549,9 +550,9 @@
                     an alternate approach to handling bathymetry sample that give depth values.</p>
 
                 <pre>
-                          width min max
-      2. Elevation F 19.11 786.560000 871.200000
-      3. Depth F 19.11 -84.880000 -0.240000
+                 type width min         max
+      2. Elevation  F 19.11 786.560000  871.200000
+      3. Depth      F 19.11  -84.880000  -0.240000
                 </pre>
 
                 <p>SVM operates on the assumption that the elevations given for the lake bottom are less than
@@ -559,19 +560,18 @@
                     they are consistent with this assumption. So its easy to use them as a source of "relative
                     bottom elevation" measurements. We can simply set the shoreline-reference-value to
                     zero. As a precaution, I also "hard-wire" the boundary depth value to zero as shown below:</p>
-
                 <pre>
-    bathymetryModel = DepthNegative
+    bathymetryModel = Depth
     samples = Arbuckle_Collected_Points.shp | Depth
     bounds = Arbuckle_Boundary.shp | 0
     shorelineReferenceElevation = 0
                 </pre>
 
-                <p>Again, these settings work because the Arbuckle data gives depth as negative numbers.
-                    Some data sets give depth values as positive numbers. For example, the Lake Victoria Shapefile
+                <p>As noted above, the Arbuckle data gives depth as negative numbers, but
+                    some data sets give depth values as positive numbers. For example, the Lake Victoria Shapefile
                     discussed in <a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Compute-Lake-Volume-Part-1" >Using-the-Delaunay-to-Compute Lake Volume</a>
                     records depth values as a positive number in meters stored in a data field named "Z".
-                    To handle different approaches to recording depth values, the SVM provides two selections for depth parameters:</p>
+                    The SVM bathymetry model setting for "Depth" handles both approaches to recording depth values:</p>
 
                 <pre>
     bathymetryModel = Depth
@@ -605,7 +605,7 @@
 
                 <p>The capacity graph features a single curve relating water level to both
                     percent overall capacity and volume.
-                 </p>
+                </p>
 
                 <img src="images/SvmArbuckleCapacity.png" alt="SVM Capacity for Lake of the Arbuckles" />
 
@@ -615,8 +615,8 @@
 
 
                 <p>The drawdown graph provides a variation on the capacity graph. It features a single curve showing the response
-                  of volume and capacity to a drawdown of the surface level.
-                 </p>
+                    of volume and capacity to a drawdown of the surface level.
+                </p>
 
                 <img src="images/SvmArbuckleDrawdown.png" alt="Drawdown response for Lake of the Arbuckles" />
 
@@ -624,8 +624,8 @@
                 <h1 id="FutureWork">Future Work</h1>
 
                 <p>Future work on the Simple Volumetric Model will focus on performing additional
-				interpolation and statistical analysis operation. Future work may also expand the range
-				of hydrologic analysis functions performed by the model.</p>
+                    interpolation and statistical analysis operation. Future work may also expand the range
+                    of hydrologic analysis functions performed by the model.</p>
 
                 <p>Finally, development of a graphical user interface for SVM will be considered if
                     there is sufficient user interest.</p>
