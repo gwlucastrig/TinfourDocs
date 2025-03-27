@@ -258,12 +258,21 @@
                     inspection results in our discussion below to help configure a properties file
                     for processing.</p>
 
-                <h2 id="ConfiguringTheSVMPropertiesFileNdashStepByStep">Configuring the SVM Properties File &ndash; Step-by-Step</h2>
+                <h2 id="ConfiguringTheSVMPropertiesFileStepByStep">Configuring the SVM Properties File &ndash; Step-by-Step</h2>
 
                 <p>Now that we've introduced the basic operation of the Simple Volumetric Model,
                     let's trace through the steps of configuring a properties file for processing data.</p>
 
-                <p>Of course, before we can use SVM, we need some data to work with. For this article,
+                <h3 id="InputDataSources">Input Data Sources</h3>
+                <p>Of course, before we can use SVM, we need some data to work with. SVM supports two kinds of
+                    input data files:</p>
+                <ol>
+                    <li>Shapefiles</li>
+                    <li>Text-based tabular data files (csv, tab-delimited, etc.). See <a href="#UsingTextBasedFiles">Using text-based files</a> below.</li>
+                </ol>
+
+
+                <p>For this article,
                     we will use Shapefiles for the Lake of the Arbuckes which was mentioned above.
                     The lake will serve as an interesting example because it is the principle water supply
                     reservoir for the city of Ardmore, Oklahoma.</p>
@@ -620,6 +629,35 @@
 
                 <img src="images/SvmArbuckleDrawdown.png" alt="Drawdown response for Lake of the Arbuckles" />
 
+
+                <h1 id="UsingTextBasedFiles">Text-based files</h1>
+                <p>Sometimes, it is convenient to use input sounding data from text-based file formats.
+                    These include comma-separated-value files (i.e. "csv files"), tab-delimited files,
+                    and space-delimited files.  SVM accepts all three formats.</p>
+                <p>When configuring SVM to use text files, it may be necessary to specify which
+                    columns are to be used to which purpose.  By default, SVM assumes that the first three
+                    columns in each line give coordinates for a single sample in the order x, y, and z.
+                    But if the input file includes headers, SVM can be configured to use specific columns for
+                    its horizontal and vertical input coordinates. For example, consider the text file that
+                    begins with the following lines:</p>
+                <pre>
+    ID,     Date,            Easting,     Northing,     Lon,     Lat,     High,   Low,
+    1, "8/5/2020 0:00:00", 821018.7597, 9983595.0449, 29.8836, -0.1482, 2.1360, 2.1500
+    2, "8/5/2020 0:00:00", 821019.6787, 9983594.2090, 29.8837, -0.1482, 2.1370, 2.1600
+                </pre>
+                <p>In this example, the "Easting" and "Northing" columns give x and y coordinates in a projected coordinate
+                    system (e.g. a Cartesian coordinate system). The
+                    "Hi" and "Low" columns give the upper and lower bounds for an measured bottom depth.
+                    If the source data were taken from a file named "example.csv", we could configure SVM to select the
+                    target fields Easting, Northing, and High as:</p>
+
+                <pre>
+    example.csv | Easting, Northing, High
+                </pre>
+
+                <p>The example above uses a comma-separated value file, but SVM will also accept tab and space delimited files.
+                    The choice of delimiter for the file is deduced at run-time based on the file name extension and an inspection of the first
+                    line of text in the file.</p>
 
                 <h1 id="FutureWork">Future Work</h1>
 
