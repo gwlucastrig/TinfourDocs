@@ -5,26 +5,37 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="G.W. Lucas">
         <title>The Tinfour Documentation Page</title>
-        <link rel="stylesheet" href="css/text.css" />
-        <link rel="stylesheet" href="css/layout.css" />
+        <link rel="stylesheet" href="css/text_960_12.css" />
+        <link rel="stylesheet" href="css/960_12_col.css" />
     </head>
 
 
     <body>
-        <div id="notescontainer">
-            <div id="notesheader">
-                <ul class="link-bar">
-                    <li>Home</li>
-                    <li>|</li>
-                    <li><a href="https://github.com/gwlucastrig/Tinfour">Code (Github)</a></li>
-                    <li>|</li>
-                </ul>
-                <p>&nbsp;</p>
+        <div class="container_12">
+            <div >
+                Home
+                &nbsp;&nbsp;|&nbsp;
+                <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour">Code (Github)</a>
+                |
+                <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour/wiki">Wiki</a>
+                |
             </div>
 
-            <div id="notescontent">
+            <div class="grid_9">
 
                 <h1 id="Welcome">Welcome to the Tinfour Software Project Documentation</h1>
+                <img src="images/LogoCDT2.png" alt="The Tinfour Logo as a CDT" title="The Tinfour logo as a Constrained Delaunay Triangulation" />
+                <h2 id="TheBasics">What Tinfour Does</h2>
+                <p>The focus of Tinfour is the Delaunay Triangulation. The Delaunay Triangulation
+                    defines an optimal form for organizing unstructured or semi-random
+                    sample points into a triangular mesh. That optimality makes the Delaunay Triangulation
+                    a useful tool for interpolation, grid construction, and surface analysis.</p>
+
+            </div>
+
+            <div class="grid_7">
+                <h2 id="ProjectNotes">Project Notes</h2>
+
                 <p>To help you use Tinfour, we've posted four flavors of documentation:</p>
                 <ul>
                     <li> <a class="box-link" href="#the-ideas">The Ideas</a>&nbsp;&ndash;
@@ -42,41 +53,33 @@
                         a useful source of information.
                     </li>
                     <li><a class="box-link" href="javadoc/TinfourCore-2.1.6-javadoc/index.html">The API</a>&nbsp;&ndash;
-                    Our source code includes lots of documentation. You can access the Javadoc for each
-                    of the Tinfour modules at the following links:
-                    <ul>
-                       <li><a class="box-link" href="javadoc/TinfourCore-2.1.6-javadoc/index.html">Core</a>&nbsp;&ndash;
-                       The core implementation of our Delaunay triangulation, interpolation, and other support classes
-                       (no external dependencies)</li>
-                       <li><a class="box-link" href="javadoc/TinfourGis-2.1.6-javadoc/index.html">GIS</a>&nbsp;&ndash;
-                       While Tinfour is not a Geographic Information System (GIS), it does provide a small set of tools
-                       for accessing GIS-related data sources including Lidar elevation and ESRI shapefiles.</li>
-                       <li><a class="box-link" href="javadoc/TinfourDemo-2.1.6-javadoc/index.html">Demo</a>&nbsp;&ndash;
-                       Demonstration implementations that show how to use the Tinfour APIs</li>
-                       <li><a class="box-link" href="javadoc/TinfourSvm-2.1.6-javadoc/index.html">SVM</a>&nbsp;&ndash;
-                       The Simple Volumetric Model (SVM), a hydrographic anaylsis utility for estimating the
-                       volume and capacity of lakes and reservoirs using the Delaunay Triangulation</li>
-                       <li><a class="box-link" href="javadoc/TinfourAnalysis-2.1.6-javadoc/index.html">Analysis</a>&nbsp;&ndash;
-                       The Analysis module includes our experimental Geographically Weighted Regression implementation as well
-                       as other mathematics and statistics applications.</li>
-                     </ul>
-                     </li>
+                        Our source code includes lots of documentation. You can access the Javadoc for each
+                        of the Tinfour modules at the following links:
+                        <ul>
+                            <li><a class="box-link" href="javadoc/TinfourCore-2.1.6-javadoc/index.html">Core</a>&nbsp;&ndash;
+                                The core implementation of our Delaunay triangulation, interpolation, and other support classes
+                                (no external dependencies)</li>
+                            <li><a class="box-link" href="javadoc/TinfourGis-2.1.6-javadoc/index.html">GIS</a>&nbsp;&ndash;
+                                While Tinfour is not a Geographic Information System (GIS), it does provide a small set of tools
+                                for accessing GIS-related data sources including Lidar elevation and ESRI shapefiles.</li>
+                            <li><a class="box-link" href="javadoc/TinfourDemo-2.1.6-javadoc/index.html">Demo</a>&nbsp;&ndash;
+                                Demonstration implementations that show how to use the Tinfour APIs</li>
+                            <li><a class="box-link" href="javadoc/TinfourSvm-2.1.6-javadoc/index.html">SVM</a>&nbsp;&ndash;
+                                The Simple Volumetric Model (SVM), a hydrographic anaylsis utility for estimating the
+                                volume and capacity of lakes and reservoirs using the Delaunay Triangulation</li>
+                            <li><a class="box-link" href="javadoc/TinfourAnalysis-2.1.6-javadoc/index.html">Analysis</a>&nbsp;&ndash;
+                                The Analysis module includes our experimental Geographically Weighted Regression implementation as well
+                                as other mathematics and statistics applications.</li>
+                        </ul>
+                    </li>
                 </ul>
- 
+
                 <p>You can find source code and project information on Github at:</p>
                 <ul>
                     <li> <a class="box-link" href="https://github.com/gwlucastrig/Tinfour">The Tinfour Repository</a>&nbsp;&ndash;
                         A free open-source collection of high-performance Delaunay Triangulation software written in Java.
                     </li>
                 </ul>
-
-                <h2 id="TheBasics">What Tinfour Does</h2>
-                <p>The focus of Tinfour is the Delaunay Triangulation. The Delaunay Triangulation
-                    defines an optimal form for organizing unstructured or semi-random
-                    sample points into a triangular mesh. That optimality makes the Delaunay Triangulation
-                    a useful tool for interpolation, grid construction, and surface analysis.</p>
-
-                <img src="images/TwoTins.png" alt="Surface Models using TINs" title="Tinfour rendering of surface models based on a Delaunay Triangulation" />
 
                 <h1 id="the-ideas">The Ideas</h1>
                 <p>The articles listed below describe the ideas that form the basis of the Tinfour software.</p>
@@ -98,11 +101,11 @@
                 <p>Natural Neighbor Interpolation is a technique for reconstructing a smooth and visually pleasing
                     surface from a set of scattered sample points.</p>
                 <ul>
-                    <li> <a class="box-link" href="NaturalNeighborIntro/index.html">An Introduction to Natural Neighbor Interpolation</a>&nbsp;&ndash;
+                    <li> <a class="box-link" href="NaturalNeighborIntro/index.html">An introduction to Natural Neighbor Interpolation</a>&nbsp;&ndash;
                         This article provides a lightweight introduction to the ideas and mathematics behind the Natural Neighbor Interpolation.
                         It also discusses some of the strengths and weaknesses of the technique.
                     </li>
-                    <li> <a class="box-link" href="NaturalNeighborTinfourAlgorithm/index.html">A Fast and Accurate Algorithm for Natural Neighbor Interpolation</a>&nbsp;&ndash;
+                    <li> <a class="box-link" href="NaturalNeighborTinfourAlgorithm/index.html">A fast and accurate algorithm for Natural Neighbor Interpolation</a>&nbsp;&ndash;
                         The Tinfour software suite includes a robust implementation of the Natural Neighbor technique that
                         can process over a million interpolation per second on a commodity laptop. This article describes
                         the Tinfour algorithm and introduces an often overlooked test procedure that can be used to verify that a
@@ -115,25 +118,60 @@
                     capacity of lakes and reservoirs. This series of articles describes the Tinfour technique
                     and how its used in an application called the <i>Simple Volumetric Model (SVM)</i></p>
                 <ul>
-                    <li> <a class="box-link" href="HydrographyLakeVolume1/index.html">Using the Delaunay to Compute Lake Volume, Part 1</a>&nbsp;&ndash;
+                    <li> <a class="box-link" href="HydrographyLakeVolume1/index.html">Using the Delaunay to compute lake volume, Part 1: Concepts</a>&nbsp;&ndash;
                         This article describes how the Constrained Delaunay was used to compute the volume of Lake Victoria in Africa.
                         The analysis used two collections of depth soundings and a digitized shoreline information.
                     </li>
-                    <li> <a class="box-link" href="HydrographyLakeVolume2/index.html">Using the Delaunay to Compute Lake Volume, Part 2</a>&nbsp;&ndash;
+                    <li> <a class="box-link" href="HydrographyLakeVolume2/index.html">Using the Delaunay to compute lake volume, Part 2: Implementation</a>&nbsp;&ndash;
                         This article provides implementation notes and detailed results for the Tinfour lake computations.
                         Sample code is available at the Tinfour Software Project repository on Github.
                     </li>
 
 
-                    <li> <a class="box-link" href="HydrographyReservoirLevelAndVolume/index.html">Using the Delaunay to Create a Reservoir Volume Model</a>&nbsp;&ndash;
-                        The volume of water in a reservoir can vary based on season and public demand. The Simple Volumetric Model provides
+                    <li> <a class="box-link" href="HydrographyReservoirLevelAndVolume/index.html">Using the Delaunay to create a model for variable reservoir volume and surface area</a>&nbsp;&ndash;
+                        The volume of water in a reservoir can vary based on season and public demand. The Simple Volumetric Model (SVM) provides
                         a tool for computing water volume and capacity based on water level. Results are provided for the Alan Henry Reservoir in Texas, USA.
                     </li>
 
 
-                    <li> <a class="box-link" href="HydrographySimpleVolumetricModel/index.html">Using the Simple Volumetric Model</a>&nbsp;&ndash;
+                    <li> <a class="box-link" href="HydrographySimpleVolumetricModel/index.html">Using the Simple Volumetric Model (SVM)</a>&nbsp;&ndash;
                         This article provides details on using the Simple Volume Model. Results are provided for the Lake of the Arbuckles in Oklahoma, USA.
                     </li>
+                </ul>
+            </div>
+
+
+            <div class="grid_4">
+                <ul >
+                    <li class="box-list-row">The Articles</li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="DelaunayIntro/index.html">An introduction to the Delaunay Triangulation</a>
+                    </li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="DelaunayIntroCDT/index.html">What is the Constrained Delaunay Triangulation and why would you care?</a>
+                    </li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="NaturalNeighborIntro/index.html">An introduction to Natural Neighbor Interpolation (NNI)</a>
+                    </li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="NaturalNeighborTinfourAlgorithm/index.html">A fast and accurate algorithm for Natural Neighbor Interpolation (NNI)</a
+                    </li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="HydrographyLakeVolume1/index.html">Using the Delaunay to compute lake volume, Part 1: Concepts</a>
+                    </li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="HydrographyLakeVolume2/index.html">Using the Delaunay to compute lake volume, Part 2: Implementation</a>
+                    </li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="HydrographyReservoirLevelAndVolume/index.html">Using the Delaunay to create a model for variable reservoir volume and surface area</a>
+                    </li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="HydrographySimpleVolumetricModel/index.html">Using the Simple Volumetric Model (SVM)</a>
+                    </li>
+                    <li class="box-list-row">
+                        <a class="box-link" href="TinfourAlgorithmsAndDataElements.pdf">Data elements and algorithms for the Tinfour software library (PDF)</a>
+                    </li>
+
                 </ul>
             </div>
         </div>
