@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="G.W. Lucas">
+    <title>Implementation details for a 2D alpha shape utility</title>
+
+    <link rel="stylesheet" href="../css/960_12_col.css" />
+    <link rel="stylesheet" href="../css/text.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+</head>
+
+
+<body>
+    <div class="container_12">
+        <div >
+            <a class="top-link" href = "https://gwlucastrig.github.io/Tinfour/">Home</a>
+            |
+            <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour">Code Repository (Github)</a>
+            |
+            <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour/wiki">Wiki</a>
+            |
+        </div>
+
+        <div id="notescontent">
+
+            <div class="titleblock">
+                <p class="title">
+                    Implementation details for a 2D alpha shape utility<br>Part 1: Concepts
+                </p>
+                <p class="author">by G.W. Lucas</p>
+            </div>
+
+            <div class="grid_10">
+
+                <h2 id="Introduction">Introduction</h2>
+                <p>Recently, the Tinfour software project introduced a utility for creating 2D
+                    alpha shapes based on the Delaunay triangulation. These notes provide
+                    a brief introduction to the alpha shape concept and describe implementation
+                    details for the utility. That information intended to help developer any
+                    alpha shape implementation to its best advantage (any implementation, not just ours).
+                    Also, our discussion of the techniques used in the Tinfour software should provide insights for
+                    developers who wish to extend the software or apply its ideas to their own application development.
+                    Triangulation a useful tool for interpolation, grid construction, and surface analysis.
+                </p>
+
+                <h2 id="AboutTheAlphaShape">About the alpha shape</h2>
+                <p>
+                    The figure below shows a set of scattered points that form a recognizable shape
+                    in the form of the letters "C" and "O".
+                    Human beings are adept at picking out shapes
+                    from visual ques, particularly when an image
+                    presents planar data. For some applications, it may be useful to give a
+                    computer a similar ability to construct a digital outline of a shape
+                    from a set of scattered points. In 1983, Edelsbrunner, Kirkpatrick,
+                    and Seidel presented a technique for doing just that using a
+                    structure they called the <i>alpha shape</i>.
+                </p>
+                <img src="images1/LetterFormFigure_CO.png" alt="Letter forms C and O" title="Point samples for letter forms C and O" />
+
+                <p>
+                    To find an alpha shape, Edelsbrunner's technique begins by constructing a
+                    Delaunay triangulation from the scattered points. It then applies a
+                    circle-based criterion for marking edges from the triangulation as
+                    belonging to a potentially non-convex structure. In the figure below,
+                    the edges from the Delaunay triangulation are shown as thin gray lines.
+                    Edges that are selected as boundary components are linked together
+                    to create polygon features. Those features comprise the alpha shape.
+                </p>
+
+                <img src="images1/AlphaShapeFigure_CO.png" alt="Alpha shape derived from point samples for C and O" title="Alpha shapes derived from point samples for C and O" />
+
+                <h2 id="TheCircleSelectionCriterion">The circle selection criterion</h2>
+                <p>
+                    So how do we select which edges belong to the underlying shape?
+                    Intuitively, it seems that we can separate features based on the
+                    local density of the sample points.  Where points are massed close
+                    together, we assume they belong to the same structure. Where points are
+                    widely spaced, we assume they represent separate features.
+                    Edelsbrunner's introduction of the alpha shape concept formalizes that
+                    intuition into an edge-selection criterion based on constructing circles
+                    of an arbitrarily specified radius<sup><a href="#Note2">[2]</a></sup>. For these notes, we will call that
+                    radius alpha, or α.  For each edge in the Delaunay triangulation
+                    of length less than 2α, we can construct two open circles of radius α
+                    that intersect the endpoint vertices of the edge. The figure below
+                    illustrates the geometry of the twin alpha circles.  In the alpha shape
+                    specification, edges are classified as being “α-exposed” or “α-unexposed”
+                    depending on whether neighboring vertices appear within the alpha circles.
+                    If at least one of the circles associated with an edge is empty,
+                    the edge is classified as α-exposed. If both circles contain neighboring
+                    vertices, the edge is classified as α-unexposed. When the alpha shape is
+                    constructed, exposed edges are treated as being exterior to the alpha shape.
+                    Unselected edges are selected as belonging to the interior of the alpha shape.
+                </p>
+
+                <img src="images1/AlphaCircleGeometry.png" alt="Alpha circle geometry" title="Alpha circle geometry for exposed and unexposed edges" />
+
+                <p>The figure below shows empty alpha circles for edges that
+                    were selected as α-exposed. To avoid clutter, non-empty circles
+                    are omitted. The specification of the alpha radius is arbitrary.
+                    Picking an alpha radius often requires some kind of human input
+                    or trial-and-error process.  A larger alpha radius will result
+                    in simpler shapes with a sufficiently large parameter leading
+                    to a convex hull. A smaller radius generally introduces concavities
+                    into the shape. </p>
+                <img src="images1/AlphaShapeWithOuterCircles.png" alt="Alpha circle with outer circles" title="Alpha shape showing circles for exposed edges" />
+
+                <h3 id="Boundaries">Boundaries</h3>
+                <p>
+                    In addition to classifying edges as either exposed or unexposed,
+                    an alpha shape implementation needs to identify edges that are to be treated
+                    as boundaries. Edelsbrunner classified edges as boundaries when only one
+                    of the open circles contained a point and the other was empty.
+                    Tinfour uses a modified version of this rule which is discussed below.
+                </p>
+
+                <h3 id="ChoosingTheAlphaValue">Choosing an alpha value</h3>
+                <p>Unfortunately, it is not always clear how to choose a value for α.
+                    In practice, implementations try to pick an alpha
+                    radius that is scaled appropriately to the overall spacing of
+                    the sample points. Clearly doing so requires some pre-existing
+                    knowledge of the nature and scale of the data.  To create
+                    the figure below, we specified different alpha values for a
+                    set of sample points based on the uppercase letter A.</p>
+                <img src="images1/AlphaShapeDifferentRadii.png" alt="Alpha shapes for different radii" title="Alpha shapes showing the effects of radius variations" />
+
+                <p>
+                    For an alpha value of 2.5 units, all the points in the sample set
+                    lie within the bounds of the alpha shape polygons.  At the smaller radii,
+                    the shape begins to fracture into multiple disjoint polygons.
+                    For alpha values 1.0 and 0.5, the radius is small enough that many of
+                    the points in the sample set are not incorporated into the alpha polygons.
+                    This situation illustrates the idea that some of the features generated
+                    by an alpha shape are actually individual points or line segments
+                    rather than polygons.
+                </p>
+                <p>When trying to pick an alpha value for processing, it is sometimes
+                    useful to look at the lengths of the edges in the source Delaunay
+                    triangulation.  For this example, we used a sans serif font with
+                    a font-size of 72 points. Since the uppercase letter A does not
+                    include descenders, its height was somewhat less than the full
+                    size of the font. In the table below, we refer to sizes using the
+                    generic term "units" to emphasize the idea that the alpha radius
+                    is not tied to any particular unit system as long as it is consistent
+                    with the scale of the input data.
+                </p>
+
+                <table class="tight" >
+                    <tr>
+                        <td class="tight" width=213 valign=top>Height of letter form</td>
+                        <td class="tight"  width=213 valign=top>51 units</td>
+                    </tr>
+                    <tr>
+                        <td class="tight" >  Median edge length</td>
+                        <td class="tight" >1.546 units</td>
+                    </tr>
+                    <tr>
+                        <td class="tight" >65<sup>th</sup> percentile length</td>
+                        <td class="tight" >1.996 units</td>
+                    </tr>
+                    <tr>
+                        <td class="tight" >80<sup>th</sup> percentile length</td>
+                        <td class="tight" >2.519 units</td>
+                    </tr>
+                </table>
+
+                <h3 id="TinfourModifications">Tinfour modifications for border identification</h3>
+                <p>The Tinfour implementation modifies the classic alpha shape rule for identifying borders.
+                    In a classic alpha shape, an edge is identified as a border if exactly one
+                    of the alpha circles contains an input point. In the Tinfour modification,
+                    an edge is treated as a border if one or both of the associated alpha
+                    circles contain an input sample point, but all the contained points lie
+                    on the same side of the edge.
+                </p>
+                <p>One well known short coming of the classic alpha shape definition is that as
+                    the alpha radius gets smaller the process tends to create cavities in the output.
+                    These cavities appear as either small holes split in the boundaries
+                    of the shape. The Tinfour modification reduces this effect. For a well-chosen
+                    alpha radius value, the difference between the results is not substantial.
+                    But for smaller radius values, it can become significant.
+                </p>
+                <p>In the figure below, the classic alpha-shape technique gives rise
+                    to small holes along the inside of the edges in the letter form.
+                    These cavity features could be eliminated by increasing the radius,
+                    but doing so would tend to fill in some of the tight corners in the shape.
+                </p>
+
+                <img src="images1/AlphaShapeClassicVersusMod.png" alt="Alpha shapes classic versus modified criterion" title="Alpha shapes contrasting the classic versus Tinfour modified criterion" />
+
+
+                <h3 id="SpecialConsiderations">Special consideration</h3>
+                <p>There are a few special considerations when applying the alpha-circle selection process.
+                    First off, for a reasonable choice of α, some edges in the Delaunay triangulation
+                    may be longer than 2α, the diameter of the alpha circle.  Long edges often
+                    appear along the perimeter of the Delaunay triangulation, but as we saw in the figures
+                    above they can also occur in gap-areas in the data. The implementation described
+                    in these notes specifies that edges of length greater than the diameter of the alpha circles
+                    are treated as exposed. Additionally, the classic alpha-shape specification treats the
+                    alpha circles as open circles. So, a vertex lies within an alpha circle only
+                    if its distance from the circle center is less than the radius
+                </p>
+
+                <h1>Example applications</h1>
+                <h2>Mobile robot navigation and mapping</h2>
+                <p>To see how an alpha shape might be used, consider a mobile robot or all-terrain
+                    vehicle navigating a stand of trees. If we simplify the trees as single points
+                    (or sets of points) and the robot as a circle of a fixed radius, then the
+                    resulting alpha shape gives the boundaries of navigable regions within
+                    the wooded area. This example may sound a bit contrived, that basic
+                    idea was explored by  Weingarten and Siegwart (2006) as a way of performing
+                    Simultaneous Localization and Mapping (SLAM) of indoor environments. Others,
+                    such as Trevor (2012) and Hou (2019) incorporated alpha shape techniques into
+                    a broader suite of techniques for similar purposes.
+                </p>
+                <h2>Region separation for bathymetry samples</h2>
+                <p>The Tinfour software project is currently exploring using alpha shapes
+                    as part of its Simple Volume Model to identify regions with different
+                    data collection characteristics in bathymetric survey data sets.
+                    In situations in which it is not feasible to collect data in
+                    near-shore areas, alpha shape processing allows the software
+                    to separate regions in which data is readily available (deeper water)
+                    for modeling versus areas where alternate methods must be used.
+                </p>
+
+                <h1>Conclusion</h1>
+                <p>The alpha shape technique provides a way of extracting a polygon-based
+                    representation of the distribution from a set of individual data points.
+                    The quality of the results depends on the specification of a parameter giving
+                    the radius of circles used to select edges from a Delaunay triangulation.
+                    Part 1 of this article introduced concepts related to the alpha shape.
+                    Part 2 will describe some of the calculations and implementation details
+                    used by one particular implementation created by the Tinfour software project.
+                </p>
+                <h1>Notes</h1>
+                <p id="Note1">
+                    [1] The Delaunay triangulation is the focus of the Tinfour software project.
+                    For more details see
+                    <a href="https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html">
+                        An introduction to the Delaunay triangulation</a>.
+                </p>
+                <p id="Note2">
+                    [2] Some authors use different definitions for the alpha parameter.
+                    Edelsbrunner's original paper treated the parameter as being the inverse
+                    of the radius of the alpha circles (α=1/r), others refer to it as the square
+                    of the radius (α=r<sup>2</sup>). All examples in this article treat alpha
+                    as the radius of the selection circles.
+                </p>
+                <p id="Note3">
+                    [3] Although this article uses letter forms as input data sets
+                    for the alpha shape algorithm, there is no intrinsic relationship
+                    between alpha shapes and the alphabet. This article uses letter
+                    forms because they provide a convenient source of sample data.
+                </p>
+
+                <h1 id="References">References</h1>
+            </div>
+        </div>
+    </div>
+</body>
+
