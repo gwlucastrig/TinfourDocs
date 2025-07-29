@@ -1,0 +1,12 @@
+https://gwlucastrig.github.io/TinfourDocs/index.html
+https://gwlucastrig.github.io/TinfourDocs/AlphaShape/AlphaShapePart1.html
+https://gwlucastrig.github.io/TinfourDocs/AlphaShape/AlphaShapePart2.html
+https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html
+https://gwlucastrig.github.io/TinfourDocs/DelaunayIntroCDT/index.html
+https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html
+https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume2/index.html
+https://gwlucastrig.github.io/TinfourDocs/HydrographyReservoirLevelAndVolume/index.html
+https://gwlucastrig.github.io/TinfourDocs/HydrographySimpleVolumetricModel/index.html
+https://gwlucastrig.github.io/TinfourDocs/NaturalNeighborIntro/index.html
+https://gwlucastrig.github.io/TinfourDocs/NaturalNeighborTinfourAlgorithm/index.html
+https://gwlucastrig.github.io/TinfourDocs/TinfourAlgorithmsAndDataElements.pdf
