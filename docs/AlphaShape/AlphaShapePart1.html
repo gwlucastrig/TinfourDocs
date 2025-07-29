@@ -15,11 +15,13 @@
 <body>
     <div class="container_12">
         <div >
-            <a class="top-link" href = "https://gwlucastrig.github.io/Tinfour/">Home</a>
+            <a class="top-link" href = "https://gwlucastrig.github.io/TinfourDocs/">Home</a>
             |
             <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour">Code Repository (Github)</a>
             |
             <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour/wiki">Wiki</a>
+            |
+            <a class="top-link"  href="AlphaShapePart2.html">Part 2: Implementation</a>
             |
         </div>
 
@@ -36,13 +38,12 @@
 
                 <h2 id="Introduction">Introduction</h2>
                 <p>Recently, the Tinfour software project introduced a utility for creating 2D
-                    alpha shapes based on the Delaunay triangulation. These notes provide
-                    a brief introduction to the alpha shape concept and describe implementation
-                    details for the utility. That information intended to help developer any
+                    alpha shapes based on the Delaunay triangulation<sup><a href="#Note1">[1]</a></sup>.
+                    These notes provide a brief introduction to the alpha shape concept and describe
+                    implementation details for the utility. That information intended to help developer any
                     alpha shape implementation to its best advantage (any implementation, not just ours).
                     Also, our discussion of the techniques used in the Tinfour software should provide insights for
                     developers who wish to extend the software or apply its ideas to their own application development.
-                    Triangulation a useful tool for interpolation, grid construction, and surface analysis.
                 </p>
 
                 <h2 id="AboutTheAlphaShape">About the alpha shape</h2>
@@ -54,8 +55,8 @@
                     presents planar data. For some applications, it may be useful to give a
                     computer a similar ability to construct a digital outline of a shape
                     from a set of scattered points. In 1983, Edelsbrunner, Kirkpatrick,
-                    and Seidel presented a technique for doing just that using a
-                    structure they called the <i>alpha shape</i>.
+                    and Seidel presented a technique for doing just that. Their method uses a
+                    structure that they called the <i>alpha shape</i>.
                 </p>
                 <img src="images1/LetterFormFigure_CO.png" alt="Letter forms C and O" title="Point samples for letter forms C and O" />
 
@@ -210,12 +211,13 @@
                     the wooded area. This example may sound a bit contrived, that basic
                     idea was explored by  Weingarten and Siegwart (2006) as a way of performing
                     Simultaneous Localization and Mapping (SLAM) of indoor environments. Others,
-                    such as Trevor (2012) and Hou (2019) incorporated alpha shape techniques into
+                    such as Trevor (2012) and Hou (2019) incorporated alpha shape methods into
                     a broader suite of techniques for similar purposes.
                 </p>
                 <h2>Region separation for bathymetry samples</h2>
                 <p>The Tinfour software project is currently exploring using alpha shapes
-                    as part of its Simple Volume Model to identify regions with different
+                    as part of its <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyReservoirLevelAndVolume/index.html">Simple Volume Model (SVM)</a>
+                    to identify regions with different
                     data collection characteristics in bathymetric survey data sets.
                     In situations in which it is not feasible to collect data in
                     near-shore areas, alpha shape processing allows the software
@@ -234,7 +236,9 @@
                 </p>
                 <h1>Notes</h1>
                 <p id="Note1">
-                    [1] The Delaunay triangulation is the focus of the Tinfour software project.
+                    [1] The Delaunay triangulation creates a mesh of triangle facets that is
+                    optimal in many regards. The Delaunay, which is the focus of the Tinfour software project,
+                    is a useful tool for interpolation, grid construction, and surface analysis.
                     For more details see
                     <a href="https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html">
                         An introduction to the Delaunay triangulation</a>.
@@ -252,8 +256,30 @@
                     between alpha shapes and the alphabet. This article uses letter
                     forms because they provide a convenient source of sample data.
                 </p>
+                <p id="Note4">
+                    [4] For a different perspective on alpha shapes, check out Martin Davis' article
+                    <a href="https://lin-ear-th-inking.blogspot.com/2023/01/alpha-shapes-in-jts.html">Alpha Shapes in JTS</a>.
+                </p>
+                <p id="Note5">
+                    [5] Kaspar Fischer gives detailed background and mathematic proofs in his
+                    <a href="https://graphics.stanford.edu/courses/cs268-11-spring/handouts/AlphaShapes/as_fisher.pdf">Introduction to Alpha Shapes</a>.
+                </p>
 
                 <h1 id="References">References</h1>
+
+                <p>
+                    Hou, Jiawei & Yuan, Yijun & Schwertfeger, Sören. (2019). Area Graph: Generation of topological maps using the Voronoi diagram. 509-515. 10.1109/ICAR46387.2019.8981588.
+                    Accessed July 2025 from <a href="https://doi.org/10.48550/arXiv.1910.01019">https://doi.org/10.48550/arXiv.1910.01019</a>
+                </p>
+                <p>
+                    Trevor, Alexander & III, Rogers & Christensen, Henrik. (2012). Planar surface SLAM with 3D and 2D sensors. Proceedings - IEEE International Conference on Robotics and Automation. 10.1109/ICRA.2012.6225287.
+                </p>
+                <p>
+                    Weingarten, J. & Siegwart, R. (2006).  “3D SLAM using planar segments”. In: 2006 IEEE/RSJ International Conference on Intelligent Robots and Systems. October 2006, pp. 3062–3067. DOI: 10.1109/IROS.2006.282245.
+                </p>
+
+
+
             </div>
         </div>
     </div>
