@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="G.W. Lucas">
+    <title>Implementation details for a 2D alpha shape utility</title>
+
+    <link rel="stylesheet" href="../css/960_12_col.css" />
+    <link rel="stylesheet" href="../css/text.css" />
+    <link rel="stylesheet" href="../css/layout.css" />
+</head>
+
+
+<body>
+    <div class="container_12">
+        <div >
+            <a class="top-link" href = "https://gwlucastrig.github.io/TinfourDocs/">Home</a>
+            |
+            <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour">Code Repository (Github)</a>
+            |
+            <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour/wiki">Wiki</a>
+            |
+            <a class="top-link"  href="AlphaShapePart1.html">Part 1: Concepts</a>
+                  |
+            <a class="top-link"  href="AlphaShapePart2.html">Part 2: Implementation</a>
+        </div>
+
+        <div id="notescontent">
+
+            <div class="titleblock">
+                <p class="title">
+                    Implementation details for a 2D alpha shape utility<br>
+                    Part 3: The alpha circle calculation
+                </p>
+                <p class="author">by G.W. Lucas</p>
+            </div>
+
+            <div class="grid_10">
+
+                <h1>Introduction</h1>
+                <p>Part 1 of these notes introduced the concepts underlying a 2D alpha shape utility.
+                    Part 2 discussed implementation details from the AlphaShape class.
+                    This section of the notes provides the derivation for the alpha circle calculations
+                    which are used extensively within the AlphaShape class.</p>
+                <p>The process of building an alpha shape from a Delaunay triangulation
+                    is based on determining which edges in the triangulation are to be
+                    included in the shape and which are external to its bounds
+                    (<i>i.e.</i> which edges are "exposed").  The choice of which
+                    edges are exposed is based on the
+                    <a href="AlphaShapePart1.html#TheCircleSelectionCriterion">
+                        alpha circle selection criterion</a>
+
+                <h1 id="AlphaCircleCalculation">The alpha circle calculation</h1>
+                <p>The key calculation needed to construct an alpha circle is to find the centers
+                    for two circles of radius <i>r</i> that intersect a line segment of length
+                    <i>2r</i> or less. This calculation can be accomplished using basic algebra,
+                    though a software implementation needs to make a few adjustments to compensate
+                    for the limits of float-point arithmetic.  In particular, when processing
+                    geospatial data, we are often faced with coordinates that are separated by small
+                    distances but have a large magnitude. And, under some circumstances, calculations
+                    with large-magnitude values suffer a loss of precision when low-order digits
+                    drop out of addition or subtraction operations. So the calculation
+                    below uses a simple offsetting transformation to reduce the magnitude
+                    of the values the software needs to process in a numerical calculation.</p>
+                <p>Given a line segment
+                    <img class="imageInText" width=35 height=25 src="math2/image001.png">
+                    with distinct endpoints
+                    <img class="imageInText" width=123 height=29 src="math2/image002.png">
+                    and <img class="imageInText" width=126 height=29 src="math2/image003.png">,
+                    we wish to find the coordinates for the centers of two alpha circles
+                    <img class="imageInText" width=124 height=29 src="math2/image004.png">
+                    and
+                    <img class="imageInText" width=119 height=29 src="math2/image005.png">.
+                </p>
+                <p>Let</p>
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image006.png"></td>
+                    </tr>
+                </table>
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image007.png"></td>
+                    </tr>
+                </table>
+
+                <p>This specification essentially transforms the problem into finding the centers
+                    of two circles of radius r that intersect the points
+                    <img class="imageInText" src="math2/image008.png">
+                    and  <img class="imageInText" src="math2/image009.png">.
+                    Once we find those centers, we can transform them back to the original
+                    coordinate system by adding back the offset for
+                    <img class="imageInText" src="math2/image009a.png">.
+
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image010.png"></td>
+                        <td class="math2">[1]</td>
+                    </tr>
+                </table>
+
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image011.png"></td>
+                    </tr>
+                </table>
+
+
+                <p>Solving the two simultaneous equations in [1] for y as a function of x, we have</p>
+
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image012.png"></td>
+                        <td class="math2">[2]</td>
+                    </tr>
+                </table>
+
+                <p>assuming that <i>k</i> is not zero.</p>
+
+                <p>Let</p>
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image013.png"></td>
+                        <td class="math2">[3]</td>
+                    </tr>
+                </table>
+                <p>with</p>
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image014.png"></td>
+                    </tr>
+                </table>
+
+                <p>Substituting [3] into [1], we have</p>
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image015.png"></td>
+                    </tr>
+                </table>
+
+                <p>and</p>
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image016.png"></td>
+                        <td class="math2">[4]</td>
+                    </tr>
+                </table>
+                <p>Solving the quadratic equation [4] gives us two values for x
+                    corresponding to the centers of the two circles:</p>
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img width="251" height="60" src="math2/image018.png"></td>
+                    </tr>
+                </table>
+                <p>Designating the values of <i>x</i> as <i>x<sub>0</sub></i> and <i>x<sub>1</sub></i>,
+                    compute  <i>y<sub>0</sub></i> and <i>y<sub>1</sub></i> using [2].
+                    Then for each coordinate pair, we have circle centers
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image019.png"></td>
+                    </tr>
+                </table>
+                <p>Special cases exist when the line segment is of length <i>2r</i>
+                    (the quadratic has a single solution), length greater than <i>2r</i>
+                    (the quadratic has no solution), and the line segment is of zero length
+                    (the two endpoints are not distinct and an alternate, trivial solution applies).</p>
+                <p>In the equations above, we assume that the value for <i>k</i>
+                    is not zero and allow it to appear in the denominator for some of the equations.
+                    If <i>k</i> is zero, then the y coordinates of the line segment
+                    <img class="imageInText" width="35" height="25" src="math2/image001.png">
+                    would be equal and there is a simpler calculation that we could
+                    use for the circle centers.  But doing so would not address the floating-point
+                    arithmetic issues that would arise when <i>k</i> was non-zero but had a very
+                    small absolute value.  To avoid putting near-zero values in the denominator,
+                    Tinfour uses an alternate derivation of the calculation for circle centers.
+                    When <img class="imageInText" width="72" height="25" src="math2/image020.png">
+                    it puts <i>h</i> in the denominator rather than
+                    <i>k</i> by solving the simultaneous equations in [1] to get
+                    <i>x</i> as a function of <i>y</i>.
+                </p>
+
+                <table class="math">
+                    <tr>
+                        <td class="math1"><img src="math2/image021.png"></td>
+                        <td class="math2">[5]</td>
+                    </tr>
+                </table>
+                <p>
+                    This expression closely resembles expression [2] which gave
+                    us <i>y</i> as a function of <i>x</i>.
+                    The rest of the alpha-circle calculation follows in a manner similar
+                    to the steps above: solve the quadratic equation for <i>y</i>
+                    and compute the two values
+                    <i>x<sub>0</sub></i> and <i>x<sub>1</sub></i>
+                    from
+                    <i>y<sub>0</sub></i> and <i>y<sub>1</sub></i>.</p>
+                <p>In Tinfour's AlphaCircle class, there are two blocks of code
+                    for computing the circle centers. One puts <i>h</i> in
+                    the denominator, and one that puts <i>k</i> in the denominator,
+                    depending on which of the variables has the largest absolute value.
+                    While there is some redundancy in the code,
+                    this approach neatly avoid numeric problems
+                    when either <i>h</i> or <i>k</i> are nearly zero.</p>
+
+            </div>
+        </div>
+    </div>
+</body>
+
