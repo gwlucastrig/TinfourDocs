@@ -85,13 +85,24 @@
                     </tr>
                 </table>
 
-                <p>This specification essentially transforms the problem into finding the centers
-                    of two circles of radius r that intersect the points
-                    <img class="imageInText" src="math2/image008.png">
-                    and  <img class="imageInText" src="math2/image009.png">.
-                    Once we find those centers, we can transform them back to the original
+                <p>This specification essentially transforms the endpoints of
+                    the segment to a new coordinate system in which they are defined as
+                    <img class="imageInText" width=42 height=25 src="math2/image008.png">
+                    and  <img class="imageInText" width=43 height=25 src="math2/image009.png">.
+                    From the definition of a circle, we obtain the relationships shown
+                    below in [1].  While these equations superficially resemble the
+                    standard equations for a circle, they are actually intended to
+                    allow us to find the <i>centers</i> of the circles.
+                    Those centers are found by solving the equations for <i>x</i> and <i>y</i>.
+                    As we would expect, the equations lead to two solutions,
+                    one for each circle.
+                </p>
+                <p>
+                    Once we find the pair solutions for <i>(x, y)</i>,
+                    we can transform the results back to the original
                     coordinate system by adding back the offset for
-                    <img class="imageInText" src="math2/image009a.png">.
+                    <img class="imageInText" src="math2/image009a.png">.</p>
+
 
                 <table class="math">
                     <tr>
