@@ -214,6 +214,20 @@
                     this approach neatly avoid numeric problems
                     when either <i>h</i> or <i>k</i> are nearly zero.</p>
 
+                <h2>Post-processing for Tinfour</h2>
+                <p>The Tinfour AlphaCircle class performs an additional operation
+                that is not strictly part of the alpha circle calculation.</p>
+                <p>In practice, one circle center always lies to the left of
+                the line segment
+                <img class="imageInText" width=35 height=25 src="math2/image001.png">
+                and one circle center always lies to its right.
+                The Tinfour implementation uses this
+                information as part of its logic for constructing the alpha shape.
+                So, when computing the alpha circle centers,
+                Tinfour ensures that the solutiuons are given in order
+                so that  the circle center to the left of the line segment is given first
+                and the circle center to the right of the line segment is given second.
+
             </div>
         </div>
     </div>
