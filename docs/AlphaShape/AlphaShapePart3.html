@@ -208,9 +208,10 @@
                     from
                     <i>y<sub>0</sub></i> and <i>y<sub>1</sub></i>.</p>
                 <p>In Tinfour's AlphaCircle class, there are two blocks of code
-                    for computing the circle centers. One puts <i>h</i> in
-                    the denominator, and one that puts <i>k</i> in the denominator,
-                    depending on which of the variables has the largest absolute value.
+                    for computing the circle centers.  One puts <i>h</i> in
+                    the denominator. The other puts <i>k</i> in the denominator.
+                    The logic selects which block to use based on which
+                    of the two variables has the largest absolute value.
                     While there is some redundancy in the code,
                     this approach neatly avoid numeric problems
                     when either <i>h</i> or <i>k</i> are nearly zero.</p>

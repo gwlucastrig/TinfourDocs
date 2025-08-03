@@ -168,23 +168,25 @@
 
                 <h3 id="TinfourModifications">Tinfour modifications for border identification</h3>
                 <p>The Tinfour implementation modifies the classic alpha shape rule for identifying borders.
-                    In a classic alpha shape, an edge is identified as a border if exactly one
-                    of the alpha circles contains an input point. In the Tinfour modification,
-                    an edge is treated as a border if one or both of the associated alpha
+                    In a classic alpha shape, an edge is identified as a border if one
+                    of the alpha circles contains an input point and the other is empty.
+                    In the Tinfour modification, an edge is treated as a border if one or both of the associated alpha
                     circles contain an input sample point, but all the contained points lie
                     on the same side of the edge.
                 </p>
                 <p>One well known short coming of the classic alpha shape definition is that as
                     the alpha radius gets smaller the process tends to create cavities in the output.
-                    These cavities appear as either small holes split in the boundaries
+                    These cavities appear as either small holes or v-shaped splits in the boundaries
                     of the shape. The Tinfour modification reduces this effect. For a well-chosen
                     alpha radius value, the difference between the results is not substantial.
                     But for smaller radius values, it can become significant.
                 </p>
-                <p>In the figure below, the classic alpha-shape technique gives rise
-                    to small holes along the inside of the edges in the letter form.
+                <p>The figure below illustrates a case in which the classic alpha-shape
+                    technique gives rise to small holes along the inside of the edges in the letter form.
                     These cavity features could be eliminated by increasing the radius,
                     but doing so would tend to fill in some of the tight corners in the shape.
+                    As the figure shows, the Tinfour modifications can simplify
+                    the overall shape and reduce cavitation artifacts.
                 </p>
 
                 <img src="images1/AlphaShapeClassicVersusMod.png" alt="Alpha shapes classic versus modified criterion" title="Alpha shapes contrasting the classic versus Tinfour modified criterion" />
@@ -195,7 +197,8 @@
                     First off, for a reasonable choice of α, some edges in the Delaunay triangulation
                     may be longer than 2α, the diameter of the alpha circle.  Long edges often
                     appear along the perimeter of the Delaunay triangulation, but as we saw in the figures
-                    above they can also occur in gap-areas in the data. The implementation described
+                    above they can also occur in empty or sparsely populated
+                    areas in the data. The implementation described
                     in these notes specifies that edges of length greater than the diameter of the alpha circles
                     are treated as exposed. Additionally, the classic alpha-shape specification treats the
                     alpha circles as open circles. So, a vertex lies within an alpha circle only
@@ -216,7 +219,8 @@
                 </p>
                 <h2>Region separation for bathymetry samples</h2>
                 <p>The Tinfour software project is currently exploring using alpha shapes
-                    as part of its <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyReservoirLevelAndVolume/index.html">Simple Volume Model (SVM)</a>
+                    as part of its
+                    <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyReservoirLevelAndVolume/index.html">Simple Volumetric Model (SVM)</a>
                     to identify regions with different
                     data collection characteristics in bathymetric survey data sets.
                     In situations in which it is not feasible to collect data in
@@ -272,7 +276,7 @@
                     <a href="https://graphics.stanford.edu/courses/cs268-11-spring/handouts/AlphaShapes/as_fisher.pdf">
                         https://graphics.stanford.edu/courses/cs268-11-spring/handouts/AlphaShapes/as_fisher.pdf</a>
                 </p>
-                
+
                 <p>
                     Hou, Jiawei & Yuan, Yijun & Schwertfeger, Sören. (2019). Area Graph: Generation of topological maps using the Voronoi diagram. 509-515. 10.1109/ICAR46387.2019.8981588.
                     Accessed July 2025 from <a href="https://doi.org/10.48550/arXiv.1910.01019">https://doi.org/10.48550/arXiv.1910.01019</a>
