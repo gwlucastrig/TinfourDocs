@@ -55,6 +55,50 @@
                     defined by that interface, all of the functions it uses should have equivalents
                     in other Delaunay triangulation implementations.</p>
 
+                <h1 id="Preliminaries">Preliminaries</h1>
+                <p>Before getting into the techniques used by AlphaShape, we will briefly review the
+                    relevant features of Tinfour Delaunay triangulations. The figure below illustrates
+                    the structure of a simple triangulation based on four vertices labeled A, B, C, and D.</p>
+
+
+                <img width="320" height="335" alt="Triangulation A,B,C,D"
+                     title="Delaunay triangulation for 4 points" src="images2/TinfourPreliminaries1.png"/>
+
+                <p>The following details will be relevant to our discussion of the Tinfour algorithms
+                    for constructing an AlphaShape from a Delaunay triangulation.</p>
+
+                <ul>
+                    <li>Tinfour Delaunay triangulations implement a collection of vertices and edges.
+                        Triangles are not actively maintained in memory, but may be constructed on an as-needed basis.</li>
+                    <li>In the classic Delaunay triangulation, pairs of vertices are linked together by bi-directional
+                        edges.  For software implementation purposes, Tinfour depends on a single-direction
+                        edge definition. So two vertices are linked together by a "paired edge" structure
+                        that specifies one edge for each direction of traversal.</li>
+                    <li>Each Tinfour edge carries a reference to a corresponding "dual" edge that supports
+                        the opposite direction of traversal. In the figure above, the edge labeled "0"
+                        indicates the traversal from vertex A to B. Its dual, the edge labeled "1"
+                        supports the traversal from vertex B to A.</li>
+                    <li>Tinfour assigns unique integer index values to each edge at the time
+                        it is created. These index values allow an application to maintain
+                        supplemental information about the edges they represent.</li>
+                    <li>To form triangles, each Tinfour edge is linked to two other edges.
+                        These linked edges are referred to the "forward" edge and the "reverse"
+                        edge. For example, in the figure above:</li>
+                    <ul>
+                        <li>The forward of edge 0 is edge 2.</li>
+                        <li>The reverse of edge 2 is edge 0.</li>
+                        <li>The forward of edge 2 is edge 4.</li>
+                        <li>The forward of edge 4 is edge 0.</li>
+                        <li>The reverse of edge 0 is edge 4.</li>
+                    </ul>
+                    <li>When three edges are linked together to form a triangle,
+                        the triangle is always specified in counterclockwise order.</li>
+                    <li>The triangle associated with an edge is always formed to its left.
+                        In the figure above, triangle ABC is defined by edges 0, 2, and 4.
+                        Triangle DBA is defined by edges 8, 1, and 6.</li>
+                </ul>
+
+
                 <h1 id="IsAnEdgeExposed">Is an edge exposed?</h1>
                 <p>As discussed in Part 1 of these notes, the alpha shape definition treats
                     each edge in the Delaunay triangulation as either
