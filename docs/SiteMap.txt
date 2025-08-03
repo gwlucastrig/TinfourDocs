@@ -1,6 +1,7 @@
 https://gwlucastrig.github.io/TinfourDocs/index.html
 https://gwlucastrig.github.io/TinfourDocs/AlphaShape/AlphaShapePart1.html
 https://gwlucastrig.github.io/TinfourDocs/AlphaShape/AlphaShapePart2.html
+https://gwlucastrig.github.io/TinfourDocs/AlphaShape/AlphaShapePart3.html
 https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html
 https://gwlucastrig.github.io/TinfourDocs/DelaunayIntroCDT/index.html
 https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html
