@@ -56,7 +56,7 @@
                     for two circles of radius <i>r</i> that intersect a line segment of length
                     <i>2r</i> or less. This calculation can be accomplished using basic algebra,
                     though a software implementation needs to make a few adjustments to compensate
-                    for the limits of float-point arithmetic.  In particular, when processing
+                    for the limits of floating-point arithmetic.  In particular, when processing
                     geospatial data, we are often faced with coordinates that are separated by small
                     distances but have a large magnitude. And, under some circumstances, calculations
                     with large-magnitude values suffer a loss of precision when low-order digits
@@ -73,6 +73,7 @@
                     and
                     <img class="imageInText" width=119 height=29 src="math2/image005.png">.
                 </p>
+                <img width="390" height="390" alt="Alpha circles" title="Segment with alpha circles" src="images3/AlphaCirclesForSegment.png"/>
                 <p>Let</p>
                 <table class="math">
                     <tr>
@@ -87,9 +88,9 @@
 
                 <p>This specification essentially transforms the endpoints of
                     the segment to a new coordinate system in which they are defined as
-                    <img class="imageInText" width=42 height=25 src="math2/image008.png">
-                    and  <img class="imageInText" width=43 height=25 src="math2/image009.png">.
-                    From the definition of a circle, we obtain the relationships shown
+                    <i>(0, 0)</i> and <i>(h, k)</i>.
+                    Because both endpoints are at distance <i>r</i> from the center <i>(x, y)</i> of an
+                    alpha circle, we can use the distance formula to obtain the relationships shown
                     below in [1].  While these equations superficially resemble the
                     standard equations for a circle, they are actually intended to
                     allow us to find the <i>centers</i> of the circles.
@@ -224,7 +225,7 @@
                 The Tinfour implementation uses this
                 information as part of its logic for constructing the alpha shape.
                 So, when computing the alpha circle centers,
-                Tinfour ensures that the solutiuons are given in order
+                Tinfour ensures that the solutions are given in order
                 so that  the circle center to the left of the line segment is given first
                 and the circle center to the right of the line segment is given second.
 
