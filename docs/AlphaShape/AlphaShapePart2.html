@@ -37,13 +37,15 @@
 
             <div class="grid_10">
                 <p>
-                    <b>Note:</b> This webpage is under construction. <strong>More content coming soon.</strong>
+                    <b>Note:</b> This webpage is under construction. Some of its content
+                    is still evolving and may not be completely accurate.
+                    <strong>More content and corrections are coming soon.</strong>
                 </p>
 
                 <h1>Introduction</h1>
                 <p>Part 1 of these notes introduced the concepts underlying a 2D alpha shape utility.
-                    This section of the notes covers technical details and the methods implemented by the utility.
-                    Although the Tinfour AlphaShape class is written in Java, the ideas described
+                    This section of the notes covers the algorithms and technical details of the Tinfour
+                    implementation. Although the Tinfour AlphaShape class is written in Java, the ideas described
                     in these notes would carry over to any development environment.</p>
 
                 <p>The classic alpha shape definition depends on the construction of a
@@ -71,9 +73,8 @@
                     <li>Tinfour Delaunay triangulations implement a collection of vertices and edges.
                         Triangles are not actively maintained in memory, but may be constructed on an as-needed basis.</li>
                     <li>In the classic Delaunay triangulation, pairs of vertices are linked together by bi-directional
-                        edges.  For software implementation purposes, Tinfour depends on a single-direction
-                        edge definition. So two vertices are linked together by a "paired edge" structure
-                        that specifies one edge for each direction of traversal.</li>
+                        edges.  Tinfour uses a "paired edge" structure in which two single-direction edges
+                        are coupled together, one edge for each direction of traversal.</li>
                     <li>Each Tinfour edge carries a reference to a corresponding "dual" edge that supports
                         the opposite direction of traversal. In the figure above, the edge labeled "0"
                         indicates the traversal from vertex A to B. Its dual, the edge labeled "1"
@@ -83,31 +84,75 @@
                         supplemental information about the edges they represent.</li>
                     <li>To form triangles, each Tinfour edge is linked to two other edges.
                         These linked edges are referred to the "forward" edge and the "reverse"
-                        edge. For example, in the figure above:</li>
-                    <ul>
-                        <li>The forward of edge 0 is edge 2.</li>
-                        <li>The reverse of edge 2 is edge 0.</li>
-                        <li>The forward of edge 2 is edge 4.</li>
-                        <li>The forward of edge 4 is edge 0.</li>
-                        <li>The reverse of edge 0 is edge 4.</li>
-                    </ul>
+                        edge. The Tinfour API provides methods for obtaining references to each linked edge
+                        (forward, reverse, and dual).</li>
                     <li>When three edges are linked together to form a triangle,
                         the triangle is always specified in counterclockwise order.</li>
-                    <li>The triangle associated with an edge is always formed to its left.
-                        In the figure above, triangle ABC is defined by edges 0, 2, and 4.
-                        Triangle DBA is defined by edges 8, 1, and 6.</li>
                 </ul>
+
+                <p>Additional details about the Tinfour edge concept are presented in our Wiki article
+                    <a href="https://github.com/gwlucastrig/Tinfour/wiki/Tutorial-Using-Edge-Based-Techniques-Part-1">
+                        Tutorial Using Edge Based Techniques</a>.
+
+                <h1 id="BuildingAnAlphaShape">Building an alpha shape</h1>
+                <p>The Tinfour technique for building an alpha is a three-step process:</p>
+                <ol>
+                    <li>Create a Delaunay triangulation from a set of
+                        scattered data points</li>
+                    <li>Use the alpha-circle criteria to identify edges from
+                        the triangulation as being either a border, or interior or exterior
+                        to the alpha shape (Edelsbrunner referred to exterior edges as α-exposed).</li>
+                    <li>Connect the border edges together to form polygons enclosing
+                        the alpha shape.
+                        <ul>
+                            <li>An alpha shape may consist of multiple polygons.</li>
+                            <li>Some polygons may include "holes" (nested polygons).</li>
+                            <li>For sufficiently small radius values, it may be impossible
+                                to build polygons that enclose all of the input points.
+                                Some points may remain as "orphans" which must be treated
+                                as isolated individuals rather than part of a polygon structure.</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <p>The Delaunay triangulation is the focus of the Tinfour software project.
+                    Given a set of scattered points, the Tinfour API includes classes
+                    that link points into a triangle-based mesh structure that
+                    can be accessed through the Java interface IIncrementalTin.
+                    Interested readers may consult our <a href="https://gwlucastrig.github.io/TinfourDocs/">project documentation</a>
+                    and <a href="https://github.com/gwlucastrig/Tinfour/wiki">Wiki page</a> for
+                    more information.</p>
+
 
 
                 <h1 id="IsAnEdgeExposed">Is an edge exposed?</h1>
-                <p>As discussed in Part 1 of these notes, the alpha shape definition treats
-                    each edge in the Delaunay triangulation as either
-                    exposed or not exposed depending on whether any of the neighboring points in the sample
-                    set lie within the pair of circles of radius <i>r</i> associated with the edge
-                    (see <a href="./AlphaShapePart1.html#TheCircleSelectionCriterion">The circle selection criteria</a>).</p>
+                <p>Once a Delaunay triangulation is constructed from a set of scattered points,
+                    it may be passed to Tinfour's AlphaShape constructor
+                    along with an arbitrarily specified radius value.</p>
+                <p>AlphaShape begins by classifying each edge in the Delaunay triangulation
+                    as either interior (α-unexposed), exterior (α-exposed), or a border according
+                    to the following rules:</p>
+                <ul>
+                    <li>α-exposed: If both of the alpha circles associated with the
+                        edge are empty, the edge is exterior to the alpha shape.</li>
+                    <li>α-unexposed: If both of the circles are occupied by distinct vertices,
+                    the edge is interior to the alpha shape.</li>
+                    <li>border: If one of the circles is occupied by a vertex
+                        and the other is empty, then the edge is a border
+                        of the alpha shape
+                        (see <a href="./AlphaShapePart1.html#TheCircleSelectionCriterion">The circle selection criteria</a>).
+                    </li>
+                    <li>border (Tinfour modified rule): If both circles are
+                        occupied by the same vertex, but not by any others,
+                        the edge is a border of the alpha shape
+                        (see <a href="AlphaShapePart1.html#TinfourModifications">
+                            Tinfour modifications for border identification<a>).
+                    </li>
+                </ul>
+
 
                 <p>If we had to search for every point in an input sample set in order to discover whether
-                    a circle is occupied or note, the processing cost for a large set of points
+                    a circle is occupied or not, the processing cost for a large set of points
                     might become prohibitive (on the order of N<sup>2</sup>).
                     Fortunately, the nature of the Delaunay triangulation makes that
                     unnecessary.
@@ -117,17 +162,52 @@
                     to inspect the two vertices opposite that edge. If an alpha circle
                     is not occupied by either of the associated vertices, then it will not
                     be occupied by any other vertices in the Delaunay triangulation.
-                </p>
-                <p><strong>More content to come:</strong> images and discussion. Show the layout
-                    of the two triangles near a Delaunay edge. Explain how to classify borders.
-                    Note that a proof is required for this claim.</p>
+                    A typical edge/vertex situation is illustrated in the figure below</p>
 
-                <h1 id="BuildingTheAlphaShape">Building the alpha shape</h1>
+                <img width="780" height="390" alt="Delaunay and Alpha Circles"
+                     title="Relationship between Delaunay and alpha circles"
+                     src="images2/TinfourPreliminaries2.png"/>
+
+                <h2>Assigning an edge as a border or interior component</h2>
+                <p>When both alpha circles associated with an segment (pair of edges)
+                    are occupied by vertices, the segment is treated as being part
+                    of the <i>interior</i> of the alpha shape. When both circles
+                    are empty, the segment is treated as being <i>exterior</i>
+                    to the alpha shape (
+                    Because the alpha circles contain a vertex on one side of segment AB, but not both,
+                    the segment would be treated as a border. The alpha circle to the
+                    right of the edge is occupied by Vertex D.  The alpha circle
+                    to the left is not occupied. Tinfour defines the side of the edge
+                    with an empty circle as being <i>exterior</i> to the alpha shape.
+                    The side of the edge with an occupied circle is treated as being
+                    in the <i>interior</i>.
+                </p>
+                    <p>During the construction of the
+                    AlphaShape, Tinfour maintains an array of flags indicating which edges
+                    are interior to the alpha shape and which are borders. These arrays are named
+                    covered[] and border[]. The arrays are indexed
+                    using the edge index as shown in the figure above.
+                    In the figure above, segment AB is a border because only
+                    one of the alpha circles is occupied (by vertex D). The
+                    segment has two sides (two Tinfour edge objects) which are
+                    numbered 0 and 1.  In the figure, the edge to the left of
+                    segment, which has edge index 0, faces the exterior of the alpha shape.
+                    So border[0] would be set to true. The edge to the right of
+                    the segment, which has edge index 1, faces the interior
+                    of the alpha shape, so covered[0] would be set to true.
+                </p>
+
+                <h1 id="AlphaPolygons">Stitching edges together to form alpha polygons</h1>
                 <p><strong>More content to come:</strong> images and discussion.
                     Explain the edge traversal logic for creating polygons.
                     Explain isolated vertices issue.</p>
 
 
+                                <h1 id="References">References</h1>
+                <p>Edelsbrunner, Herbert; Kirkpatrick, David G.; Seidel, Raimund. (1983).
+                    On the shape of a set of points in the plane,
+                    <i>IEEE Transactions on Information Theory</i>, 29 (4): 551–559, doi:10.1109/TIT.1983.1056714.
+                </p>
 
             </div>
         </div>

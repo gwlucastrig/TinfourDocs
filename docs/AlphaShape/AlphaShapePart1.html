@@ -233,10 +233,15 @@
                 <p>The alpha shape technique provides a way of extracting a polygon-based
                     representation of the distribution from a set of individual data points.
                     The quality of the results depends on the specification of a parameter giving
-                    the radius of circles used to select edges from a Delaunay triangulation.
+                    the radius of circles used to select edges from a Delaunay triangulation.</p>
+                <p>
                     Part 1 of this article introduced concepts related to the alpha shape.
-                    Part 2 will describe some of the calculations and implementation details
-                    used by one particular implementation created by the Tinfour software project.
+                    <a href="AlphaShapePart2.html">Part 2</a> describes
+                    the algorithms and implementation details for Tinfour's version
+                    of the alpha shape technique.
+                    <a href="AlphaShapePart3.html">Part 3</a> gives a simple computation
+                    for finding the centers of the alpha circles from the endpoints of a
+                    line segment and an arbitrarily specified radius.
                 </p>
                 <h1>Notes</h1>
                 <p id="Note1">
@@ -270,6 +275,10 @@
                 </p>
 
                 <h1 id="References">References</h1>
+                <p>Edelsbrunner, Herbert; Kirkpatrick, David G.; Seidel, Raimund. (1983).
+                    On the shape of a set of points in the plane,
+                    <i>IEEE Transactions on Information Theory</i>, 29 (4): 551–559, doi:10.1109/TIT.1983.1056714.
+                </p>
                 <p>
                     Fischer, K. (2000). Introduction to alpha shapes. Stanford Computer Graphics, Stanford University.
                     Accessed July 2025 from
