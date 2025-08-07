@@ -200,24 +200,33 @@
 
                 <h1 id="AlphaPolygons">Stitching edges together to form alpha polygons</h1>
 
-
                 <p>The alpha circle criterion allows an application to identify
                     a set of edges that border an alpha shape. Once the
                     border segments are established, the AlphaShape
                     links them together into polygons using a sweep technique
-                    as illustrated in the figure below. The resulting polygons
-                    are ordered counterclockwise around the alpha shape and clockwise
-                    around any embedded holes.</p>
+                    as illustrated in the figure below. Before considering the figure,
+                    we note the following:</p>
+                <ul>
+                    <li>The outward side of the edge is marked with the border flag.
+                        For example, in the upper part of the image, edges 1, 15, and 21 are
+                        borders.</li>
+                    <li>The inward side of the edge is marked with the covered
+                        flag and treated as being interior to the alpha shape.
+                        For example, edges 0, 14, and 20 are covered.</li>
+                    <li>The alpha shape polygon will consist of the inside
+                        edges and be given in a counterclockwise order.</li>
+                </ul>
 
                 <img width="780" height="500" alt="Alpha shape with sweeps"
                      title="Alpha shape construction using counterclockwise sweeps"
                      src="images2/AlphaShapeWIthOuterSweeps.png"/>
 
-                <p>The process begins with an
+                <h2 id="TheBigSweep">The sweep</h2>
+                <p>The sweep process begins with an
                     arbitrarily chosen border edge with vertices designated A and B.
                     As described above, the border edge faces outward from the alpha shape.
                     The logic adds the dual of the border edge (the dual is the inner facing edge)
-                    to the polygon. It then searches edges adjacent to B by sweeping
+                    to the polygon. It then searches the edges that are adjacent to B by sweeping
                     in a counterclockwise order (in the figure, the sweeps are
                     shown as loops ending with arrows). The polygon is considered
                     complete when the search reaches the starting polygon.</p>
@@ -229,7 +238,7 @@
                     polygon-building portion of the alpha shape algorithm terminates.</p>
                 <p>The final step in the process is to collect a list of any individual vertices
                     that were not part of the region enclosed by the polygons.
-                    To do so, Tinfour loops through the edges and checks for
+                    To do so, Tinfour simply checks for
                     any vertices that were not connected to an edge that
                     was classified as covered.</p>
 
