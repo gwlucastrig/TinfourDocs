@@ -132,9 +132,11 @@
                     the shape begins to fracture into multiple disjoint polygons.
                     For alpha values 1.0 and 0.5, the radius is small enough that many of
                     the points in the sample set are not incorporated into the alpha polygons.
-                    This situation illustrates the idea that some of the features generated
-                    by an alpha shape are actually individual points or line segments
-                    rather than polygons.
+                    Technically, these orphan vertices are part of the alpha shape,
+                    but they do represent a slightly different implementation challenge.
+                    The Tinfour ALphaShape logic collects these orphan vertices
+                    into a separate list that can be accessed once the alpha
+                    shape is constructed.
                 </p>
                 <p>When trying to pick an alpha value for processing, it is sometimes
                     useful to look at the lengths of the edges in the source Delaunay
