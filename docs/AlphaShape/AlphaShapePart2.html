@@ -22,7 +22,7 @@
             <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour/wiki">Wiki</a>
             |
             <a class="top-link"  href="AlphaShapePart1.html">Part 1: Concepts</a>
-                        |
+            |
             <a class="top-link"  href="AlphaShapePart3.html">Part 3: Alpha circle calculation</a>
         </div>
 
@@ -136,7 +136,7 @@
                     <li>α-exposed: If both of the alpha circles associated with the
                         edge are empty, the edge is exterior to the alpha shape.</li>
                     <li>α-unexposed: If both of the circles are occupied by distinct vertices,
-                    the edge is interior to the alpha shape.</li>
+                        the edge is interior to the alpha shape.</li>
                     <li>border: If one of the circles is occupied by a vertex
                         and the other is empty, then the edge is a border
                         of the alpha shape
@@ -146,7 +146,7 @@
                         occupied by the same vertex, but not by any others,
                         the edge is a border of the alpha shape
                         (see <a href="AlphaShapePart1.html#TinfourModifications">
-                            Tinfour modifications for border identification<a>).
+                            Tinfour modifications for border identification</a>).
                     </li>
                 </ul>
 
@@ -182,11 +182,12 @@
                     The side of the edge with an occupied circle is treated as being
                     in the <i>interior</i>.
                 </p>
-                    <p>During the construction of the
+                <p>During the construction of the
                     AlphaShape, Tinfour maintains an array of flags indicating which edges
-                    are interior to the alpha shape and which are borders. These arrays are named
-                    covered[] and border[]. The arrays are indexed
-                    using the edge index as shown in the figure above.
+                    are interior to the alpha shape and which are
+                    borders<sup><a href="#Note1">[1]</a></sup>.
+                    These arrays are named covered[] and border[]. The arrays are indexed
+                    using the edge index as shown in the figure above<sup><a href="#Note2">[2]</a></sup>.
                     In the figure above, segment AB is a border because only
                     one of the alpha circles is occupied (by vertex D). The
                     segment has two sides (two Tinfour edge objects) which are
@@ -198,12 +199,63 @@
                 </p>
 
                 <h1 id="AlphaPolygons">Stitching edges together to form alpha polygons</h1>
+
+
+                <p>The alpha circle criterion allows an application to identify
+                    a set of edges that border an alpha shape. Once the
+                    border segments are established, the AlphaShape
+                    links them together into polygons using a sweep technique
+                    as illustrated in the figure below. The resulting polygons
+                    are ordered counterclockwise around the alpha shape and clockwise
+                    around any embedded holes.</p>
+
+                <img width="780" height="500" alt="Alpha shape with sweeps"
+                     title="Alpha shape construction using counterclockwise sweeps"
+                     src="images2/AlphaShapeWIthOuterSweeps.png"/>
+
+                <p>The process begins with an
+                    arbitrarily chosen border edge with vertices designated A and B.
+                    As described above, the border edge faces outward from the alpha shape.
+                    The logic adds the dual of the border edge (the dual is the inner facing edge)
+                    to the polygon. It then searches edges adjacent to B by sweeping
+                    in a counterclockwise order (in the figure, the sweeps are
+                    shown as loops ending with arrows). The polygon is considered
+                    complete when the search reaches the starting polygon.</p>
+                <p>The alpha shape may contain multiple polygons.  Once
+                    a polygon is completed, the code searches for any additional
+                    edges that have not yet been committed to a polygon. As they are
+                    found, the sweep-and-build process continues as described above.
+                    When no additional uncommitted edges are available, the algorithm
+                    alpha shape is complete.</p>
+
                 <p><strong>More content to come:</strong> images and discussion.
                     Explain the edge traversal logic for creating polygons.
-                    Explain isolated vertices issue.</p>
+                    Explain isolated vertices issue.  Create an outline for
+                    the steps for the algorithm.
+                </p>
 
 
-                                <h1 id="References">References</h1>
+                <h1 id="Notes">Notes</h1>
+                <p id="Note1">
+                    [1] Edelsbrunner, et al., original paper treats border edges
+                    as α-exposed. That choice reflects the mathematical
+                    basis for their proofs and derivation (as does the choice of
+                    open circles versus closed circles for the edge selection
+                    criterion). To distinguish implementation considerations
+                    the Tinfour code does not use the term "unexposed". Instead,
+                    it uses the term "covered" to refer to edges that are
+                    either α-unexposed (interior) or part of the border.
+                </p>
+
+                <p id="Note2">
+                    [2] For clarity, it is worth noting that what Tinfour
+                    calls an "edge" is usually just a single side of a
+                    bidirectional segment created between two vertices
+                    in the Delaunay triangulation.
+                </p>
+
+
+                <h1 id="References">References</h1>
                 <p>Edelsbrunner, Herbert; Kirkpatrick, David G.; Seidel, Raimund. (1983).
                     On the shape of a set of points in the plane,
                     <i>IEEE Transactions on Information Theory</i>, 29 (4): 551–559, doi:10.1109/TIT.1983.1056714.
