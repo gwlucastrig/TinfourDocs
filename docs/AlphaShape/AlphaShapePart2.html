@@ -225,8 +225,13 @@
                     a polygon is completed, the code searches for any additional
                     edges that have not yet been committed to a polygon. As they are
                     found, the sweep-and-build process continues as described above.
-                    When no additional uncommitted edges are available, the algorithm
-                    alpha shape is complete.</p>
+                    When no additional uncommitted edges are available, the
+                    polygon-building portion of the alpha shape algorithm terminates.</p>
+                <p>The final step in the process is to collect a list of any individual vertices
+                    that were not part of the region enclosed by the polygons.
+                    To do so, Tinfour loops through the edges and checks for
+                    any vertices that were not connected to an edge that
+                    was classified as covered.</p>
 
                 <p><strong>More content to come:</strong> images and discussion.
                     Explain the edge traversal logic for creating polygons.
