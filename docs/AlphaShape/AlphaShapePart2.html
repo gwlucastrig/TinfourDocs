@@ -173,7 +173,7 @@
                     are occupied by vertices, the segment is treated as being part
                     of the <i>interior</i> of the alpha shape. When both circles
                     are empty, the segment is treated as being <i>exterior</i>
-                    to the alpha shape (
+                    to the alpha shape.
                     Because the alpha circles contain a vertex on one side of segment AB, but not both,
                     the segment would be treated as a border. The alpha circle to the
                     right of the edge is occupied by Vertex D.  The alpha circle
@@ -249,22 +249,30 @@
                 below shows a locally concave section of the Delaunay triangulation near
                 its upper corner.</p>
                 <img width=520 height=320 alt="ConcaveSweep" src="images2/AlphaShapeSectionSweeps.png">
-                <p>During the border identification process,
-                edge 21 is marked as a border (edge 20 is interior to the
-                alpha shape and so marked as covered). The initial vertex of
-                edge 21 is marked as the "Pivot". If the algorithm
-                picked 21 as its starting edge, it would add its dual (edge 20)
-                to the polygon and transfer the search to edge 15.  Edge 15 is part of the
-                same triangle as 21 and is referenced by the reverse link of 21.
-                This observation leads to a partial description of the traversal rule:</p>
-                <ul>
-                    <li>For each border edge, obtain its reverse link</li>
-                    <li>If the reverse link is a border, transfer to the reverse</li>
-                </ul>
+                <p>The selection of starting edge for the polygon building loop
+                    is arbitrary. Any border edge will do.  For this example, we select
+                    edge 21 as the starting edge of the polygon building loop.
+                    Its dual, edge 20, is interior to the alpha shape and would be
+                    marked as covered. The polygon building logic adds covered
+                    edges to the alpha-shape polygon and uses the border edges
+                    to navigate its perimeter. So once edge 20 is added to the polygon,
+                    the polygon building logic sweeps counter clockwise.
+                </p>
                 <p>
-                    The figure below shows a section of a Delaunay triangulation that
-                    is locally convex.  If the algorithm picked edge 507 as a starting
-                    edge, it would have to traverse across 4 α-exposed edges in order
+                    In the figure, we labeled  the initial vertex of edge 21 the "Pivot".
+                    The next edge in the border traversal is edge 15.  Recalling
+                    that Tinfour gives triangles in counterclockwise order, we see
+                    that edge 15 is the <i>reverse</i> of edge 21. So for this particular
+                    layout (a locally concave section of the alpha shape), the transfer is
+                    simply a matter of moving to the reverse, edge 15. The building logic would
+                    add the dual of edge 15, edge 14, to the polygon and continue the sweep.
+                </p>
+                <p>
+                    The figure below shows a section of a different Delaunay triangulation
+                    and illustrates a case where the alpha shape would be
+                    is locally convex.  In that case, the traversal is a little more complicated.
+                    If the algorithm was positioned at edge 507
+                    the sweep would have to traverse across 4 α-exposed edges in order
                     to reach the next border segment (edge 501). </p>
 
                 <img width="780" height="536" alt="ConvexSection" src="images2/AlphaShapeSectionS2.png"/>
