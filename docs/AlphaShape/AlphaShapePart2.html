@@ -368,12 +368,100 @@
             <p>TBD</p>
 
             <h2 id="assemblePolygons">Step 2: Assemble alpha polygons</h2>
-            <p>TBD</p>
+            <p>
+                The Tinfour edge iterator loops through pairs of edges. So in
+                the outline below, there is a test to see whether either an edge,
+                or its dual, is a border.  Because the main loop iterates
+                through all polygons in the triangulation, it maintains an array
+                called "visited" to keep track of which edges are added to
+                an alpha polygon. This array is used to prevent edges from being
+                processed more than one.</p>
+            <ol>
+                <li>Allocate an array visited[maxEdgeAllocationIndex] and initialize
+                    it to value false to indicate when edges are  processed</li>
+                <li>Find a starting edge for a polygon.  For each edge in
+                    the Delaunay triangulation:
+                    <ul>
+                        <li>If the visited array indicates that the edge has already been
+                            processed. Continue to the next edge in the iteration.</li>
+                        <li>If the edge is a border, then assign it as the starting edge</li>
+                        <li>If the dual is a border, then assign it as the starting edge</li>
+                        <li>If neither edge is a unprocessed border, continue to the next
+                            edge in the iteration.</li>
+                    </ul>
+                </li>
+                <li>Initialize a new polygon.</li>
+                <li>Set a traversal edge reference, e, to the starting edge: e=starting edge</li>
+                <li>The polygon-build loop: Repeat the following steps:
+                    <ol class="innerList">
+                        <li>Mark the e as visited and e&#46;getDual() as visited
+                            (<i>i&#46;e&#46;</i> both sides of the edge are marked as visited).</li>
+                        <li>If the edge is a border or a covered edge:
+                            <ul>
+                                <li>Add the dual of the edge to the polygon</li>
+                                <li>Advance the traversal edge, e, to the next edge in the sweep
+                                    by setting e=e&#46;getForward()</li>
+                            </ul>
+                        </li>
+                        <li>If the edge is uncovered:
+                            <ul>
+                                <li>Advance the traversal edge, e, to the next
+                                    edge in the sweep by setting e=e&#46;getDual()&#46;getReverse().
+                                    This action effectively skips over the uncovered edge</li>
+                            </ul>
+                        </li>
+                        <li>The polygon-build loop terminates when e equals the starting edge.</li>
+                    </ol>
+                </li>
+            </ol>
 
+            <h2 id="assembleOrphans">Step 3: Assemble orphan vertices</h2>
+            <p>The assemble polygons step will have set visited flags for any edge that
+            was identified as being part of the alpha shape. If the alpha radius is
+            sufficiently small, there may exist additional vertices in the Delaunay
+            triangulation that were not associated with an incorporated edge.
+            Add these vertices to a list of unassociated vertices.</p>
 
-            <h2 id="assembleOrphans">Step 3: Assemble orphan points</h2>
-            <p>TBD</p>
+            <ol>
+                <li>For each edge in the Delaunay triangulation that is
+                    not covered, not a border, and not visited, perform
+                    the following for <b>both</b> the edge and its dual:
+                    <ul>
+                        <li>Determine whether the initial vertex connects to an
+                        edge that is covered or that has already been processed.
+                        If not, perform the following:
+                        <ol class="innerList">
+                            <li>Set a flag called uncommitted to true.
+                            <li>Loop on each edge that starts with vertex
+                                A (in Tinfour, this action is accomplished
+                                using the "pinwheel" iterator).
+                            <ul>
+                            <li>If the loop-edge is covered, a border, or
+                                visited, set uncommitted to false</li>
+                            <li>Mark the loop-edge as visited.</li>
+                            </ul>
+                            </li>
+                            <li>If the uncommited flag is true, then the
+                                starting vertex for the edge is an unassociated
+                                vertex.  Add it to the collection of
+                                unassociated vertices</li>
+                        </ol>
+                        </li>
+                    </ul>
+                </li>
+            </ol>
 
+            <p>Note that in the description above, the inner loop only
+                sets the visited flag for one side of the edges. So, if the logic
+                is processing the edge AB, the first
+                time the inner loop executes (for the edge), only the sides
+                of the edges directed away from point A are marked as visited.
+                Then, as it processed the dual, BA, the sides of the edges
+                directed away from point B will be marked as visited.
+                This approach ensures that both endpoints for an uncovered
+                edge are correctly processed and that no vertex is added to
+                the unassociated vertices collection more than once.</p>
+ 
             <p><strong>More content to come:</strong> Present the complete
                 algorithm in outline form, suitable for implementation.
                 Add a conclusion.  Mention the example class
