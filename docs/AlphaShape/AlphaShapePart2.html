@@ -400,7 +400,7 @@
                             <ul>
                                 <li>Add the dual of the edge to the polygon</li>
                                 <li>Advance the traversal edge, e, to the next edge in the sweep
-                                    by setting e=e&#46;getForward()</li>
+                                    by setting e=e&#46;getReverse()</li>
                             </ul>
                         </li>
                         <li>If the edge is uncovered:
@@ -461,7 +461,7 @@
                 This approach ensures that both endpoints for an uncovered
                 edge are correctly processed and that no vertex is added to
                 the unassociated vertices collection more than once.</p>
- 
+
             <p><strong>More content to come:</strong> Present the complete
                 algorithm in outline form, suitable for implementation.
                 Add a conclusion.  Mention the example class
