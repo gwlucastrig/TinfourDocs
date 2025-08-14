@@ -392,9 +392,9 @@
        Vertex C = edge.getForward().getB();         // vertex opposite edge, for triangle ABC
        Vertex D = edge.getForwardFromDual().getB(); // vertex opposite dual, for triangle BAD
     }
-                    </code></pre>
+            </code></pre>
 
-            <h2>Step 1: classify edges</h2>
+            <h2>Step 1: Classify edges</h2>
             <p>Given a valid Delaunay triangulation and a specified alpha radius <i>r</i>:</p>
             <ol id="classifyEdges">
                 <li>Obtain maximum edge index, maxEdgeAllocationIndex, allocate boolean arrays
@@ -440,7 +440,24 @@
             </ol>
 
             <h2 id="reclassifyEdges">Step 1a: Reclassify edges based on neighboring triangles</h2>
-            <p> <b>More content to come:</b> Outline steps for reclassification.</p>
+            <p>The following logic reclassifies border edges to be non-border
+                (purely covered) in cases where the facing triangle is interpreted
+                as being interior to the alpha shape. This condition occurs when
+                the two adjacent edges (the forward and reverse) edges are
+                both marked as non-border and covered.</p>
+            <ol>
+                <li>For all edges (both sides) in the triangulation, perform
+                    the following steps:
+                    <ol class="innerList">
+                        <li>If the edge is a border, obtain its forward
+                            and reverse edges. These edges represent the
+                            three edges of a triangle</li>
+                        <li>If the reverse and forward edges are covered
+                            and not borders, then mark the current edge as
+                            covered and not a border.</li>
+                    </ol>
+                </li>
+            </ol>
 
 
             <h2 id="assemblePolygons">Step 2: Assemble alpha polygons</h2>
@@ -491,7 +508,7 @@
                 </li>
             </ol>
 
-            <h2 id="assembleOrphans">Step 3: Assemble orphan vertices</h2>
+            <h2 id="collectOrphans">Step 3: Collect orphan vertices</h2>
             <p>The assemble polygons step will have set visited flags for any edge that
                 was identified as being part of the alpha shape. If the alpha radius is
                 sufficiently small, there may exist additional vertices in the Delaunay
@@ -539,11 +556,31 @@
                 the unassociated vertices collection more than once.</p>
 
             <h1 id="Conclusion">Conclusion</h1>
-            <p><strong>More content to come:</strong>
-                Add a conclusion.  Talk about future work, especially where
-                proofs are needed. Mention the example class
-                AlphaShapeDemoImage.java from the Tinfour code distribution.
+            <p>The Tinfour AlphaShape class provides a modified version of the
+                classic 2D alpha shape technique that reduces the incidence
+                of hole and cavity features. These notes provides implementation
+                details and an outline of the steps performed by AlphaShape.
+                The next article in this series provides a derivation
+                of the <a href="AlphaShapePart3.html">alpha circle calculation</a>.
             </p>
+            <h2 id="futureWork">Future work</h2>
+            <p>We have not yet established a rigorous mathematical proof
+                for one of the key assumptions in the Tinfour modification.
+                The logic assumes that it is sufficient to establish whether an edge is
+                α-exposed by examining just the two vertices opposite an edge
+                (see <a href="#IsAnEdgeExposed">Is an edge exposed?</a> above.
+                During the investigation, the Tinfour developers performed
+                extensive testing that supported this idea, but without a
+                formal proof, we cannot be sure that there are not cases for
+                which the assumption is inadequate. Further investigation is
+                required.</p>
+
+            <h2>An example application using the Tinfour alpha-shape API</h2>
+            <p>Finally, the illustrations included in this article were
+                created using applications built on top of the Tinfour
+                software library.  Tinfour includes an example
+                application, AlphaShapeDemoImage.java, which demonstrates
+                many of the techniques used for these illustrations.</p>
 
             <h1 id="Notes">Notes</h1>
             <p id="Note1">
