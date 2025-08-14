@@ -168,7 +168,7 @@
                  title="Relationship between Delaunay and alpha circles"
                  src="images2/TinfourPreliminaries2.png"/>
 
-            <h2>Assigning an edge as a border or interior component</h2>
+            <h2>Classifying an edge as a border or interior component</h2>
             <p>When both alpha circles associated with an segment (pair of edges)
                 are occupied by vertices, the segment is treated as being part
                 of the <i>interior</i> of the alpha shape. When both circles
@@ -272,7 +272,7 @@
                 and illustrates a case where the alpha shape would be
                 is locally convex.  In that case, the traversal is a little more complicated.
                 If the algorithm was positioned at edge 507
-                the sweep would have to traverse across 4 α-exposed edges in order
+                the sweep would have to traverse across four α-exposed edges in order
                 to reach the next border segment (edge 501). </p>
 
             <img width="780" height="536" alt="ConvexSection" src="images2/AlphaShapeSectionS2.png"/>
@@ -297,6 +297,81 @@
                 lie outside the convex hull. The presence os these edges
                 allows the AlphaShape class to apply the traversal rules
                 without special considerations.</p>
+
+            <h2 id="optionalModReclassifyEdges">Reclassifying edges based on neighboring triangles</h2>
+            <p>Tinfour implements an additional modification to the original alpha shape
+                logic by reclassifying some border edges based on the conditions
+                of the triangle that it borders. While this idea is not original
+                to Tinfour<sup><a href="#Note3">[3]</a></sup>, it is often useful as
+                a way of eliminating small holes and cavities from the alpha shape.</p>
+
+
+            <p>The figure below illustrates a case where the alpha shape is
+                simplified by reclassifying edges</p>
+            <img width="780" height="400" alt="Reclassify edges"
+                 title="Edges to be reclassified"
+                 src="images2/AlphaShapeEdgeClassification4.png" />
+            <p>The gray filled areas in the image indicates Tinfour's interpretation of
+                a modified alpha shape. The right panel shows a close up of the area in the letter A
+                with edges color coded to show their classifications. Once again,
+                we note that Tinfour edges have two sides. In the figure, some edges
+                are labeled on either side with their edge index. Edges <i>0|1</i>,
+                <i>2|3</i>, and <i>4|5</i> are border edges. Initially they are assigned
+                covered and border flag values as shown in the table below.
+            </p>
+            <table class="tight">
+                <tr>
+                    <th class="tight">Side</th>
+                    <th class="tight">Classification</th>
+                </tr>
+                <tr>
+                    <td class="tight" >0</td><td class="tight" >Covered (interior-facing)</td>
+                </tr>
+                <tr>
+                    <td class="tight" >1</td><td class="tight" >Border (exterior-facing)</td>
+                </tr>
+                <tr>
+                    <td class="tight" >2</td><td class="tight" >Covered (interior-facing)</td>
+                </tr>
+                <tr>
+                    <td class="tight" >3</td><td class="tight" >Border (exterior-facing)</td>
+                </tr>
+                <tr>
+                    <td class="tight" >4</td><td class="tight" >Border (exterior-facing)</td>
+                </tr>
+                <tr>
+                    <td class="tight" >5</td><td class="tight" >Covered (interior-facing)</td>
+                </tr>
+            </table>
+
+            <p>Based on the edge classifications, the stich and sweep method described
+                above would develop a triangle shaped hole from edges 1, 2, and 4
+                (using clockwise order because it is a hole feature).
+                In fact, the unmodified edge classifications would result
+                in a number of holes and cavities in the shape. But, as the
+                table above shows, edge 2 was classified as covered because
+                the vertex opposite the edge lies within its alpha circles.
+                So edge 2 is an inward-facing side of edge <i>2|3</i>, a situation which
+                suggests that &#9651;1,2,4 should be treated as
+                an interior triangle. This observation leads to the following rule:</p>
+
+            <p class="blockquote">If either the forward or reverse
+                links of a border edge are classified as covered,
+                the border edge should be reclassified as covered.</p>
+
+            <p>The figure below shows the effect of the reclassification
+                rule. The panel on the left is based on an alpha shape
+                constructed without the reclassification rule. The
+                panel on the right shows an alpha shape constructed
+                with edge-reclassification based on information from
+                its facing triangle. The reclassification eliminates
+                a number of hole and cavity features, resulting in a
+                cleaner presentation.</p>
+
+            <img width="780" height="400" alt="Reclassification comparison"
+                 title="Reclassification rule reduces holes and cavities"
+                 src="images2/AlphaShapeCompareReclassification.png" />
+
 
             <h1 id="algorithmIntro">The algorithm and the implementation</h1>
             <p>
@@ -364,8 +439,9 @@
                 </li>
             </ol>
 
-            <h2 id="reclassifyEdge">Step 1a (optional): Reinforce edges</h2>
-            <p>TBD</p>
+            <h2 id="reclassifyEdges">Step 1a: Reclassify edges based on neighboring triangles</h2>
+            <p> <b>More content to come:</b> Outline steps for reclassification.</p>
+
 
             <h2 id="assemblePolygons">Step 2: Assemble alpha polygons</h2>
             <p>
@@ -394,10 +470,10 @@
                 <li>Set a traversal edge reference, e, to the starting edge: e=starting edge</li>
                 <li>The polygon-build loop: Repeat the following steps:
                     <ol class="innerList">
-                        <li>Mark the e as visited and e&#46;getDual() as visited
-                            (<i>i&#46;e&#46;</i> both sides of the edge are marked as visited).</li>
                         <li>If the edge is a border or a covered edge:
                             <ul>
+                                <li>Mark the e as visited and e&#46;getDual() as visited
+                                    (<i>i&#46;e&#46;</i> both sides of the edge are marked as visited).</li>
                                 <li>Add the dual of the edge to the polygon</li>
                                 <li>Advance the traversal edge, e, to the next edge in the sweep
                                     by setting e=e&#46;getReverse()</li>
@@ -417,10 +493,10 @@
 
             <h2 id="assembleOrphans">Step 3: Assemble orphan vertices</h2>
             <p>The assemble polygons step will have set visited flags for any edge that
-            was identified as being part of the alpha shape. If the alpha radius is
-            sufficiently small, there may exist additional vertices in the Delaunay
-            triangulation that were not associated with an incorporated edge.
-            Add these vertices to a list of unassociated vertices.</p>
+                was identified as being part of the alpha shape. If the alpha radius is
+                sufficiently small, there may exist additional vertices in the Delaunay
+                triangulation that were not associated with an incorporated edge.
+                Add these vertices to a list of unassociated vertices.</p>
 
             <ol>
                 <li>For each edge in the Delaunay triangulation that is
@@ -428,24 +504,24 @@
                     the following for <b>both</b> the edge and its dual:
                     <ul>
                         <li>Determine whether the initial vertex connects to an
-                        edge that is covered or that has already been processed.
-                        If not, perform the following:
-                        <ol class="innerList">
-                            <li>Set a flag called uncommitted to true.
-                            <li>Loop on each edge that starts with vertex
-                                A (in Tinfour, this action is accomplished
-                                using the "pinwheel" iterator).
-                            <ul>
-                            <li>If the loop-edge is covered, a border, or
-                                visited, set uncommitted to false</li>
-                            <li>Mark the loop-edge as visited.</li>
-                            </ul>
-                            </li>
-                            <li>If the uncommited flag is true, then the
-                                starting vertex for the edge is an unassociated
-                                vertex.  Add it to the collection of
-                                unassociated vertices</li>
-                        </ol>
+                            edge that is covered or that has already been processed.
+                            If not, perform the following:
+                            <ol class="innerList">
+                                <li>Set a flag called uncommitted to true.
+                                <li>Loop on each edge that starts with vertex
+                                    A (in Tinfour, this action is accomplished
+                                    using the "pinwheel" iterator).
+                                    <ul>
+                                        <li>If the loop-edge is covered, a border, or
+                                            visited, set uncommitted to false</li>
+                                        <li>Mark the loop-edge as visited.</li>
+                                    </ul>
+                                </li>
+                                <li>If the uncommited flag is true, then the
+                                    starting vertex for the edge is an unassociated
+                                    vertex.  Add it to the collection of
+                                    unassociated vertices</li>
+                            </ol>
                         </li>
                     </ul>
                 </li>
@@ -462,9 +538,10 @@
                 edge are correctly processed and that no vertex is added to
                 the unassociated vertices collection more than once.</p>
 
-            <p><strong>More content to come:</strong> Present the complete
-                algorithm in outline form, suitable for implementation.
-                Add a conclusion.  Mention the example class
+            <h1 id="Conclusion">Conclusion</h1>
+            <p><strong>More content to come:</strong>
+                Add a conclusion.  Talk about future work, especially where
+                proofs are needed. Mention the example class
                 AlphaShapeDemoImage.java from the Tinfour code distribution.
             </p>
 
@@ -487,6 +564,11 @@
                 in the Delaunay triangulation.
             </p>
 
+            <p id="Note3">[3] Tinfour's edge reclassification technique was suggested,
+                in part, by an example provided on the stackoverflow website
+                at <a href="https://stackoverflow.com/a/23073229/12664668">
+                    https://stackoverflow.com/a/23073229/12664668</a>.
+            </p>
 
             <h1 id="References">References</h1>
             <p>Edelsbrunner, Herbert; Kirkpatrick, David G.; Seidel, Raimund. (1983).

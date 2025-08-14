@@ -252,6 +252,14 @@ td.tight {
 	caption-side:top;
 }
 
+th.tight{
+	font-weight: bold;
+		padding:2px;
+	margin-bottom: 2px;
+	margin-left: 5px;
+	caption-side:top;
+}
+
 table.math {
 	border-collapse:collapse;
 	border: none;
