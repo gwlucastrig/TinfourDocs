@@ -40,7 +40,7 @@
                 <p>Recently, the Tinfour software project introduced a utility for creating 2D
                     alpha shapes based on the Delaunay triangulation<sup><a href="#Note1">[1]</a></sup>.
                     These notes provide a brief introduction to the alpha shape concept and describe
-                    implementation details for the utility. That information intended to help developer any
+                    implementation details for the utility. That information is intended to help developer any
                     alpha shape implementation to its best advantage (any implementation, not just ours).
                     Also, our discussion of the techniques used in the Tinfour software should provide insights for
                     developers who wish to extend the software or apply its ideas to their own application development.
@@ -92,7 +92,7 @@
                     the edge is classified as α-exposed. If both circles contain neighboring
                     vertices, the edge is classified as α-unexposed. When the alpha shape is
                     constructed, exposed edges are treated as being exterior to the alpha shape.
-                    Unselected edges are selected as belonging to the interior of the alpha shape.
+                    Unexposed edges are selected as belonging to the interior of the alpha shape.
                 </p>
 
                 <img src="images1/AlphaCircleGeometry.png" alt="Alpha circle geometry" title="Alpha circle geometry for exposed and unexposed edges" />
