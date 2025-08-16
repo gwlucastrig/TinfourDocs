@@ -15,7 +15,7 @@
 <body>
     <div class="container_12">
         <div >
-            <a class="top-link" href = "https://gwlucastrig.github.io/TinfourDocs/">Home</a>
+            <a class="top-link" href="https://gwlucastrig.github.io/TinfourDocs/">Home</a>
             |
             <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour">Code Repository (Github)</a>
             |
@@ -73,7 +73,7 @@
                 <li>Tinfour Delaunay triangulations implement a collection of vertices and edges.
                     Triangles are not actively maintained in memory, but may be constructed on an as-needed basis.</li>
                 <li>In the classic Delaunay triangulation, pairs of vertices are linked together by bi-directional
-                    edges.  Tinfour uses a "paired edge" structure in which two <strong>single-direction edges</strong>
+                    edges.  Tinfour uses an "edge-pair" structure in which two <strong>single-direction edges</strong>
                     are coupled together, one edge for each direction of traversal.</li>
                 <li>Each Tinfour edge carries a reference to a corresponding "dual" edge that supports
                     the opposite direction of traversal. In the figure above, the edge labeled "0"
@@ -137,14 +137,13 @@
                     edge are empty, the edge is exterior to the alpha shape.</li>
                 <li>α-unexposed: If both of the circles are occupied by distinct vertices,
                     the edge is interior to the alpha shape.</li>
-                <li>border: If one of the circles is occupied by a vertex
-                    and the other is empty, then the edge is a border
-                    of the alpha shape
+                <li>border: If one of the circles is occupied by one or more vertices
+                    and the other is empty, then the edge is a border of the alpha shape
                     (see <a href="./AlphaShapePart1.html#TheCircleSelectionCriterion">The circle selection criteria</a>).
                 </li>
                 <li>border (Tinfour modified rule): If both circles are
-                    occupied by the same vertex, but not by any others,
-                    the edge is a border of the alpha shape
+                    occupied by one or more vertices, but all enclosed vertices lie on
+                    the same side of the edge, then the edge is a border of the alpha shape
                     (see <a href="AlphaShapePart1.html#TinfourModifications">
                         Tinfour modifications for border identification</a>).
                 </li>
@@ -159,8 +158,8 @@
             </p>
             <p>To determine the alpha exposure value
                 for any standard edge in the Delaunay triangulation, it is sufficient
-                to inspect the two vertices opposite that edge. If an alpha circle
-                is not occupied by either of the associated vertices, then it will not
+                to inspect the two vertices opposite that edge.<sup><a href="#Note1">[1]</a></sup>
+                If an alpha circle is not occupied by either of the associated vertices, then it will not
                 be occupied by any other vertices in the Delaunay triangulation.
                 A typical edge/vertex situation is illustrated in the figure below</p>
 
@@ -185,9 +184,9 @@
             <p>During the construction of the
                 AlphaShape, Tinfour maintains an array of flags indicating which edges
                 are interior to the alpha shape and which are
-                borders<sup><a href="#Note1">[1]</a></sup>.
+                borders<sup><a href="#Note2">[2]</a></sup>.
                 These arrays are named covered[] and border[]. The arrays are indexed
-                using the edge index as shown in the figure above<sup><a href="#Note2">[2]</a></sup>.
+                using the edge index as shown in the figure above<sup><a href="#Note3">[3]</a></sup>.
                 In the figure above, segment AB is a border because only
                 one of the alpha circles is occupied (by vertex D). The
                 segment has two sides (two Tinfour edge objects) which are
@@ -213,8 +212,9 @@
                 <li>The inward side of the edge is marked with the covered
                     flag and treated as being interior to the alpha shape.
                     For example, edges 0, 14, and 20 are covered.</li>
-                <li>The alpha shape polygon will consist of the inside
-                    edges and be given in a counterclockwise order.</li>
+                <li>The alpha shape polygon will consist of the <i>covered</i>
+                    edges and be given in a counterclockwise order. In the figure,
+                    the alpha shape would be given by edges 20, 14, 0, 63, 60, <i>etc</i>.</li>
             </ul>
 
             <img width="780" height="500" alt="Alpha shape with sweeps"
@@ -249,20 +249,20 @@
                 below shows a locally concave section of the Delaunay triangulation near
                 its upper corner.</p>
             <img width=520 height=320 alt="ConcaveSweep" src="images2/AlphaShapeSectionSweeps.png">
-            <p>The selection of starting edge for the polygon building loop
-                is arbitrary. Any border edge will do.  For this example, we select
+            <p>The choice of starting edge for the polygon building loop
+                is arbitrary. Any border edge will do.  For this example, we chose
                 edge 21 as the starting edge of the polygon building loop.
                 Its dual, edge 20, is interior to the alpha shape and would be
                 marked as covered. The polygon building logic adds covered
                 edges to the alpha-shape polygon and uses the border edges
                 to navigate its perimeter. So once edge 20 is added to the polygon,
-                the polygon building logic sweeps counter clockwise.
+                the polygon building logic sweeps counterclockwise.
             </p>
             <p>
                 In the figure, we labeled  the initial vertex of edge 21 the "Pivot".
                 The next edge in the border traversal is edge 15.  Recalling
                 that Tinfour gives triangles in counterclockwise order, we see
-                that edge 15 is the <i>reverse</i> of edge 21. So for this particular
+                that edge 15 is the <i>reverse link</i> of edge 21. So for this particular
                 layout (a locally concave section of the alpha shape), the transfer is
                 simply a matter of moving to the reverse, edge 15. The building logic would
                 add the dual of edge 15, edge 14, to the polygon and continue the sweep.
@@ -293,8 +293,10 @@
                 pass outside the convex hull of the Delaunay triangulation.
                 To ensure that the Delaunay triangulation link relationships
                 are fully populated (reverse, forward, and dual), Tinfour implements
-                a set of non-standard edges (so called "ghost edges") which
-                lie outside the convex hull. The presence os these edges
+                a set of non-standard edges called "ghost edges". Ghost edges
+                lie outside the convex hull and do not have a valid
+                geometry. They are included in the Delaunay triangulation solely
+                to provide a complete set of links. The presence of these edges
                 allows the AlphaShape class to apply the traversal rules
                 without special considerations.</p>
 
@@ -302,7 +304,7 @@
             <p>Tinfour implements an additional modification to the original alpha shape
                 logic by reclassifying some border edges based on the conditions
                 of the triangle that it borders. While this idea is not original
-                to Tinfour<sup><a href="#Note3">[3]</a></sup>, it is often useful as
+                to Tinfour<sup><a href="#Note4">[4]</a></sup>, it is often useful as
                 a way of eliminating small holes and cavities from the alpha shape.</p>
 
 
@@ -344,7 +346,7 @@
                 </tr>
             </table>
 
-            <p>Based on the edge classifications, the stich and sweep method described
+            <p>Based on the edge classifications, the stitch and sweep method described
                 above would develop a triangle shaped hole from edges 1, 2, and 4
                 (using clockwise order because it is a hole feature).
                 In fact, the unmodified edge classifications would result
@@ -427,12 +429,12 @@
                                     are occupied, the edge is covered.</li>
                                 <li>If the left side (C side) is occupied and the
                                     right side (D side) is not occupied, then the left side is
-                                    covered (covered[eIndex] = true) and the right side
-                                    is a border (border[dIndex] = true).</li>
+                                    covered (covered[eIndex]=true) and the right side
+                                    is a border (border[dIndex]=true).</li>
                                 <li>If the right side (D side) is occupied and the
                                     left side (C side) is not occupied, then the left side is
-                                    a border (border[eIndex] = true) and the right side
-                                    is covered (covered[dIndex] = true).</li>
+                                    a border (border[eIndex]=true) and the right side
+                                    is covered (covered[dIndex]=true).</li>
                             </ul>
                         </li>
                     </ol>
@@ -472,15 +474,15 @@
             <ol>
                 <li>Allocate an array visited[maxEdgeAllocationIndex] and initialize
                     it to value false to indicate when edges are  processed</li>
-                <li>Find a starting edge for a polygon.  For each edge in
+                <li>Find a starting edge for a polygon.  For each edge-pair in
                     the Delaunay triangulation:
                     <ul>
-                        <li>If the visited array indicates that the edge has already been
-                            processed. Continue to the next edge in the iteration.</li>
-                        <li>If the edge is a border, then assign it as the starting edge</li>
-                        <li>If the dual is a border, then assign it as the starting edge</li>
-                        <li>If neither edge is a unprocessed border, continue to the next
-                            edge in the iteration.</li>
+                        <li>If the visited array indicates that the edge-pair has already been
+                            processed. Continue to the next edge-pair in the iteration.</li>
+                        <li>If the base edge of the edge-pair is a border, then assign it as the starting edge</li>
+                        <li>If the dual edge of the edge-pair is a border, then assign it as the starting edge</li>
+                        <li>If neither side of the edge-pair is a unprocessed border, continue to the next
+                            edge-pair in the iteration.</li>
                     </ul>
                 </li>
                 <li>Initialize a new polygon.</li>
@@ -516,9 +518,9 @@
                 Add these vertices to a list of unassociated vertices.</p>
 
             <ol>
-                <li>For each edge in the Delaunay triangulation that is
+                <li>For each edge-pair in the Delaunay triangulation that is
                     not covered, not a border, and not visited, perform
-                    the following for <b>both</b> the edge and its dual:
+                    the following for <b>both</b> the base side of the edge and its dual:
                     <ul>
                         <li>Determine whether the initial vertex connects to an
                             edge that is covered or that has already been processed.
@@ -534,7 +536,7 @@
                                         <li>Mark the loop-edge as visited.</li>
                                     </ul>
                                 </li>
-                                <li>If the uncommited flag is true, then the
+                                <li>If the uncommitted flag is true, then the
                                     starting vertex for the edge is an unassociated
                                     vertex.  Add it to the collection of
                                     unassociated vertices</li>
@@ -584,7 +586,13 @@
 
             <h1 id="Notes">Notes</h1>
             <p id="Note1">
-                [1] Edelsbrunner, et al., original paper treats border edges
+                [1] We have not yet established a rigorous mathematical proof
+                that it is sufficient to establish whether an edge is α-exposed
+                by examining just the two vertices opposite an edge. Additional
+                investigation is required.
+            </p>
+            <p id="Note2">
+                [2] Edelsbrunner, et al., original paper treats border edges
                 as α-exposed. That choice reflects the mathematical
                 basis for their proofs and derivation (as does the choice of
                 open circles versus closed circles for the edge selection
@@ -594,14 +602,15 @@
                 either α-unexposed (interior) or part of the border.
             </p>
 
-            <p id="Note2">
-                [2] For clarity, it is worth noting that what Tinfour
+            <p id="Note3">
+                [3] For clarity, it is worth noting that what Tinfour
                 calls an "edge" is usually just a single side of a
                 bidirectional segment created between two vertices
                 in the Delaunay triangulation.
             </p>
 
-            <p id="Note3">[3] Tinfour's edge reclassification technique was suggested,
+            <p id="Note4">
+                [4] Tinfour's edge reclassification technique was suggested,
                 in part, by an example provided on the stackoverflow website
                 at <a href="https://stackoverflow.com/a/23073229/12664668">
                     https://stackoverflow.com/a/23073229/12664668</a>.
@@ -612,7 +621,12 @@
                 On the shape of a set of points in the plane,
                 <i>IEEE Transactions on Information Theory</i>, 29 (4): 551–559, doi:10.1109/TIT.1983.1056714.
             </p>
-
+            <p>
+                Fischer, K. (2000). Introduction to alpha shapes. Stanford Computer Graphics, Stanford University.
+                Accessed July 2025 from
+                <a href="https://graphics.stanford.edu/courses/cs268-11-spring/handouts/AlphaShapes/as_fisher.pdf">
+                    https://graphics.stanford.edu/courses/cs268-11-spring/handouts/AlphaShapes/as_fisher.pdf</a>
+            </p>
 
         </div>
     </div>

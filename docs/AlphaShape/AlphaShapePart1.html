@@ -123,7 +123,7 @@
                     the sample points. Clearly, doing so requires some pre-existing
                     knowledge of the nature and scale of the data.  To create
                     the figure below, we specified different alpha values for a
-                    set of sample points based on the uppercase letter A.</p>
+                    set of sample points based on the uppercase letter A<sup><a href="#Note3">[3]</a></sup>.</p>
                 <img src="images1/AlphaShapeDifferentRadii.png" alt="Alpha shapes for different radii" title="Alpha shapes showing the effects of radius variations" />
 
                 <p>
@@ -132,7 +132,7 @@
                     the shape begins to fracture into multiple disjoint polygons.
                     For alpha values 1.0 and 0.5, the radius is small enough that many of
                     the points in the sample set are not incorporated into the alpha polygons.
-                    Technically, these orphan vertices are part of the alpha shape,
+                    Technically, these orphan vertices are also part of the alpha shape,
                     but they do represent a slightly different implementation challenge.
                     The Tinfour AlphaShape logic collects these orphan vertices
                     into a separate list that can be accessed once the alpha
@@ -287,7 +287,6 @@
                     <a href="https://graphics.stanford.edu/courses/cs268-11-spring/handouts/AlphaShapes/as_fisher.pdf">
                         https://graphics.stanford.edu/courses/cs268-11-spring/handouts/AlphaShapes/as_fisher.pdf</a>
                 </p>
-
                 <p>
                     Hou, Jiawei & Yuan, Yijun & Schwertfeger, Sören. (2019). Area Graph: Generation of topological maps using the Voronoi diagram. 509-515. 10.1109/ICAR46387.2019.8981588.
                     Accessed July 2025 from <a href="https://doi.org/10.48550/arXiv.1910.01019">https://doi.org/10.48550/arXiv.1910.01019</a>
