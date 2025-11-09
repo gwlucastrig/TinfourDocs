@@ -1,0 +1,14 @@
+org.tinfour.common
+org.tinfour.contour
+org.tinfour.edge
+org.tinfour.interpolation
+org.tinfour.io
+org.tinfour.refinement
+org.tinfour.semivirtual
+org.tinfour.standard
+org.tinfour.utils
+org.tinfour.utils.alphashape
+org.tinfour.utils.loaders
+org.tinfour.utils.rendering
+org.tinfour.vividsolutions.jts.math
+org.tinfour.voronoi
