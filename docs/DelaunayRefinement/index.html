@@ -36,13 +36,13 @@
 
                 <p>The Tinfour open-source software project recently introduced
                     a Java-based implementation of Ruppert’s Delaunay refinement method.
-                    To assist developers who wish to use the Tinfour implementation or any
+                    To assist developers who wish to use the Tinfour implementation, or any
                     other implementation of Delaunay refinement, these notes provide
                     a brief introduction to the concepts and applications of this technique.</p>
 
                 <h2 id="Concepts">Concepts</h2>
 
-                <p>The Delaunay triangulation is a technique for constructing an optimal triangular mesh from a set of unstructured (or “scattered”) points (see Lucas, 2017). It is often used for geophysical applications and in finite element analysis methods. One of the desirable qualities of the Delaunay is that it tends to produce “robust” triangles (i.e. it avoids constructing triangles with small minimum angles).  Unfortunately, there are many cases where the underlying geometry of the sample points or the presence of application-defined constraints results in the production of “skinny” triangles (i.e. flattened triangles with one or two very small angles).  The presence of skinny triangles can lead to numeric issues in geometric calculations and may result in undesirable artifacts in graphics or physical modeling applications. Delaunay refinement techniques attempt to remedy this situation by introducing synthetic points (called “Steiner” points) at optimally selected locations to improve the quality of the Delaunay triangulation.</p>
+                <p>The Delaunay triangulation is a technique for constructing an optimal triangular mesh from a set of unstructured (or “scattered”) points (see  <a href="https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html">Lucas, 2017</a>). It is often used for geophysical applications and in finite element analysis methods. One of the desirable qualities of the Delaunay is that it tends to produce “robust” triangles (<i>i.e.</i> it avoids constructing triangles with small angles).  Unfortunately, there are many cases where the underlying geometry of the sample points or the presence of application-defined constraints results in the production of “skinny” triangles (<i>i.e.</i> flattened triangles with one or two very small angles).  The presence of skinny triangles can lead to numeric issues in geometric calculations and may result in undesirable artifacts in graphics or physical modeling applications. Delaunay refinement techniques attempt to remedy this situation by introducing synthetic points (called “Steiner” points) at optimally selected locations to improve the quality of the Delaunay triangulation.</p>
 
                 <p>The figure below shows two views of Delaunay triangulations for Lake Michigan, one of the North American Great Lakes. The left panel shows the results of a constrained Delaunay triangulation constructed from a low-resolution digitized shoreline for the lake. The source data provides 616 points to describe about 1200 miles (1946 km) of shoreline. Because the shoreline represents a fixed, real-world object, the Delaunay triangulation is not allowed to modify the geometry of the edges that define the lake polygon. This constraint limits the ability of the Delaunay to optimize the triangles that it produces. So, even though the resulting mesh is “Delaunay conforming”, it is prone to the skinny triangles visible in the image.</p>
 
@@ -52,15 +52,18 @@
                     as shown in the panel to the right. In the figure, the vertices added
                     in the open-water parts of the lake are Steiner points.
                     In cases where a constrained edge is “encroached” by a vertex
-                    (i.e. the vertex lies too close to the edge),   Ruppert’s technique
+                    (<i>i.e.</i> the vertex lies too close to the edge), Ruppert’s technique
                     implements logic to split the line at its midpoint. The split improves
                     the quality of the local mesh by dividing the large obtuse angle
                     of the adjacent triangle into smaller pieces.  And because it
                     occurs at the midpoint, this split operation does not
                     alter the geometry of constrained line segment.</p>
 
+		<figure>
+		    <img src="images/LakeMichiganDelaunayRefinement.png" width="700" height="890" alt="Delaunay refinement for Lake Michigan"/>
+		    <figcaption>Figure 1. &mdash; Constrained Delaunay triangulation for Lake Michigan before and after refinement (image source: Tinfour).</figcaption>
+		</figure>
 
-                <img src="images/LakeMichiganDelaunayRefinement.png" width="700" height=""890/>
 
                 <h2 id="TinfourRuppert">The Tinfour implementation of Ruppert’s Delaunay refinement method</h2>
 
@@ -121,7 +124,7 @@
                 <ul>
                     <li><strong>Varied input:</strong> Input sources may include a combination of
                         line and polygon constraints, as well as conventional vertices.
-                        However, the input Delaunay triangulation (i.e. an instance of one of the
+                        However, the input Delaunay triangulation (<i>i.e.</i> an instance of one of the
                         incremental TIN classes) must be Delaunay compliant. This setting is
                         specified by the restoreConformity argument
                         for the IIncrementalTin.addConstraints() method.
