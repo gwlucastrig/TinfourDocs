@@ -251,6 +251,16 @@ td.tight {
 	margin-left: 5px;
 	caption-side:top;
 }
+td.num {
+	border-collapse:collapse;
+	padding:2px;
+	margin-bottom:2px;
+	margin-left:2px;
+	margin-right:5px;
+	caption-side:top;
+	text-align:right
+}
+
 
 th.tight{
 	font-weight: bold;
