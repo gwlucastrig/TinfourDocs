@@ -159,7 +159,7 @@ calculating a rate:</p>
  
 <p>Where</p>
 
-<p class="mathtext"><i>R<sub>i</sub></i><sub>  </sub>is the rate-of-change
+<p class="mathtext"><i>R<sub>i</sub></i> is the rate-of-change
 based test value for the ith reporting station.<br>
 
 <i>N<sub>i </sub></i> is the number of neighboring
@@ -176,6 +176,11 @@ neighbor of station i, given in °C.<br>
  <i>S<sub>i,j</sub></i><sub> </sub>is the distance from
 the ith reporting station to its jth neighbor, given in km.</p>
 
+<p>Additionally, let</p>
+<p class="mathtext"><i>R<sub>i,j</sub></i> be the computed rate-of-change
+for the jth neighbor of the ith reporting station.
+</p>
+
 <p>This formulation leads to the question of how we determine a
 threshold value for classifying a value as conflicting. To answer that, let’s
 consider the data for KHHV and its neighbors.</p>
@@ -187,7 +192,7 @@ for station KHHV is about 0.1472 degrees Celsius per kilometer.</p>
 
 <table class="tight">
 <thead>
-<th>Station</th><th>T<sub>i,j</sub> °C</th><th>ΔT<sub>i,j</sub> °C</th><th>S<sub>i,j<sub> km</th><th>R<sub>i,j</sub> °C/km</th>
+<th>Station</th><th>T<sub>i,j</sub> (°C)</th><th>ΔT<sub>i,j</sub> (°C)</th><th>S<sub>i,j</sub> (km)</th><th>R<sub>i,j</sub> (°C/km)</th>
 </thead>
 <tbody>
 <tr><td class="tight">KVAF</td><td class="num">22</td><td class="num">31</td><td class="num"> 46.5</td><td class="num">0.6670</td></tr>
@@ -266,7 +271,7 @@ and their reduced contributions reflect that. </p>
 for station KVVH.</p>
 <table class="tight">
 <thead>
-<th>Station</th><th>T. °C</th><th>ΔT. °C</th><th>Distance km</th><th>Rate °C/km</th><th>Weight</th><th>Contribution</th>
+<th>Station</th><th>T<sub>i,j</sub> (°C)</th><th>ΔT<sub>i,j</sub> (°C)</th><th>S<sub>i,j (km)</sub></th><th>R<sub>i,j</sub> (°C/km)</th><th>&#955;<sub>i,j </sub></th><th>Contribution</th>
 </thead>
 <tbody>
 <tr><td class="tight">KVAF</td><td class="num">22</td><td class="num">31</td><td class="num">46.5</td><td class="num">0.667</td><td class="num">0.7719</td><td class="num">0.5149</td></tr>
@@ -377,7 +382,7 @@ Washington goes from 0.4642 to -0.1922 °C/km.  </p>
 
 <table class="tight">
 <thead>
-<th>Station</th><th>E<sub>i,j</sub> (m)</th><th>T<sub>i,j</sub> (°C)</th><th>S<sub>i,j</sub> (m)</th><th>R<sub>i,j</sub> (°C/km)</th><th>T<sub>Γ i,j</sub> (°C)</th><th>R<sub>Γ I,j</sub> (°C/km)</th><th>Weighted<br>Contribution</th>
+<th>Station</th><th>E<sub>i,j</sub> (m)</th><th>T<sub>i,j</sub> (°C)</th><th>S<sub>i,j</sub> (m)</th><th>R<sub>i,j</sub> (°C/km)</th><th>T<sub>Γ i,j</sub> (°C)</th><th>R<sub>Γ i,j</sub> (°C/km)</th><th>Weighted<br>Contribution</th>
 </thead>
 <tbody>
 <tr><td class="tight">KMWN</td><td class="num">1909</td><td class="num">-11</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td></tr>
@@ -396,8 +401,8 @@ acceptance threshold for test scores.  For the overall population of METAR
 reports in our sample, the 0.10 percentile lapse-rate adjusted test value is
 -0.3514 °C/km and the 99.9 percentile test value is 0.4517 °C/km.  Since Mount
 Washington’s adjusted test value is -0.1922 °C/km, it is no longer classified
-as an anomaly.  While the scores for the other stations change slightly, all of them
-remain out-of-range and are treated as anomalies.  </p>
+as an anomaly.  While the scores for the other stations do change, all of them
+remain out-of-range and are treated as anomalies.</p>
 
 
 <h1 id="Conclusion">Conclusion</h1>
