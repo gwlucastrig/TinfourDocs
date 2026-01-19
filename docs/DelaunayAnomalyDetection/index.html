@@ -153,8 +153,9 @@ set of neighbors falls outside a specified range of acceptable values.</li>
 <p>To implement these rules, we define a formula for
 calculating a rate:</p>
 
+<p class="mathtext">
 <img src="images/image003.png" alt="Average rate test score"/>
-
+</p>
  
 <p>Where</p>
 
@@ -242,12 +243,16 @@ definition, the sum of a set of Sibson weights is exactly one. So the sum of
 these contributed rates gives us a weighted average (no division required). The
 rate-of-change test value for a station becomes:</p>
 
+<p class="mathtext">
 <img src="images/image004.png" alt="Weighted average rate of change"/>
+<</p>
 
 <p>with the sum of the Sibson weights, &#955;<sub>i,j </sub>for
 the neighbors of station <i>i</i> equal to 1.</p>
 
+<p class="mathtext">
 <img src="images/image005.png" alt="Weighted average rate of change"/>
+</p>
 
 <p>The table below shows the results for KHHV. The closest
 station, KVAF, makes the most heavily weighted contribution to the adjusted
@@ -281,7 +286,7 @@ for station KVVH.</p>
 
 <p>So what is a good threshold for accepting a test value?
 Inspecting the Sibson-weighted test values for the overall population, we find
-that the test value for KVVH, 0.5344, exceeds the 99.8<sup>th</sup> percentile
+that the test value for KVVH, 0.5344, exceeds the 99.9<sup>th</sup> percentile
 test value for all stations as shown in the table below. </p>
 
 <table class="tight">
@@ -337,13 +342,18 @@ advantages in modifying our test rate calculation to reflect a drop in
 temperature due to a difference in elevation.</p>
 
 <p>We can calculate a drop in temperature based on elevation
-using the <i>moist adiabatic lapse rate</i> (Wikipedia, 2026). The standard lapse
-rate calculation requires information about atmospheric pressure and dew point,
-but for example purposes it is sufficient to use a typical lapse rate of 5 °C/km
-to create a simplified lapse rate as a linear function of change in altitude.  </p>
+using the <i>moist adiabatic lapse rate</i>. Lapse rate calculations are widely
+used in meteorology. The standard moist lapse rate calculation requires
+information about atmospheric pressure and dew point, but in some applications
+it is considered sufficient to use a nominal lapse rate of  5 °C/km (Wikipedia,
+2026). We will use that value in our example calculations.</p>
 
-<image src="images/image006.png" alt="Elevation lapse rate refinement">
+<p>To create a simplified lapse rate as a linear function of
+change in altitude: </p>
 
+<p class="mathtext">
+<img src="images/image006.png" alt="Elevation lapse rate refinement">
+<p>
 
 <p>Where</p>
 
@@ -354,29 +364,40 @@ station i, in meters above mean sea level,<br>
 neighbor of reporting station i, in meters above mean sea level.
 </p>
 
+<p>Additionally, let</p>
+
+<p class="mathtext">
+<img src="images/image007.png" alt="Elevation lapse rate refinement">
+</p>
+
 <p>The table below shows lapse-rate factors for the stations
 that neighbor the Mount Washington Observatory.  By applying these lapse-rate
-factors and the appropriate Sibson weights, the absolute test value for Mount
-Washington goes from 0.4642 to 0.1922 °C/km.  </p>
+factors and the appropriate Sibson weights, the test value for Mount
+Washington goes from 0.4642 to -0.1922 °C/km.  </p>
 
 <table class="tight">
 <thead>
-<th>Station</th><th>Elevation m</th><th>Adjustment °C</th>
+<th>Station</th><th>E<sub>i,j</sub> (m)</th><th>T<sub>i,j</sub> (°C)</th><th>S<sub>i,j</sub> (m)</th><th>R<sub>i,j</sub> (°C/km)</th><th>T<sub>Γ i,j</sub> (°C)</th><th>R<sub>Γ I,j</sub> (°C/km)</th><th>Weighted<br>Contribution</th>
 </thead>
 <tbody>
-<tr><td class="tight">KHIE</td><td class="num">327</td><td class="num">-6.1</td><tr>
-<tr><td class="tight">K1P1</td><td class="num">154</td><td class="num">-5.2</td><tr>
-<tr><td class="tight">KIZG</td><td class="num">138</td><td class="num">-5.1</td><tr>
-<tr><td class="tight">KBML</td><td class="num">353</td><td class="num">-5.2</td><tr>
+<tr><td class="tight">KMWN</td><td class="num">1909</td><td class="num">-11</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td></tr>
+
+<tr><td class="tight">KHIE</td><td class="num">327</td><td class="num">3</td><td class="num">22.8</td><td class="num">-0.6147</td><td class="num">-4.9</td><td class="num">-0.2674</td><td class="num">-0.1242</td></tr>
+<tr><td class="tight">K1P1</td><td class="num">154</td><td class="num">3</td><td class="num">65.2</td><td class="num">-0.2148</td><td class="num">-5.8</td><td class="num">-0.0802</td><td class="num">-0.0028</td></tr>
+<tr><td class="tight">KIZG</td><td class="num">138</td><td class="num">2</td><td class="num">42.1</td><td class="num">-0.3326</td><td class="num">-5.9</td><td class="num">-0.1222</td><td class="num">-0.0384</td></tr>
+<tr><td class="tight">KBML</td><td class="num">353</td><td class="num">3</td><td class="num">36.4</td><td class="num">-0.3573</td><td class="num">-5.8</td><td class="num">-0.1435</td><td class="num">-0.0268</td></tr>
+<tr><td class="tight">Test value</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">-0.1922</td></tr>
 </tbody>
 </table>
+
 <p>Naturally, we need to apply the sample procedure to all
 stations in our data set. And, in doing so, we do need to derive a new
 acceptance threshold for test scores.  For the overall population of METAR
-reports in our sample, the 99.8<sup>th</sup> percentile lapse-rate adjusted
-test value is 0.4420 °C/km.  Since Mount Washington’s adjusted test value is
-0.1922 °C/km, it is no longer classified as an anomaly.  The other
-stations remain.</p>
+reports in our sample, the 0.10 percentile lapse-rate adjusted test value is
+-0.3514 °C/km and the 99.9 percentile test value is 0.4517 °C/km.  Since Mount
+Washington’s adjusted test value is -0.1922 °C/km, it is no longer classified
+as an anomaly.  While the scores for the other stations change slightly, all of them
+remain out-of-range and are treated as anomalies.  </p>
 
 
 <h1 id="Conclusion">Conclusion</h1>

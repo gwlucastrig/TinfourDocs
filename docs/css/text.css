@@ -256,9 +256,18 @@ td.num {
 	padding:2px;
 	margin-bottom:2px;
 	margin-left:2px;
-	margin-right:5px;
+	margin-right:10px;
 	caption-side:top;
 	text-align:right
+}
+td.cen {
+	border-collapse:collapse;
+	padding:2px;
+	margin-bottom:2px;
+	margin-left:5px;
+	margin-right:5px;
+	caption-side:top;
+	text-align:center
 }
 
 
