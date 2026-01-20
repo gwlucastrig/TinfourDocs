@@ -31,7 +31,7 @@
                     <p class="author">by G.W. Lucas<br>January 2026</p>
                 </div>
 
-
+ <div class="grid_10">
                 <h1 id="Introduction">Introduction</h1>
 <p>In some cases, a data set collected for a natural phenomenon
 may contain anomalous samples.  We view data points as anomalies when their
@@ -42,7 +42,7 @@ locally significant feature in the data source. We can detect anomalous samples
 based on whether their values would be plausible when compared with those of
 their neighbors. </p>
 
-<p>Of course, to compare a test value to nearby data samples,
+<p>Of course, to compare a reported value to data from nearby samples,
 we require a method of classifying points as <i>neighbors</i>. A simple
 distance criterion may be inadequate in cases where samples are not spaced in a
 regular pattern or with a uniform density. For data samples collected over a
@@ -160,7 +160,7 @@ calculating a rate:</p>
 <p>Where</p>
 
 <p class="mathtext"><i>R<sub>i</sub></i> is the rate-of-change
-based test value for the ith reporting station.<br>
+based test score for the ith reporting station.<br>
 
 <i>N<sub>i </sub></i> is the number of neighboring
 stations for the ith reporting station.<br>
@@ -212,9 +212,9 @@ for station KHHV is about 0.1472 degrees Celsius per kilometer.</p>
 <p>Comparing the average rate of change for a station with
 corresponding statistics from the general population might give a sense of
 whether its reported value is outside its expected range. Unfortunately, that
-approach doesn’t always work.  It turns out that the test value for KHHV, 0.1472
+approach doesn’t always work.  It turns out that the test score for KHHV, 0.1472
 °C/km, is not that unusual.  Although it is in the top ten percent of the
-population, the test values for a number of other station reports also fall
+population, the test scores for a number of other station reports also fall
 into that range. Many of the reported values for those stations appear to be
 valid. So we need a way of refining our test procedure.</p>
 
@@ -240,13 +240,13 @@ sample values to an overall average.<sup><a href="#Note2">[2]</a></sup> Sibson w
 the well-known Natural Neighbor Interpolation technique (Sibson, 1981).  We can
 use the Sibson weights for the neighbors of each station in our data set to
 adjust the contributions of their computed temperature rates of change. With
-this adjustment, we gain a more nuanced test value for our reporting stations.  </p>
+this adjustment, we gain a more nuanced test score for our reporting stations.  </p>
 
 <p>We obtain the contribution for each neighbor by multiplying
 its computed rate of change by the Sibson weight for that station.  By
 definition, the sum of a set of Sibson weights is exactly one. So the sum of
 these contributed rates gives us a weighted average (no division required). The
-rate-of-change test value for a station becomes:</p>
+rate-of-change test score for a station becomes:</p>
 
 <p class="mathtext">
 <img src="images/image004.png" alt="Weighted average rate of change"/>
@@ -267,7 +267,7 @@ they affect the three stations in the cluster (KPIL, KBRO, and MMMA).  Because
 the stations are so close together, they are treated as relatively redundant
 and their reduced contributions reflect that. </p>
 
-<p>This weighted average, 0.5344 °C/km, becomes the test value
+<p>This weighted average, 0.5344 °C/km, becomes the test score
 for station KVVH.</p>
 <table class="tight">
 <thead>
@@ -283,20 +283,20 @@ for station KVVH.</p>
 <tr><td class="tight">MMMD</td><td class="num">18</td><td class="num">23</td><td class="num">840.8</td><td class="num">0.0274</td><td class="num">0.0243</td><td class="num">0.0007</td></tr>
 <tr><td class="tight">KATP</td><td class="num">18</td><td class="num">33</td><td class="num">462.2</td><td class="num">0.0714</td><td class="num">0.0098</td><td class="num">0.0007</td></tr>
 <tr><td class="tight">KGHB</td><td class="num">20</td><td class="num">33</td><td class="num">284.7</td><td class="num">0.1159</td><td class="num">0.0596</td><td class="num">0.0069</td></tr>
-<tr><td class="tight">Test Value</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"> </td><td class="num"></td><td class="num"><b>0.5344</b></td></tr>
+<tr><td class="tight">Test Score</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"> </td><td class="num"></td><td class="num"><b>0.5344</b></td></tr>
 </tbody>
 </table>
 
 <h2 id="AcceptanceThresholds">Determining acceptance thresholds</h3>
 
-<p>So what is a good threshold for accepting a test value?
-Inspecting the Sibson-weighted test values for the overall population, we find
-that the test value for KVVH, 0.5344, exceeds the 99.9<sup>th</sup> percentile
-test value for all stations as shown in the table below. </p>
+<p>So what is a good threshold for accepting a test score?
+Inspecting the Sibson-weighted test scores for the overall population, we find
+that the test score for KVVH, 0.5344, exceeds the 99.9<sup>th</sup> percentile
+test score for all stations as shown in the table below. </p>
 
 <table class="tight">
 <thead>
-<th>Percentile</th><th>Test Value</th><th width="40">&nbsp;</th><th>Percentile</th><th>Test Value</th>
+<th>Percentile</th><th>Test Score</th><th width="40">&nbsp;</th><th>Percentile</th><th>Test Score</th>
 </thead>
 <tbody>
 <tr><td class="tight">0.1</td><td class="num">-0.4271</td><td class="num">&nbsp;</td><td class="num">99.1</td><td class="num">0.1425</td></tr>
@@ -313,13 +313,13 @@ test value for all stations as shown in the table below. </p>
 
 <p>The data set from 16:00 UTC 27 March 2019 includes three
 samples that fall below the 0.1 percentile threshold value, -0.4271, and three
-that that exceed the 99.9<sup>th</sup> percentile test value, 0.4352. All of
+that that exceed the 99.9<sup>th</sup> percentile test score, 0.4352. All of
 them also meet the selection criterion of being a local extrema. These are
 listed below.</p>
 
 <table class="tight">
 <thead>
-<th>Station</th><th>T °C</th><th>Test Value</th><th>Location</th>
+<th>Station</th><th>T °C</th><th>Test Score</th><th>Location</th>
 </thead>
 <tbody>
 <tr><td class="tight">KMWM</td><td class="num">-11</td><td class="num">-0.4642</td><td class="tight">&nbsp;Mount Washington,  NH, USA</td></tr>
@@ -332,7 +332,7 @@ listed below.</p>
 </table>
 
 
-<h2 id="ElevationRefinement">Refining the test value to consider elevation</h2>
+<h2 id="ElevationRefinement">Refining the test score to consider elevation</h2>
 
 <p>The station identifier KMWN refers to the Mount Washington
 Observatory located in New Hampshire, U.S.  Unlike the case of KHHV, the
@@ -377,7 +377,7 @@ neighbor of reporting station i, in meters above mean sea level.
 
 <p>The table below shows lapse-rate factors for the stations
 that neighbor the Mount Washington Observatory.  By applying these lapse-rate
-factors and the appropriate Sibson weights, the test value for Mount
+factors and the appropriate Sibson weights, the test score for Mount
 Washington goes from 0.4642 to -0.1922 °C/km.  </p>
 
 <table class="tight">
@@ -391,16 +391,17 @@ Washington goes from 0.4642 to -0.1922 °C/km.  </p>
 <tr><td class="tight">K1P1</td><td class="num">154</td><td class="num">3</td><td class="num">65.2</td><td class="num">-0.2148</td><td class="num">-5.8</td><td class="num">-0.0802</td><td class="num">-0.0028</td></tr>
 <tr><td class="tight">KIZG</td><td class="num">138</td><td class="num">2</td><td class="num">42.1</td><td class="num">-0.3326</td><td class="num">-5.9</td><td class="num">-0.1222</td><td class="num">-0.0384</td></tr>
 <tr><td class="tight">KBML</td><td class="num">353</td><td class="num">3</td><td class="num">36.4</td><td class="num">-0.3573</td><td class="num">-5.8</td><td class="num">-0.1435</td><td class="num">-0.0268</td></tr>
-<tr><td class="tight">Test value</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">-0.1922</td></tr>
+<tr><td class="tight">Test score</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">-0.1922</td></tr>
 </tbody>
 </table>
 
-<p>Naturally, we need to apply the sample procedure to all
-stations in our data set. And, in doing so, we do need to derive a new
+<p>Naturally, we need to recompute new test scores for all the sample in our data set
+and rebuild the percentile table for the overall population.
+And, because the population statistics will change somewhat, we also need to derive a new
 acceptance threshold for test scores.  For the overall population of METAR
-reports in our sample, the 0.10 percentile lapse-rate adjusted test value is
--0.3514 °C/km and the 99.9 percentile test value is 0.4517 °C/km.  Since Mount
-Washington’s adjusted test value is -0.1922 °C/km, it is no longer classified
+reports in our sample, the 0.10 percentile lapse-rate adjusted test score is
+-0.3514 °C/km and the 99.9 percentile test score is 0.4517 °C/km.  Since Mount
+Washington’s adjusted test score is -0.1922 °C/km, it is no longer classified
 as an anomaly.  While the scores for the other stations do change, all of them
 remain out-of-range and are treated as anomalies.</p>
 
@@ -439,6 +440,7 @@ href="https://gwlucastrig.github.io/TinfourDocs/NaturalNeighborIntro/index.html"
                         https://en.wikipedia.org/wiki/Lapse_rate</a></p>
 
             </div>
+		 </div>
         </div>
     </body>
 
