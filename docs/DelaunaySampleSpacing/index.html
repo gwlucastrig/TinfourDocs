@@ -37,17 +37,15 @@
 		    <p class="blockquote"><b>Note:</b> The 2D Delaunay triangulation is the focus of the <a href="https://github.com/gwlucastrig/Tinfour">Tinfour Software Project.</a>
 			Background information on the Delaunay is available
 			from the Tinfour project document <a href="https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html">
-			    An introduction to the Delaunay triangulation</a>.</p>
+			An introduction to the Delaunay triangulation</a>.</p>
 
 
-
-
-		    <h1 id="Introduction">Introduction</h1>
-		    <p>The Delaunay triangulation is a useful technique for evaluating the distances between <i>neighboring samples</i>
+			<h1 id="Introduction">Introduction</h1>
+			<p>The Delaunay triangulation is a useful technique for evaluating the distances between <i>neighboring samples</i>
 			in a set of unstructured data points. In cases where the data points are distributed with a uniform density
 			across a surface, we can estimate the average spacing between neighboring samples, <i>s</i>,
-			using a simple calculation, <img class="imageInText" src="images/image001.png">, where <i>A</i> is the area
-			of a polygon containing <i>n</i> samples.<sup><a href="#uniformcase">[1]</a></sup>&nbsp;But, in cases where the
+			using a simple calculation, <img class="imageInText" src="images/image001.png" width="116" height="24">, where <i>A</i> is the area
+			of a polygon containing <i>n</i> samples (see&nbsp;<a href="#uniformcase">below</a>). But, in cases where the
 			point spacing is non-uniform, the simple calculation may be insufficient.
 			To compute actual distances between points in a set with local variations in density, we need a method
 			for establishing which pairs of samples can be treated as neighbors. The Delaunay triangulation provides one such method.</p>
@@ -60,9 +58,15 @@
 			Although the Delaunay optimization is focused on the structure of its triangles
 			rather than the assignment of neighbors, the resulting selection of neighboring
 			vertex pairs does provide a good balance between proximity, directionality, and density.
+			As such, the Delaunay triangulation provides a reliable technique for identifying
+			which samples are treated neighbors and can be used to compute sample spacing.
 		    </p>
 
 		    <h1>Preliminaries</h1>
+			<p>To see how the Delaunay triangulation is used to identify neighboring sample pairs,
+			we will take a look at a few underlying ideas for the technique. Specific issues in using
+			the Delaunay will be discussed in the section <a href="#application">Applying the Delaunay to a sample spacing calculation</a> below.</p>
+
 		    <h2 id="uniformcase">The uniform density case</h2>
 		    In the special case where samples are distributed across the surface with a nearly uniform
 		    density, we can compute the point spacing using the formula introduced above.
@@ -81,12 +85,12 @@
 			We wish to find the uniform distance between points, <i>s</i>, which is also the length of the sides of
 			the triangles in the tessellation For a sufficiently large number of points, <i>n</i>, the number of triangles in the
 			tessellation covering a bounded area approaches <i>2n</i>. The area of each equilateral triangles
-			is <img class="imageInText" src="images/image003.png">. So, given the area <i>A</i> of the bounded
+			is <img class="imageInText" src="images/image003.png" width="75" height="25">. So, given the area <i>A</i> of the bounded
 			region containing the sample points, we have</p>
-		    <p id="mathtext"><img src="images/image004.png"></p>
+		    <p id="mathtext"><img src="images/image004.png" width="103" height="49"></p>
 		    and, solving for <i>s</i>:
-		    <p id="mathtext"><img src="images/image005.png"></p>
-		    <p>which gives us our approximation <img class="imageInText" src="images/image001.png">.</p>
+		    <p id="mathtext"><img src="images/image005.png" width="102" height="61" ></p>
+		    <p>which gives us our approximation <img class="imageInText" src="images/image001.png" width="116" height="24">.</p>
 
 		    <p>Incidentally, the uniform tessellation shown in the figure above happens to be a Delaunay triangulation.
 			So the Delaumay-based techniques that works for a collection of non-uniformly spaced samples also
@@ -98,8 +102,6 @@
 			a circumcircle from the three vertices of the triangle, no other vertices in the triangulation
 			would lie within the closed bounds of the circumcircle.</p>
 
-
-
 		    <p>The key to constructing a conforming triangulation is to ensure that we choose which vertices
 			to link in such a way that the triangles that they form do not violate the Delaunay criterion.
 			Referring to the figure below, we see that the circumcircle for triangle ABC does not
@@ -109,9 +111,8 @@
 			if we have two adjacent triangles, such as ABC and ACD, if one triangle is Delaunay conforming,
 			them both are Delaunay conforming.<p>
 
-
 		    <figure>
-			<img src="images/SideBySide.png" alt="Circumcircles for the Delaunay criterion" >
+			<img src="images/SideBySide.png" alt="Circumcircles for the Delaunay criterion" width="800" height="400" >
 			<figcaption align="center">Figure 2 - Circumcircles for the Delaunay criterion.</figcaption>
 		    </figure>
 
@@ -134,7 +135,7 @@
 			as possible (<i>i.e.</i> will have as a large a minimum angle as possible).
 			The most robust case of a triangle is the equilateral, such as the ones that were
 			shown in the uniform density tessellation shown in Figure 1 above. So the fact that the
-			Delaunay process attempts to create robust triangles suggests that the mesh it creates
+			Delaunay process attempts to create robust triangles suggests that the mesh it produces
 			will be as close to a uniform density as is feasible for a set of points.</p>
 
 
@@ -149,18 +150,20 @@
 			the Delaunay links KHHV to its nearest neighbor, a station located immediately
 			to its north. As the image shows, many land-based stations
 			to the north and west are <i>not</i> treated as linked neighbors even though they are
-			relatively close to KHHV. On the other hand, a station to the southwest on the
+			relatively close to KHHV. On the other hand, a station to its southwest on the
 			Yucatan Peninsula is treated as a neighbor even though it is relatively
-			far away from the station. This example illustrates the way the Delaunay
+			far away from KHHV. This example illustrates the way the Delaunay
 			based neighbor selection does not depend on a simple distance calculation,
 			but adapts to the general spacing of the samples in all directions.</p>
 
 			<figure>
-			<img src="images/DelaunayForGulfOfMexico.png" alt="Delaunay triangulation for the Golfo de México" border="1">
+			<img src="images/DelaunayForGulfOfMexico.png" alt="Delaunay triangulation for the Golfo de México" 
+			border="1" width="800" height="462">
 			<figcaption align="center">Figure 3 - Delaunay triangulation for weather stations located over the Gulf of Mexico.</figcaption>
 		    </figure>
 
-		    <h1>Applying the Delaunay to a sample spacing calculation</h1>
+
+		    <h1 id="application">Applying the Delaunay to a sample spacing calculation</h1>
 		    Most software packages that construct a Delaunay triangulation include some method
 		    for iterating through its component edges. There is, however, one complication when
 		    using the lengths of edges in the Delaunay triangulation as a way of evaluating sample
@@ -178,13 +181,13 @@
 
 		    <p>In tabulating the distances between points in a Delaunay triangulation, it
 			is useful to omit those triangles that are associated with exterior edges.
-			Looking at the upper left of the figure, we see that the edge labeled 10,
-			from vertex 10 to vertex 4, is associated with the perimeter edge 18.
-			Because the triangle with vertices 0, 4, and 19 is not strictly Delaunay conforming,
-			we exclude its three edges from the calculation. </p>
+			Looking at the upper left of the figure, we see that the perimeter edge from vertex 4
+			down to vertex 0 is labled with edge-index 18. Edge 18 forms a triangle using vertex 10
+			with edges 58 and 10. Because the triangle with vertices 4, 0, and 10 is not strictly Delaunay conforming,
+			we exclude its three edges (18, 58, and 10) from the sample-distance tabulation.</p>
 
 		    <figure>
-			<img src="images/SampleSpacingPerimeter.png" alt="Delaunay triangulation with long edges near perimeter">
+			<img class="center" src="images/SampleSpacingPerimeter.png" alt="Delaunay triangulation with long edges near perimeter" width="540" height="499">
 			<figcaption align="center">Figure 4 - Delaunay triangulation with long edges near perimeter.</figcaption>
 		    </figure>
 
@@ -195,34 +198,43 @@
 
 
 		    <figure>
-			<img src="images/SampleSpacingInterior.png" alt="Relevant interior area">
+			<img class="center" src="images/SampleSpacingInterior.png" alt="Relevant interior area" width="540" height="499">
 			<figcaption align="center">Figure 5 - Area included in sample-size tabulation.</figcaption>
 		    </figure>
 
+			<h2>Constraint edges</h2>
+			<p>In some cases, a software application that uses a Delaunay triangulation may specify <i>constraints</i>
+			on the way edges are constructed. When that happens, some of the resulting edges may be non-Delaunay.
+			When tabulating sample spacing for constrained Delaunay triangulations, constraint edges are generally
+			treated the same way as the perimeter edges described above. For more information on the use of constraints
+			in the Delaunay, see the Tinfour article<br><a href="../DelaunayIntroCDT/index.html">What is the
+			constrained Delaunay trianglation and why would you care?</a></p>
+			
 		    <h1>A real-world example</h1>
 
 		    <p>Let's take a look at a real-world data set and compare how sample spacing computed using the Delaunay method compares
 			to specifications provided by the data's publisher. The figure below shows a map of the Lake of the Arbuckles, an artificial reservoir located in Murray County, Oklahoma, USA.
 			In 2016, the Oklahoma Water Resources Board (OWRB) conducted a bathymetric survey of the lake  (OWRB, 2016). The survey used
 			a boat equipped with sonar device to record bottom depth samples. The boat followed a pre-planned path and collected data
-			at intervals of 5 feet (1.5 meters). By design, the tracks are separated by 250 feet (76 meters).
-			Because the sample points are so close relative to the scale of the map, the tracks appear as solid lines in the figure.</p>
+			at intervals of 5 feet (1.5 meters) along the survey tracks. By design, the tracks are separated by 250 feet (76 meters).
+			Because the distance between samples is so small compared to the scale of the map,
+			the point positions in the figure often overlap and the tracks appear as solid lines.</p>
 
 		    <figure>
-			<img src="images/LakeOfTheArbuckles.jpg" alt="Lake of the Arbuckles">
+			<img class="center" src="images/LakeOfTheArbuckles.jpg" alt="Lake of the Arbuckles" width="800" height="807">
 			<figcaption align="center">Figure 6 - Lake of the Arbuckles.</figcaption>
 		    </figure>
 
-		    <p>Based on the information provided by the data publisher, we expect the distribution of
-			sample spacing to fall into two groups: the distances between samples along the track,
+			<p>Based on the information provided by the data publisher, we expect the distribution of
+			sample spacing to fall into two groups: the distances between samples along each track,
 			and the distances between tracks. By processing the data using the Delaunay technique,
 			we obtained the graph below. The graph shows how many times we encountered a sample
 			space with a particular value. As expected, there is a peak corresponding to
 			the 5-foot interval along the track and a smaller bump for the 250 foot distance between tracks.</p>
 
 		    <figure>
-			<img src="images/SampleSpacing.png" alt="Sample spacing for Lake of the Arbuckles">
-			<figcaption align="center">Figure 7 - Number of samples for distances from Lake of the Arbuckles survey.</figcaption>
+			<img class="center" src="images/SampleSpacing.png" alt="Sample spacing for Lake of the Arbuckles" width="617" height="334">
+			<figcaption align="center">Figure 7 - Frequency of samples for distances from Lake of the Arbuckles survey.</figcaption>
 		    </figure>
 
 		    <h1>Conclusion</h1>
