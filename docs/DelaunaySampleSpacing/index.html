@@ -48,7 +48,7 @@
 			across a surface, we can estimate the average spacing between neighboring samples, <i>s</i>,
 			using a simple calculation, <img class="imageInText" src="images/image001.png">, where <i>A</i> is the area
 			of a polygon containing <i>n</i> samples.<sup><a href="#uniformcase">[1]</a></sup>&nbsp;But, in cases where the
-			point spacing is non-uniform, the simple calculation may yield inufficient accuracy.
+			point spacing is non-uniform, the simple calculation may be insufficient.
 			To compute actual distances between points in a set with local variations in density, we need a method
 			for establishing which pairs of samples can be treated as neighbors. The Delaunay triangulation provides one such method.</p>
 
@@ -71,7 +71,9 @@
 		    tessellation consisting of equilateral triangles. An example is as shown in the figure below.
 
 		    <figure>
-			<img class="center"" src="images/UniformDensityTessellation.png" alt="Delaunay triangulation from points with uniform spacing" border="2" >
+			<img class="center"" src="images/UniformDensityTessellation.png" 
+			alt="Delaunay triangulation from points with uniform spacing" 
+			width="600" height="259" border="2" >
 			<figcaption align="center">Figure 1 - Triangular mesh with uniform spacing..</figcaption>
 		    </figure>
 
