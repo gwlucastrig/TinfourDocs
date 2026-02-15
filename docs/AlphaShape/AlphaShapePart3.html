@@ -43,6 +43,7 @@
                     Part 2 discussed implementation details from the AlphaShape class.
                     This section of the notes provides the derivation for the alpha circle calculations
                     which are used extensively within the AlphaShape class.</p>
+					
                 <p>The process of building an alpha shape from a Delaunay triangulation
                     is based on determining which edges in the triangulation are to be
                     included in the shape and which are external to its bounds
@@ -121,7 +122,7 @@
 
                 <p>Solving the two simultaneous equations in [1] for y as a function of x, we have</p>
 
-                <table class="math">
+                <table class="math" id="formula2">
                     <tr>
                         <td class="math1"><img src="math2/image012.png"></td>
                         <td class="math2">[2]</td>
@@ -166,7 +167,7 @@
                     </tr>
                 </table>
                 <p>Designating the values of <i>x</i> as <i>x<sub>0</sub></i> and <i>x<sub>1</sub></i>,
-                    compute  <i>y<sub>0</sub></i> and <i>y<sub>1</sub></i> using [2].
+                    compute  <i>y<sub>0</sub></i> and <i>y<sub>1</sub></i> using formula [2].
                     Then for each coordinate pair, we have circle centers
                 <table class="math">
                     <tr>
