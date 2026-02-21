@@ -136,10 +136,10 @@ our primary decision criterion is just whether the rate of change in
 temperature over the distance between neighbors is too extreme.  We can
 formulate some idea of what is a reasonable rate of change by looking at the
 overall population of the data set. And, for our simplified anomaly
-classification scheme, we will test whether the rates of change for a station
+detection scheme, we will test whether the rates of change for a station
 and its neighbors generally exceed that reasonable value.</p>
 
-<p>Again, this classification scheme is based on simplified,
+<p>Again, this detection scheme is based on simplified,
 empirical observations rather than solid meteorological theory. As such, it is
 adequate as an example, but may not be reliable in practice. With that in mind,
 our rules for identifying a station’s data value as anomalous can be summarized
@@ -233,7 +233,7 @@ would require some consideration of both distance and the relative positioning
 of contributing stations.</p>
 
 <p>Once again, we can use the Delaunay to refine our anomaly
-classification methods. It turns out that the structure of the Delaunay
+identification methods. It turns out that the structure of the Delaunay
 supports the calculation of <i>Sibson weights</i>, quantities that provide an
 optimal way for quantifying the relative contributions of a set of neighboring
 sample values to an overall average.<sup><a href="#Note2">[2]</a></sup> Sibson weights provide the foundation for
