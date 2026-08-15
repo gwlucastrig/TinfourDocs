@@ -182,11 +182,13 @@
                     However, the discrepancy in the results suggests that there may be opportunities for improving the SVM.
                     Let&#8217;s consider the differences in the two results and see if we find out what those opportunities may be.</p>
 
-                <p><table border=0 cellspacing=0 cellpadding=0>
+                <table border=0 cellspacing=0 cellpadding=0>
                     <thead>
+                    <tr>
                         <th width=300 valign=top>&nbsp;</th>
                         <th width=113 valign=top>SVM</th>
                         <th width=113 valign=top>TWDB</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -220,7 +222,7 @@
                         <td>N/A</td>
                     </tr>
                     </tbody>
-                </table></p>
+                </table>
 
                 <p>The first step in improving the SVM results is to address the issue of &#8220;flat triangles.&#8221; As mentioned above,
                     survey vessels can only collect bathymetry data in navigable waters. This restriction leads to a scarcity of data
@@ -256,11 +258,13 @@
                     Adding those supplementary samples to the collection substantially reduces the overall area of
                     flat triangles in the mesh.</p>
 
-                <p><table border=0 cellspacing=0 cellpadding=0>
+                <table border=0 cellspacing=0 cellpadding=0>
                     <thead>
+                    <tr>
                         <th width=300 valign=top>&nbsp;</th>
                         <th width=213 valign=top>SVM (Original)</th>
                         <th width=213 valign=top>SVM (With Supplement)</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -279,7 +283,7 @@
                         <td>8628</td>
                     </tr>
                     </tbody>
-                </table></p>
+                </table>
 
                 <p>Although the supplemental bathymetry points bring the SVM results closer to the 96,207 figure cited by the TWDB,
                     they do not eliminate all the flat triangles. To remediate the remaining flat triangles,
@@ -310,11 +314,13 @@
                     So the flat-triangle remediation increases the overall runtime for the SVM software. The results are shown below.
                     While the computed volume is still not a perfect match for the TWDB values, the interpolation did close the gap.</p>
 
-                <p><table border=0 cellspacing=0 cellpadding=0>
+                <table border=0 cellspacing=0 cellpadding=0>
                     <thead>
+                    <tr>
                         <th width=300 valign=top>&nbsp;</th>
                         <th width=213 valign=top>SVM (with interpolation)</th>
                         <th width=213 valign=top>TWDB</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -348,7 +354,7 @@
                         <td>N/A</td>
                     </tr>
                     </tbody>
-                </table></p>
+                </table>
 
                 <p>An interpolation process such as the one used in SVM necessarily makes assumptions about how the bottom behaves.
             In applying a linear interpolation, SVM treats the bottom as if it transitioned from shore elevation
@@ -457,24 +463,35 @@
                 <p>To conclude this article, I&#8217;d like to thank the Texas Water Development Board for providing a valuable
                     resource for public use. It is uncommon to find such a wealth of hydrographic information on the web.
                     Their approach to the collection and dissemination of survey data is an example of the way
-                    information should be handled for all publically funded projects. I commend the
-            TWDB Hydrographic Survey Program on a job done right.</p>
+                    information should be handled for all publicly funded projects. I commend the
+                    TWDB Hydrographic Survey Program on a job done right.</p>
 
                 <h1 id="References">References</h1>
 
                 <p>GIS Geography (2018). Inverse Distance Weighting (IDW) Interpolation. Accessed May, 2019 from
-                    <a href="https://gisgeography.com/inverse-distance-weighting-idw-interpolation">https://gisgeography.com/inverse-distance-weighting-idw-interpolation</a></p>
+                    <a href="https://gisgeography.com/inverse-distance-weighting-idw-interpolation">
+                    https://gisgeography.com/inverse-distance-weighting-idw-interpolation</a></p>
 
                 <p>Lucas, G. (2018). Using the Delaunay to compute lake volume &#8211; Part 1: Concepts. Retrieved May, 2019 from
-                    <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html">https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html</a></p>
+                    <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html">
+                    https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html</a></p>
 
-                <p>McEwen, T., Pothina, D., & Negusse, S. (2011). Improving efficiency and repeatability of lake volume estimates using Python. Proceedings of the 10th Python in Science Conference. (SCIPY 2011). Retrieved May, 2019 from http://conference.scipy.org/proceedings/scipy2011/pdfs/tyler_mcewen.pdf</p>
+                <p>McEwen, T., Pothina, D., & Negusse, S. (2011). 
+                Improving efficiency and repeatability of lake volume estimates using Python. 
+                Proceedings of the 10th Python in Science Conference. (SCIPY 2011). Retrieved May, 2019 from 
+                http://conference.scipy.org/proceedings/scipy2011/pdfs/tyler_mcewen.pdf</p>
 
-                <p>Merwade, V., & Maidment, D. (2004), Geospatial Description of River Channels in Three Dimensions (CRWR Online Report -04-08) University of Texas at Austin, Center for Research in Water Resources. Retrieved May, 2019 from https://repositories.lib.utexas.edu/handle/2152/6995.</p>
+                <p>Merwade, V., & Maidment, D. (2004), Geospatial Description of River Channels in Three Dimensions 
+                (CRWR Online Report -04-08) University of Texas at Austin, Center for Research in Water Resources. 
+                Retrieved May, 2019 from https://repositories.lib.utexas.edu/handle/2152/6995.</p>
 
-                <p>Texas Water Development Board &ndash; Hydrographic Survey Program. (2018). Volumetric and Sedimentation Survey of Alan Henry Reservoir, August 2017 Survey. Austin, TX. Retrieved May, 2019 from http://www.twdb.texas.gov/hydro_survey/alanhenry/2017-08/AlanHenry2017_FinalReport.pdf</p>
+                <p>Texas Water Development Board &ndash; Hydrographic Survey Program. (2018). 
+                Volumetric and Sedimentation Survey of Alan Henry Reservoir, August 2017 Survey. Austin, TX. 
+                Retrieved May, 2019 from http://www.twdb.texas.gov/hydro_survey/alanhenry/2017-08/AlanHenry2017_FinalReport.pdf</p>
 
-                <p>Texas Water Development Board &ndash; Hydrographic Survey Program. (2019). Completed Surveys & Data. Retrieved May, 2019 from http://www.twdb.texas.gov/surfacewater/surveys/completed/list/index.asp</p>
+                <p>Texas Water Development Board &ndash; Hydrographic Survey Program. (2019). 
+                Completed Surveys & Data. 
+                Retrieved May, 2019 from http://www.twdb.texas.gov/surfacewater/surveys/completed/list/index.asp</p>
 
 
             </div>
