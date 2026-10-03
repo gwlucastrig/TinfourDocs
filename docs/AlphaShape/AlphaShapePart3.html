@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -25,7 +26,7 @@
 				<li><a href="AlphaShapePart2.html">Part 2: Implementation</a></li>
 				<li>|</li>
 			</ul>
-			<p>&nbsp;</p>
+			<br>
 		</div>
 
 
@@ -41,17 +42,17 @@
 
                 <h1>Introduction</h1>
                 <p>Part 1 of these notes introduced the concepts underlying a 2D alpha shape utility.
-                    Part 2 discussed implementation details from the AlphaShape class.
+                    Part 2 discussed implementation details of the AlphaShape class.
                     This section of the notes provides the derivation for the alpha circle calculations
                     which are used extensively within the AlphaShape class.</p>
 					
                 <p>The process of building an alpha shape from a Delaunay triangulation
                     is based on determining which edges in the triangulation are to be
-                    included in the shape and which are external to its bounds
+                    included in the shape and which lie outside its bounds
                     (<i>i.e.</i> which edges are "exposed").  The choice of which
                     edges are exposed is based on the
                     <a href="AlphaShapePart1.html#TheCircleSelectionCriterion">
-                        alpha circle selection criterion</a>
+                        alpha circle selection criterion</a>.</p>
 
                 <h1 id="AlphaCircleCalculation">The alpha circle calculation</h1>
                 <p>The key calculation needed to construct an alpha circle is to find the centers
@@ -88,7 +89,7 @@
                     </tr>
                 </table>
 
-                <p>This specification essentially transforms the endpoints of
+                <p>This transformation maps the endpoints of
                     the segment to a new coordinate system in which they are defined as
                     <i>(0, 0)</i> and <i>(h, k)</i>.
                     Because both endpoints are at distance <i>r</i> from the center <i>(x, y)</i> of an
@@ -101,7 +102,7 @@
                     one for each circle.
                 </p>
                 <p>
-                    Once we find the pair solutions for <i>(x, y)</i>,
+                    Once we find the pair of solutions for <i>(x, y)</i>,
                     we can transform the results back to the original
                     coordinate system by adding back the offset for
                     <img class="imageInText" src="math2/image009a.png">.</p>
@@ -215,7 +216,7 @@
                     The logic selects which block to use based on which
                     of the two variables has the largest absolute value.
                     While there is some redundancy in the code,
-                    this approach neatly avoid numeric problems
+                    this approach neatly avoids numeric problems
                     when either <i>h</i> or <i>k</i> are nearly zero.</p>
 
                 <h2>Post-processing for Tinfour</h2>
@@ -236,4 +237,4 @@
         </div>
     </div>
 </body>
-
+</html>

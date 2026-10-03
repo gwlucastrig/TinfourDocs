@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -16,7 +17,7 @@
 			<ul class="link-bar">
 				<li> <a href="https://gwlucastrig.github.io/TinfourDocs/">Home</a> </li>
 				<li>|</li>
-				<li><a href="https://github.com/gwlucastrig/Tinfour">Code (Github)</a></li>
+				<li><a href="https://github.com/gwlucastrig/Tinfour">Code (GitHub)</a></li>
 				<li>|</li>
 				<li><a href="https://github.com/gwlucastrig/Tinfour/wiki">Tinfour Wiki</a></li>
 				<li>|</li>
@@ -25,7 +26,7 @@
 				<li><a href="AlphaShapePart3.html">Part 3: Alpha circle calculation</a></li>
 				<li>|</li>
 			</ul>
-			<p>&nbsp;</p>
+			<br>
 		</div>
 
         <div id="notescontent">
@@ -48,7 +49,7 @@
                 And, naturally, the Tinfour AlphaShape code is built on top
                 of the Tinfour Delaunay triangulation classes. Tinfour implements the Delaunay
                 using a Java interface known as IIncrementalTin (for "incremental triangulated irregular network").
-                While some of the operations described in this article depend the capabilities
+                While some of the operations described in this article depend on the capabilities
                 defined by that interface, all of the functions it uses should have equivalents
                 in other Delaunay triangulation implementations.</p>
 
@@ -87,7 +88,7 @@
 
             <p>Additional details about the Tinfour edge concept are presented in our Wiki article
                 <a href="https://github.com/gwlucastrig/Tinfour/wiki/Tutorial-Using-Edge-Based-Techniques-Part-1">
-                    Tutorial Using Edge Based Techniques</a>.
+                    Tutorial Using Edge Based Techniques</a>.</p>
 
             <h1 id="BuildingAnAlphaShape">Building an alpha shape</h1>
             <p>The Tinfour technique for building an alpha is a three-step process:</p>
@@ -279,7 +280,7 @@
                     <ul>
                         <li>If the reverse link is a border, transfer to the reverse.</li>
                         <li>If the reverse link is α-exposed,  transfer to the
-                            dual of the the reverse link</li>
+                            dual of the reverse link</li>
                     </ul>
                 </li>
             </ul>
@@ -374,7 +375,7 @@
             <p>
                 In the steps below, references "the edges in a Delaunay triangulation" refer
                 to the standard (non-ghost) edges in the structure. That is, all edges
-                the are enclosed within the convex hull of the triangulation. All
+                enclosed within the convex hull of the triangulation. All
                 such edges will have a valid geometry (vertices A and B in the images above),
                 though in some cases the references to the opposite vertices
                 (vertices C and D in the image above) will be null.
@@ -555,7 +556,7 @@
             <h1 id="Conclusion">Conclusion</h1>
             <p>The Tinfour AlphaShape class provides a modified version of the
                 classic 2D alpha shape technique that reduces the incidence
-                of hole and cavity features. These notes provides implementation
+                of hole and cavity features. These notes provide implementation
                 details and an outline of the steps performed by AlphaShape.
                 The next article in this series provides a derivation
                 of the <a href="AlphaShapePart3.html">alpha circle calculation</a>.
@@ -587,7 +588,7 @@
                 investigation is required.
             </p>
             <p id="Note2">
-                [2] Edelsbrunner, et al., original paper treats border edges
+                [2] Edelsbrunner, et al., the original paper treats border edges
                 as α-exposed. That choice reflects the mathematical
                 basis for their proofs and derivation (as does the choice of
                 open circles versus closed circles for the edge selection
@@ -626,4 +627,4 @@
         </div>
     </div>
 </body>
-
+</html>
