@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="G.W. Lucas">
-        <title>Anomaly Detection using the Delaunay</title>
+        <title>Anomaly detection using the Delaunay triangulation</title>
         <link rel="stylesheet" href="../css/text.css" >
         <link rel="stylesheet" href="../css/layout.css" >
     </head>
@@ -90,9 +90,9 @@ up as a hot spot in the figure below.  </p>
 </figure>
 
 <p>METARs identify their reporting station using alphanumeric
-facility codes. These locations of these facilities are treated as vertices in
+facility codes. The locations of these facilities are treated as vertices in
 the Delaunay triangulation shown above. The problematic temperature reports
-were issued from station KHHV which is located at the position located on the
+were issued from station KHHV which is located at the position shown on the
 map.</p>
 
 <p>In comparing a data value to other samples taken in its
@@ -273,7 +273,7 @@ the stations are so close together, they are treated as relatively redundant
 and their reduced contributions reflect that. </p>
 
 <p>This weighted average, 0.5344 °C/km, becomes the test score
-for station KVVH.</p>
+for station KHHV.</p>
 <table class="tight">
 <thead>
 <th>Station</th><th>T<sub>i,j</sub> (°C)</th><th>ΔT<sub>i,j</sub> (°C)</th><th>S<sub>i,j (km)</sub></th><th>R<sub>i,j</sub> (°C/km)</th><th>&#955;<sub>i,j </sub></th><th>Contribution</th>
@@ -292,7 +292,7 @@ for station KVVH.</p>
 </tbody>
 </table>
 
-<h2 id="AcceptanceThresholds">Determining acceptance thresholds</h3>
+<h2 id="AcceptanceThresholds">Determining acceptance thresholds</h2>
 
 <p>So what is a good threshold for accepting a test score?
 Inspecting the Sibson-weighted test scores for the overall population, we find
@@ -318,8 +318,8 @@ test score for all stations as shown in the table below. </p>
 
 <p>The data set from 16:00 UTC 27 March 2019 includes three
 samples that fall below the 0.1 percentile threshold value, -0.4271, and three
-that that exceed the 99.9<sup>th</sup> percentile test score, 0.4352. All of
-them also meet the selection criterion of being a local extrema. These are
+that exceed the 99.9<sup>th</sup> percentile test score, 0.4383. All of
+them also meet the selection criterion of being local extrema. These are
 listed below.</p>
 
 <table class="tight">
@@ -363,7 +363,7 @@ change in altitude: </p>
 
 <p class="mathtext">
 <img src="images/image006.png" alt="Elevation lapse rate refinement">
-<p>
+</p>
 
 <p>Where</p>
 
@@ -426,7 +426,7 @@ applications that deal with phenomenon distributed over a surface. </p>
 <p id="Note1">1. Weather observations in the form of METAR reports were
 provided by the National Center for Atmospheric Research/Earth Observing
 Laboratory (NCAR/EOL) under the sponsorship of the National Science Foundation
-<a href="https://data.eol.ucar.edu/">https://data.eol.ucar.edu/</a><p>
+<a href="https://data.eol.ucar.edu/">https://data.eol.ucar.edu/</a></p>
 
 <p id="Note2">2. For more information on the derivation of Sibson weights and
 their use in the Natural Neighbor Interpolation technique, see <a
