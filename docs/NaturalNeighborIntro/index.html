@@ -31,18 +31,21 @@
                 <nav aria-label="Document sections">
                     <ul>
                         <li><a href="#Introduction">Introduction</a></li>
-                        <li><a href="#Background">Background</a></li>
+                        <li><a href="#Background">Background</a> 
+						<ul>
                         <li><a href="#NaturalNeighbors">The Natural Neighbors</a></li>
                         <li><a href="#NearestSamplesAndTheVoronoiDiagram">Nearest Samples &amp; the Voronoi Diagram</a></li>
+						</ul>
+						</li>
                         <li><a href="#Interpolation">The Interpolation</a>
                             <ul>
                                 <li><a href="#StrengthsOfTheNaturalNeighborInterpolation">Strengths</a></li>
                                 <li><a href="#WeaknessesInTheNaturalNeighborInterpolation">Weaknesses</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#WhyItWorks">Why it Works</a></li>
-                        <li><a href="#NaturalNeighborsAndGeneralizedBarycentricCoordinates">Barycentric Coordinates</a></li>
-                        <li><a href="#TinfourSoftwareProjectSImplementationOfNaturalNeighbors">Tinfour Implementation</a></li>
+								<li><a href="#WhyItWorks">Why it Works</a></li>
+                                <li><a href="#NaturalNeighborsAndGeneralizedBarycentricCoordinates">Barycentric Coordinates</a></li>
+                                <li><a href="#TinfourImplementation">Tinfour's Implementation</a></li>
+					 	    </ul>
+						</li>
                         <li><a href="#Conclusion">Conclusion</a></li>
                         <li><a href="#References">References</a></li>
                         <li><a href="#Acknowledgements">Acknowledgements</a></li>
@@ -119,7 +122,7 @@
                     value z. For the purposes of Natural-neighbor interpolation, the z can be any
                     phenomenon that can be treated as a continuous, real-valued function of (x,y).</p>
 
-                <h1 id="NaturalNeighbors">The Natural Neighbors</h1>
+                <h2 id="NaturalNeighbors">The Natural Neighbors</h2>
 
                 <p>At first sight, the use of the term "natural" to describe an
                     interpolation technique may seem a bold choice. It originated with the
@@ -357,7 +360,7 @@
                     techniques are beyond the scope of this article, but are described in published
                     literature and elsewhere on the web.</p>
 
-                <h1 id="WhyItWorks">Why it Works</h1>
+                <h2 id="WhyItWorks">Why it Works</h2>
 
                 <p>At this point, I've shown the results of the natural-neighbors
                     technique plotted in the temperature plot of the Mediterranean Basin and
@@ -416,7 +419,7 @@
                     tools that are used in Geographic Information Systems to georectify
                     aerial photographs and other imagery products.</p>
 
-                <h2 id="TinfourSoftwareProjectSImplementationOfNaturalNeighbors">The Tinfour Software Project's Implementation of Natural Neighbors</h2>
+                <h2 id="TinfourImplementation">The Tinfour Implementation of Natural Neighbors</h2>
 
                 <p>Readers who are familiar with software implementation issues
                     may have wondered about the requirement to insert the query point into the
@@ -494,7 +497,7 @@
 
                 <p>The temperature data used for this article was derived from
                     international data sources provided by Sonalysts, Inc. For more information,
-                    visit <a href="http://www.sonalysts.com/products/wxstation" >wXstation at Sonalysts, Inc.</a></p>
+                    visit <a href="https://www.sonalysts.com/what-we-do/wxstation/" >wXstation at Sonalysts, Inc.</a></p>
 
 
             </div>
