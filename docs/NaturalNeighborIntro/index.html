@@ -86,7 +86,7 @@
                     of the samples. In the example above, I chose temperature as the phenomenon of
                     interest because it uses a completely different unit system and coordinate scale
                     than the Cartesian coordinates of the sample point positions. That choice
-                    emphasizes that the idea that the value can be thought of as a function of the
+                    emphasizes the idea that the value can be thought of as a function of the
                     position, but that position and value elements are separate entities. In the
                     text that follows, I will often refer to position coordinates (x,y) and data
                     value z. For the purposes of Natural-neighbor interpolation, the z can be any
@@ -120,16 +120,17 @@
                     specification of an input parameter indicating how many points to use (the
                     "nearest N") or some limit to the distance at which points are accepted for an
                     interpolation at target location (the "selection radius"). These <i>artificial</i>
-                    choices do not rise naturally from the data, but are specified through user
+                    choices do not arise naturally from the data, but are specified through user
                     inputs or default parameters. In Sibson's method, the selection of sample
                     points and weighting factors arise <i>in a natural way</i> from the geometric configuration
                     of the input data set.</p>
 
                 <p>The heart of the natural-neighbor interpolation is a
-                    mathematical structure known alternately as the <a href="http://mathworld.wolfram.com/VoronoiDiagram.html" >Voronoi Diagram</a> or the
+                    mathematical structure known alternately as the 
+					<a href="http://mathworld.wolfram.com/VoronoiDiagram.html" >Voronoi Diagram</a> or the
                     Dirichlet Tessellation (the first term is more popular, though Sibson preferred
-                    the second). At first glance, the Voronoi seems an unlikely candidate for any
-                    kind of interpolation. In its raw form, it presents a surface that is riddled
+                    the second). At first glance, the Voronoi seems an unlikely candidate for performing
+					an interpolation. In its raw form, it presents a surface that is riddled
                     with discontinuities and unsuited for evaluating slope or performing trend
                     analysis. But in a 1980 paper, Sibson identified a property of the Voronoi that
                     was to serve as the basis for the smooth transitions that were visible in the
@@ -180,7 +181,7 @@
                     And, thus, there is one, and only one, assignment of neighbors. Furthermore,
                     the layout of the cells in the Voronoi diagram ensures that for each sample
                     point in the interior of the structure, the process will select neighbors in
-                    all directions. Thus, the selection ensures that a point on in the diagram will
+                    all directions. Thus, the selection ensures that a point in the interior of the diagram will
                     be fully surrounded by relevant samples. Finally, the construction is
                     independent of the scale and magnitude of the coordinates of the sample points.
                     It is purely the result of geometric relationships, and is unaffected by the
@@ -208,7 +209,7 @@
                     interpolation is a weighted average of the values of the neighbors selected in
                     this method. So the next step in the interpolation process is to identify
                     weights for these samples and then combine them with the sample values to get
-                    an estimate for the temperature at the query point</p>
+                    an estimate for the temperature at the query point.</p>
 
                 <p>Looking at the figure, note that insertion cell incorporates
                     a certain amount of area that was originally covered by its neighboring
@@ -223,8 +224,8 @@
                 <img src="images/image004.png" alt="u=(x,y)"/>
 
                 <p>We use the vector <b>u</b> as a convenience. It gives coordinates
-                    of the query point in a compact form (all variables which are shown in bold
-                    face are vectors). The geometry of the insertion polygon, and the fractional
+                    of the query point in a compact form (all variables shown in boldface
+                    are vectors). The geometry of the insertion polygon, and the fractional
                     contribution to its area by each of its neighbors, will depend on the position
                     of the query point. Sibson used the Greek letter lambda to represent those
                     fractional contributions. In effect, those lambda values are functions of <b>u</b>.
@@ -244,7 +245,7 @@
                     for the surface at the query position given by <b>u</b> .</p>
 
                 <p>To make this abstract expression of the natural-neighbor interpolation a bit more concrete,
-                    let's attach some numbers to the equation for <img class="imageInText" src="images/image008.png" alt="estimator z(u)" />.
+                    let's attach some numbers to the equation for <img class="imageInText" src="images/image008.png" alt="estimator z(u)" >.
                     The values in the figure below show the intermediate products obtained when
                     performing an interpolation for the query point used in this example. The
                     fractional weights for each sample are taken in clockwise order starting at the
@@ -271,7 +272,7 @@
                     independent of any choice of unit or measure that is used for the sample point
                     coordinates. Because the lambdas are computed as the quotient of two areas,
                     the units cancel out. It doesn't matter if the sample coordinates are given in parsecs
-                    or microns... Both the structure of the Voronoi and the values of the lambda weights
+                    or microns. Both the structure of the Voronoi and the values of the lambda weights
                     depend solely on the spatial configuration of the query and sample positions.</p>
 
                 <p>A second advantage of the technique is that when the query is performed at the same
@@ -301,8 +302,8 @@
                     yield a result of 14.33 degrees. But, in doing so, it would over-represent the
                     "hot spot". In geospatial analysis terms, the interpolation would be skewed
                     due to the <i>spatial autocorrelation</i> of the two closely placed samples. The
-                    picture below illustrates the area-based process used by the Natural Neighbor
-                    Interpolator, which results in a somewhat lower temperature of 12.96 degrees.</p>
+                    picture below illustrates the area-based process used by the natural-neighbor
+                    interpolator, which results in a somewhat lower temperature of 12.96 degrees.</p>
 
                 <img src="images/image010.png" alt="auto-correlating samples" />
 
@@ -317,7 +318,7 @@
                     for the transition from one set of neighbors to another when the query point
                     moves from one part of the interpolation plane to another. For the most part,
                     this compensation also works for slope effects. Unfortunately, there are places
-                    where it is not adequate to ensure a smooth transition of slope (e.g.
+                    where it does not ensure a smooth transition of slope (e.g.
                     first-derivative continuity). Point-discontinuities in slope occur at the
                     sample positions. These are usually quite small and may appear as speckles in
                     a high resolution plot. But, even if they are scarcely noticeable, they are
@@ -325,7 +326,7 @@
 
                 <p>Sibson was aware of this issue and devoted a significant
                     part of his article to describing a technique for producing a first-derivative
-                    continuous interpolation. Other authors have pitched alternate ideas. The
+                    continuous interpolation. Other authors proposed alternate ideas. The
                     techniques are beyond the scope of this article, but are described in published
                     literature and elsewhere on the web.</p>
 
@@ -405,7 +406,7 @@
                 <p>Tinfour avoids this overhead by never constructing a Voronoi Diagram at all.
                     Instead, it uses a related structure, the Delaunay Triangulation, to model
                     the Local Coordinates Property and calculate lambda weight factors.
-                    The set of the natural neighbors for the query point are found by using
+                    The set of the natural neighbors for the query point is found by using
                     the Bowyer-Watson tessellation algorithm (Bowyer, 1981; Watson, 1981)
                     which plays a key role in many Tinfour operations. And, because the Tinfour
                     implementation accesses the underlying data structure on a read-only basis, it is
@@ -426,11 +427,11 @@
                 <p>Since the publication of Sibson's original article in 1981, natural-neighbor
                     interpolation has been discussed in scores of research papers and implemented
                     in dozens of commercial and open-source software systems. Some authors have extended
-                    it to higher-dimensions. Others have offered alternate solutions for improving
+                    it to higher dimensions. Others have offered alternate solutions for improving
                     the continuity properties for slope and higher-order derivatives.</p>
 
                 <p>I hope you will find this information about the natural-neighbor
-                    interpolation useful in trying to understand whether it is appropriate to your
+                    interpolation useful for trying to understand whether it is appropriate to your
                     own requirements and, if so, in applying it effectively.</p>
 
                 <h1 id="References">References</h1>

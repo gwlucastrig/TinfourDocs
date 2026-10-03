@@ -57,7 +57,7 @@
 			Although the Delaunay optimization is focused on the structure of its triangles
 			rather than the assignment of neighbors, the resulting selection of neighboring
 			vertex pairs does provide a good balance between proximity, directionality, and density.
-			As such, the Delaunay triangulation provides a reliable technique for identifying
+			As such, the Delaunay triangulation provides a reliable way to identify
 			which samples are treated neighbors and can be used to compute sample spacing.
 		    </p>
 
@@ -71,10 +71,10 @@
 		    density, we can compute the point spacing using the formula introduced above.
 		    This formula is derived by approximating the sample set with a truly uniform
 		    point distribution.  When all points are equally spaced on the plane, they form a
-		    tessellation consisting of equilateral triangles. An example is as shown in the figure below.
+		    tessellation consisting of equilateral triangles. An example is shown in the figure below.
 
 		    <figure>
-			<img class="center"" src="images/UniformDensityTessellation.png" 
+			<img class="center" src="images/UniformDensityTessellation.png" 
 			alt="Delaunay triangulation from points with uniform spacing" 
 			width="600" height="259" border="2" >
 			<figcaption align="center">Figure 1 - Triangular mesh with uniform spacing..</figcaption>
@@ -82,8 +82,8 @@
 
 		    <p>
 			We wish to find the uniform distance between points, <i>s</i>, which is also the length of the sides of
-			the triangles in the tessellation For a sufficiently large number of points, <i>n</i>, the number of triangles in the
-			tessellation covering a bounded area approaches <i>2n</i>. The area of each equilateral triangles
+			the triangles in the tessellation. For a sufficiently large number of points, <i>n</i>, the number of triangles in the
+			tessellation covering a bounded area approaches <i>2n</i>. The area of each equilateral triangle
 			is <img class="imageInText" src="images/image003.png" width="75" height="25">. So, given the area <i>A</i> of the bounded
 			region containing the sample points, we have</p>
 		    <p id="mathtext"><img src="images/image004.png" width="103" height="49"></p>
@@ -92,7 +92,7 @@
 		    <p>which gives us our approximation <img class="imageInText" src="images/image001.png" width="116" height="24">.</p>
 
 		    <p>Incidentally, the uniform tessellation shown in the figure above happens to be a Delaunay triangulation.
-			So the Delaumay-based techniques that works for a collection of non-uniformly spaced samples also
+			So the Delaunay-based technique that works for a collection of non-uniformly spaced samples also
 			applies to the uniform and nearly uniform cases.</p>
 
 		    <h2>The Delaunay criterion</h2>
@@ -108,7 +108,7 @@
 			vertices B and D, to form triangle BCD, the resulting circumcircle would enclose vertex A.
 			So the triangulation on the right is not properly Delaunay. A proof from geometry shows that
 			if we have two adjacent triangles, such as ABC and ACD, if one triangle is Delaunay conforming,
-			them both are Delaunay conforming.<p>
+			then both are Delaunay conforming.</p>
 
 		    <figure>
 			<img src="images/SideBySide.png" alt="Circumcircles for the Delaunay criterion" width="800" height="400" >
@@ -140,9 +140,9 @@
 
 		    <h2>The Delaunay triangulation with non-uniform spacing</h2>
 
-		    <p>The figure below shows an example of a Delaunay triangulation constructed
-			for the locations of weather-reporting stations located in the area of
-			the Gulf of Mexico. Most of the stations are located at scattered positions
+		    <p>The figure below shows an example of a Delaunay triangulation constructed from
+			the locations of weather-reporting stations in the Gulf of Mexico region.
+			Most of the stations are located at scattered positions
 			on land, though a few are located over the water.
 			The sample labeled KHHV is an automated reporting station based on an
 			oil drilling platform. As noted above, the closest pair property ensures that
@@ -190,7 +190,7 @@
 			<figcaption align="center">Figure 4 - Delaunay triangulation with long edges near perimeter.</figcaption>
 		    </figure>
 
-		    <p>In the figure below, the area shown in light blue includes the edges that would be added to the tabulation.
+		    <p>The light blue polygon in the figure below covers the edges that would be added to the tabulation.
 			Due to the relatively small sample size, almost half of the edges in the triangulation were
 			excluded from the tabulation. For large sample sizes, the number of edges associated with the
 			perimeter is much smaller than those associated with the interior.</p>
@@ -251,7 +251,7 @@
 
 		    <p>Lucas, G. (2016). An introduction to the Delaunay triangulation.<br>
 			<a href="https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html">
-			    https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html/</a></p>
+			    https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html</a></p>
 
 		    <p>Mount, D. (2020). CMSC 754: Lecture 12 -- Delaunay triangulations: general properties [PDF].<br>
 			<a href="https://www.cs.umd.edu/class/spring2020/cmsc754/Lects/lect12-delaun-prop.pdf">
