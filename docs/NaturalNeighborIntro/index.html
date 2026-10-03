@@ -32,20 +32,20 @@
                     <ul>
                         <li><a href="#Introduction">Introduction</a></li>
                         <li><a href="#Background">Background</a> 
-						<ul>
+                        <ul>
                         <li><a href="#NaturalNeighbors">The Natural Neighbors</a></li>
                         <li><a href="#NearestSamplesAndTheVoronoiDiagram">Nearest Samples &amp; the Voronoi Diagram</a></li>
-						</ul>
-						</li>
+                        </ul>
+                        </li>
                         <li><a href="#Interpolation">The Interpolation</a>
                             <ul>
                                 <li><a href="#StrengthsOfTheNaturalNeighborInterpolation">Strengths</a></li>
                                 <li><a href="#WeaknessesInTheNaturalNeighborInterpolation">Weaknesses</a></li>
-								<li><a href="#WhyItWorks">Why it Works</a></li>
+                                <li><a href="#WhyItWorks">Why it Works</a></li>
                                 <li><a href="#NaturalNeighborsAndGeneralizedBarycentricCoordinates">Barycentric Coordinates</a></li>
                                 <li><a href="#TinfourImplementation">Tinfour's Implementation</a></li>
-					 	    </ul>
-						</li>
+                             </ul>
+                        </li>
                         <li><a href="#Conclusion">Conclusion</a></li>
                         <li><a href="#References">References</a></li>
                         <li><a href="#Acknowledgements">Acknowledgements</a></li>
@@ -79,22 +79,25 @@
                     providing background on the technique, describing its strengths and weaknesses,
                     and giving examples of its application. The method of natural neighbors is one
                     of the main interpolator implementations in the <a href="https://github.com/gwlucastrig/Tinfour" >Tinfour software project</a>.
-					It is also provided as a feature of ArcGIS, GRASS GIS, SADA GIS, MATLAB, and other
+                    It is also provided as a feature of ArcGIS, GRASS GIS, SADA GIS, MATLAB, and other
                     major applications. Some of these systems, such as MATLAB, refer to Natural Neighbor Interpolation
-					as a kind of <i>scattered interpolant</i> and offer it as an option of their scattered interpolant tool sets.
-					Users who wish to gain experience with the technique may do so by exploring these systems.</p>
+                    as a kind of <i>scattered interpolant</i> and offer it as an option of their scattered interpolant tool sets.
+                    Users who wish to gain experience with the technique may do so by exploring these systems.</p>
 
                 <h1 id="Background">Background</h1>
 
-                <p>The figure below illustrates the kind of data processing
+                <p>Figure 1. below illustrates the kind of data processing
                     task at which natural neighbors excels. The numbered points represent surface
                     temperature data collected across the Mediterranean Basin and Northern Africa over
                     a one hour period in October of 2018. When we use the term "unstructured data"
                     for sample sets such as the one shown, we are referring to the fact that there
                     is no identifiable structure in the placement of the sample positions.</p>
-
+					
+				<figure>
                 <img src="images/image001.png" alt="Natural Neighbor Interpolation of Surface Temperature" >
-
+				<figcaption>Figure 1 &ndash; Interpolation of surface temperature reports over the Mediterranean Basis.</figcaption>
+				</figure>
+				
                 <p>To create the figure, I used the Tinfour implementation of
                     the natural-neighbors technique to interpolate a value for each pixel in the
                     color-coded image. The smooth transition of values across the interpolated
@@ -140,11 +143,11 @@
                     to position (Sibson, 1981, p. 25).</p>
 
                 <p>The unifying theme in Sibson's article is the idea that the natural-neighbor interpolation
-					derives from fundamental geometric principles and not through an artificial construct.
+                    derives from fundamental geometric principles and not through an artificial construct.
                     The use of natural-neighbor interpolation does not depend on
                     arbitrarily specified "design parameters" or "decision criteria" to support its
                     operation. This feature separates natural neighbors from a number of other spatial
-					interpolation techniques. For example, when dealing with large spatial data sets, many
+                    interpolation techniques. For example, when dealing with large spatial data sets, many
                     interpolators need to limit the number of samples used for a single
                     calculation to a manageable subset of the whole. To do so, they depend on the
                     specification of an input parameter indicating how many points to use (the
@@ -157,10 +160,10 @@
 
                 <p>The heart of the natural-neighbor interpolation is a
                     mathematical structure known alternately as the 
-					<a href="http://mathworld.wolfram.com/VoronoiDiagram.html" >Voronoi Diagram</a> or the
+                    <a href="http://mathworld.wolfram.com/VoronoiDiagram.html" >Voronoi Diagram</a> or the
                     Dirichlet Tessellation (the first term is more popular, though Sibson preferred
                     the second). At first glance, the Voronoi seems an unlikely candidate for performing
-					an interpolation. In its raw form, it presents a surface that is riddled
+                    an interpolation. In its raw form, it presents a surface that is riddled
                     with discontinuities and unsuited for evaluating slope or performing trend
                     analysis. But in a 1980 paper, Sibson identified a property of the Voronoi that
                     was to serve as the basis for the smooth transitions that were visible in the
@@ -192,8 +195,11 @@
                     were applied in the temperature plot above, the two figures look quite different.
                     This stark contrast is due to the discontinuous nature of the Voronoi surface.</p>
 
+				<figure>
                 <img src="images/image002.png" alt="Voronoi Diagram of Surface Temperature" >
-
+				<figcaption>Figure 2 &ndash; Voronoi diagram constructed from surface temperature reports</figcaption>
+				</figure>
+				
                 <p>Despite its discontinuous nature, the Voronoi has a useful
                     characteristic that is readily apparent on inspection. Each edge in the
                     Voronoi serves as a link between two generating sample points.
@@ -222,13 +228,17 @@
                     us find the neighbors to a query point. That question brings us to the first
                     step in the interpolation process. To find a set of relevant neighbors for
                     an interpolation, the natural-neighbor technique begins by inserting the
-                    query point into the Voronoi Diagram. The figure below shows an example
+                    query point into the Voronoi Diagram. Figure 3. below shows an example
                     of an insertion. The new polygon generated by the query point is added to
                     the structure. Some of the area from the neighbor polygons is transferred
                     to the insertion polygon. And some of the edges covered by the new polygon
                     are subsumed.</p>
 
-                <img src="images/InsertionPicture3.png" alt="Query Point Insertion for Voronoi Diagram" >
+				<figure>
+                  <img src="images/InsertionPicture3.png" alt="Query Point Insertion for Voronoi Diagram" >
+				  <figcaption>Figure 3 &ndash; Query point insertion for a Voronoi diagram.</figcaption>
+				</figure>
+
 
                 <h1 id="Interpolation">The Interpolation</h1>
 
@@ -283,9 +293,15 @@
                     correspond to the areas in the contributed fragments from each sample. If you
                     add up the lambda weighting factors, you will find they total up 1. The sum of
                     the products gives us the interpolated temperature of 12.720 degrees, which is
-                    the natural-neighbor interpolant at the query points shown in the figure.</p>
+                    the natural-neighbor interpolant at the query points shown in Figure 4. below.</p>
+ 
+					<figure>
+						<img src="images/image009.png" alt="Natural Neighbor Interpolant" >
+						<figcaption>Figure 4 &ndash; Weighted sum for natural neighbor interpolant.</figcaption>
+					</figure>
 
-                <img src="images/image009.png" alt="natural neighbor interpolant" >
+				
+				
 
                 <p>Understanding something about the weighted average used in the natural-neighbor
                     calculation gives us insight into how the interpolation will behave.
@@ -331,11 +347,15 @@
                     The interpolation logic would just be a simple average of their values. It would
                     yield a result of 14.33 degrees. But, in doing so, it would over-represent the
                     "hot spot". In geospatial analysis terms, the interpolation would be skewed
-                    due to the <i>spatial autocorrelation</i> of the two closely placed samples. The
-                    picture below illustrates the area-based process used by the natural-neighbor
+                    due to the <i>spatial autocorrelation</i> of the two closely placed samples.
+                    Figure 5. below illustrates the area-based process used by the natural-neighbor
                     interpolator, which results in a somewhat lower temperature of 12.96 degrees.</p>
 
-                <img src="images/image010.png" alt="auto-correlating samples" >
+				 
+					<figure>
+						<img src="images/image010.png" alt="Auto-correlating Samples" >
+						<figcaption>Figure 5 &ndash; The natural neighbor interpolation adjustment for auto-correlating samples.</figcaption>
+					</figure>
 
                 <h2 id="WeaknessesInTheNaturalNeighborInterpolation">Weaknesses in the Natural-Neighbor Interpolation</h2>
 

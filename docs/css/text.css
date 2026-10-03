@@ -138,6 +138,11 @@ img.mathimage {
 	vertical-align: middle;
 }
 
+img.imageInText {
+	vertical-align: middle;
+}
+
+
 img.imageCentered {
   display: block;
   margin-left: auto;
