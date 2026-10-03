@@ -5,26 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="G.W. Lucas">
     <title>Implementation details for a 2D alpha shape utility</title>
-
-    <link rel="stylesheet" href="../css/960_12_col.css" />
     <link rel="stylesheet" href="../css/text.css" />
     <link rel="stylesheet" href="../css/layout.css" />
 </head>
 
 
 <body>
-    <div class="container_12">
-        <div >
-            <a class="top-link" href = "https://gwlucastrig.github.io/TinfourDocs/">Home</a>
-            |
-            <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour">Code Repository (Github)</a>
-            |
-            <a class="top-link"  href="https://github.com/gwlucastrig/Tinfour/wiki">Wiki</a>
-            |
-            <a class="top-link"  href="AlphaShapePart1.html">Part 1: Concepts</a>
-                  |
-            <a class="top-link"  href="AlphaShapePart2.html">Part 2: Implementation</a>
-        </div>
+    <div class="notescontainer">
+   <div id="notesheader">
+			<ul class="link-bar">
+				<li> <a href="https://gwlucastrig.github.io/TinfourDocs/">Home</a> </li>
+				<li>|</li>
+				<li><a href="https://github.com/gwlucastrig/Tinfour">Code (Github)</a></li>
+				<li>|</li>
+				<li><a href="https://github.com/gwlucastrig/Tinfour/wiki">Tinfour Wiki</a></li>
+				<li>|</li>
+				<li><a href="AlphaShapePart1.html">Part 1: Concepts</a></li>
+				<li>|</li>
+				<li><a href="AlphaShapePart2.html">Part 2: Implementation</a></li>
+				<li>|</li>
+			</ul>
+			<p>&nbsp;</p>
+		</div>
+
 
         <div id="notescontent">
 
@@ -35,8 +38,6 @@
                 </p>
                 <p class="author">by G.W. Lucas</p>
             </div>
-
-            <div class="grid_10">
 
                 <h1>Introduction</h1>
                 <p>Part 1 of these notes introduced the concepts underlying a 2D alpha shape utility.
@@ -220,6 +221,7 @@
                 <h2>Post-processing for Tinfour</h2>
                 <p>The Tinfour AlphaCircle class performs an additional operation
                 that is not strictly part of the alpha circle calculation.</p>
+				
                 <p>In practice, one circle center always lies to the left of
                 the line segment
                 <img class="imageInText" width=35 height=25 src="math2/image001.png">
@@ -229,9 +231,8 @@
                 So, when computing the alpha circle centers,
                 Tinfour ensures that the solutions are given in order
                 so that  the circle center to the left of the line segment is given first
-                and the circle center to the right of the line segment is given second.
+                and the circle center to the right of the line segment is given second.</p>
 
-            </div>
         </div>
     </div>
 </body>
