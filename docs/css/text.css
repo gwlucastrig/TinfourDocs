@@ -178,8 +178,8 @@ a.box-link:hover{
     font:  16px/1.25 "Helvetica Neue", Arial, "Liberation Sans", FreeSans, sans-serif;
     list-style-type: none;
     overflow: hidden;
-    margin: 0px 0px 0px 0px;
-    padding: 0px 0px 0px 0px;
+    margin: 0;
+    padding: 0;
 }
  
 
@@ -245,7 +245,7 @@ table, th, td {
 	caption-side:top;
 }
 
-table.tight-table, th, td{
+table.tight-table  {
 	border-collapse:collapse;
 	border: 1px solid #ddd;
 	padding:2px 10px 2px 10px;
@@ -253,6 +253,51 @@ table.tight-table, th, td{
 	margin-left:10%;
 }
 
+
+table.tight {
+	border-collapse:collapse;
+	border: 1px solid #ddd;
+	padding:2px;
+	margin-bottom: 2px;
+	margin-left:50px;
+	caption-side:top;
+}
+
+td.tight {
+	border-collapse:collapse;
+	padding:2px;
+	margin-bottom: 2px;
+	margin-left: 5px;
+	caption-side:top;
+}
+
+td.num {
+	border-collapse:collapse;
+	padding:2px;
+	margin-bottom:2px;
+	margin-left:2px;
+	margin-right:10px;
+	caption-side:top;
+	text-align:right
+}
+td.cen {
+	border-collapse:collapse;
+	padding:2px;
+	margin-bottom:2px;
+	margin-left:5px;
+	margin-right:5px;
+	caption-side:top;
+	text-align:center
+}
+
+
+th.tight{
+	font-weight: bold;
+		padding:2px;
+	margin-bottom: 2px;
+	margin-left: 5px;
+	caption-side:top;
+}
 
 td.tdright {
 	text-align:right;
@@ -292,7 +337,6 @@ td.math2 {
 
 figure   {
   display: block;
-  justify-content: center;
   text-align: center;
 }
 
