@@ -32,7 +32,10 @@
                             <ul>
                                 <li><a href="#SibsonsTechnique">Sibson's technique</a></li>
                                 <li><a href="#ChallengesOfTheVoronoiDiagram">Challenges of the Voronoi diagram</a></li>
-                                <li><a href="#SolutionUsingTheDelaunayTriangulation">A solution using the Delaunay triangulation</a></li>
+							</ul>
+						<li>
+                        <li><a href="#SolutionUsingTheDelaunayTriangulation">A solution using the Delaunay triangulation</a>
+							<ul>
                                 <li><a href="#HowTheDelaunayTriangulationModelsTheVoronoiDiagram">How the Delaunay triangulation models the Voronoi diagram</a></li>
                                 <li><a href="#ModelingAVoronoiInsertion">Modeling a Voronoi insertion</a></li>
                                 <li><a href="#TheAreaCalculations">The area calculations</a>
@@ -74,7 +77,7 @@
 
                 <h1 id="Introduction">Introduction</h1>
 
-                <p>The Tinfour open-source software library implements a fast and accurate  algorithm
+                <p>The Tinfour open-source software library implements a fast and accurate algorithm
                     for Natural Neighbor Interpolation. These
                     notes describe that algorithm. They are provided here to assist investigators
                     who wish to understand how the implementation works, to extend its
@@ -159,7 +162,7 @@
                     replacing the Voronoi diagram with a related structure, the
                     <a href="../DelaunayIntro/index.html">Delaunay triangulation</a>.</p>
 
-                <h3 id="SolutionUsingTheDelaunayTriangulation">A solution using the Delaunay triangulation</h3>
+                <h2 id="SolutionUsingTheDelaunayTriangulation">A solution using the Delaunay triangulation</h2>
 
                 <p>Because of its relative simplicity and ease of
                     implementation, the Delaunay provides an attractive alternative to the Voronoi
@@ -409,7 +412,7 @@
 
                 <p class="mathtext"><img width=129 height=69 src="images/image018.png"></p>
 
-                <h3 id="HandlingCircumcentersOutsideTheEnvelope">Handling Circumcenters that are Outside the Envelope</h3>
+                <h3 id="HandlingCircumcentersOutsideTheEnvelope">Handling circumcenters that are outside the envelope</h3>
 
                 <p>The figures shown above illustrate a case where all the
                     circumcenters required for the area calculations were inside the envelope. In
