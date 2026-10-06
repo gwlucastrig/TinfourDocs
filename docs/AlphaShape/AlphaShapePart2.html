@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="G.W. Lucas">
     <title>Implementation details for a 2D alpha shape utility</title>
-    <link rel="stylesheet" href="../css/text.css" />
-    <link rel="stylesheet" href="../css/layout.css" />
+    <link rel="stylesheet" href="../css/text.css" >
+    <link rel="stylesheet" href="../css/layout.css" >
 </head>
 
 
@@ -59,7 +59,7 @@
 
 
             <img width="320" height="335" alt="Triangulation A,B,C,D"
-                 title="Delaunay triangulation for 4 points" src="images2/TinfourPreliminaries1.png"/>
+                 title="Delaunay triangulation for 4 points" src="images2/TinfourPreliminaries1.png">
 
             <p>The following details will be relevant to our discussion of the Tinfour algorithms
                 for constructing an AlphaShape from a Delaunay triangulation.</p>
@@ -67,7 +67,7 @@
             <ul>
                 <li>Tinfour Delaunay triangulations implement a collection of vertices and edges.
                     Triangles are not actively maintained in memory, but may be constructed on an as-needed basis.</li>
-                <li>In the classic Delaunay triangulation, pairs of vertices are linked together by bi-directional
+                <li>In the classic Delaunay triangulation, pairs of vertices are linked together by bidirectional
                     edges.  Tinfour uses an "edge-pair" structure in which two <strong>single-direction edges</strong>
                     are coupled together, one edge for each direction of traversal.</li>
                 <li>Each Tinfour edge carries a reference to a corresponding "dual" edge that supports
@@ -78,8 +78,8 @@
                     it is created. These index values allow an application to maintain
                     supplemental information about the edges they represent.</li>
                 <li>To form triangles, each Tinfour edge is linked to two other edges.
-                    These linked edges are referred to the "forward" edge and the "reverse"
-                    edge. The Tinfour API provides methods for obtaining references to each linked edge
+                    These linked edges are referred to the "forward" and "reverse"
+                    edges. The Tinfour API provides methods for obtaining references to each linked edge
                     (forward, reverse, and dual).</li>
                 <li>When three edges are linked together to form a triangle,
                     the triangle is always specified in counterclockwise order.</li>
@@ -90,7 +90,7 @@
                     Tutorial Using Edge Based Techniques</a>.</p>
 
             <h1 id="BuildingAnAlphaShape">Building an alpha shape</h1>
-            <p>The Tinfour technique for building an alpha is a three-step process:</p>
+            <p>The Tinfour technique for building an alpha shape is a three-step process:</p>
             <ol>
                 <li>Create a Delaunay triangulation from a set of
                     scattered data points</li>
@@ -160,7 +160,7 @@
 
             <img width="780" height="390" alt="Delaunay and Alpha Circles"
                  title="Relationship between Delaunay and alpha circles"
-                 src="images2/TinfourPreliminaries2.png"/>
+                 src="images2/TinfourPreliminaries2.png">
 
             <h2>Classifying an edge as a border or interior component</h2>
             <p>When both alpha circles associated with an segment (pair of edges)
@@ -214,13 +214,13 @@
 
             <img width="780" height="500" alt="Alpha shape with sweeps"
                  title="Alpha shape construction using counterclockwise sweeps"
-                 src="images2/AlphaShapeWithOuterSweeps.png"/>
+                 src="images2/AlphaShapeWithOuterSweeps.png">
 
             <h2 id="TheBigSweep">The sweep</h2>
             <p>The sweep process begins with an
                 arbitrarily chosen border edge.
                 As described above, the border edge faces outward from the alpha shape.
-                The logic adds the dual of the border edge (the dual is the inner facing edge)
+                The logic adds the dual of the border edge (the dual is the inner-facing edge)
                 to the polygon. The process then searches the edges that are adjacent to the
                 border by sweeping in a counterclockwise order around its initial point
                 (in the figure, the sweeps are shown as loops ending with arrows). The polygon is considered
@@ -249,7 +249,7 @@
                 edge 21 as the starting edge of the polygon building loop.
                 Its dual, edge 20, is interior to the alpha shape and would be
                 marked as covered. The polygon building logic adds covered
-                edges to the alpha-shape polygon and uses the border edges
+                edges to the alpha shape polygon and uses the border edges
                 to navigate its perimeter. So once edge 20 is added to the polygon,
                 the polygon building logic sweeps counterclockwise.
             </p>
@@ -270,7 +270,7 @@
                 the sweep would have to traverse across four α-exposed edges in order
                 to reach the next border segment (edge 501). </p>
 
-            <img width="780" height="536" alt="ConvexSection" src="images2/AlphaShapeSectionS2.png"/>
+            <img width="780" height="536" alt="ConvexSection" src="images2/AlphaShapeSectionS2.png">
 
             <p>The observation that the traversal must sometimes cross multiple edges
                 leads to a more complete description of the traversal rule:</p>
@@ -307,7 +307,7 @@
                 simplified by reclassifying edges</p>
             <img width="780" height="400" alt="Reclassify edges"
                  title="Edges to be reclassified"
-                 src="images2/AlphaShapeEdgeClassification4.png" />
+                 src="images2/AlphaShapeEdgeClassification4.png">
             <p>The gray filled areas in the image indicates Tinfour's interpretation of
                 a modified alpha shape. The right panel shows a close up of the area in the letter A
                 with edges color coded to show their classifications. Once again,
@@ -367,7 +367,7 @@
 
             <img width="780" height="400" alt="Reclassification comparison"
                  title="Reclassification rule reduces holes and cavities"
-                 src="images2/AlphaShapeCompareReclassification.png" />
+                 src="images2/AlphaShapeCompareReclassification.png">
 
 
             <h1 id="algorithmIntro">The algorithm and the implementation</h1>
@@ -482,7 +482,7 @@
                 </li>
                 <li>Initialize a new polygon.</li>
                 <li>Set a traversal edge reference, e, to the starting edge: e=starting edge</li>
-                <li>The polygon-build loop: Repeat the following steps:
+                <li>The polygon building loop: Repeat the following steps:
                     <ol class="innerList">
                         <li>If the edge is a border or a covered edge:
                             <ul>
@@ -500,7 +500,7 @@
                                     This action effectively skips over the uncovered edge</li>
                             </ul>
                         </li>
-                        <li>The polygon-build loop terminates when e equals the starting edge.</li>
+                        <li>The polygon building loop terminates when e equals the starting edge.</li>
                     </ol>
                 </li>
             </ol>
@@ -572,7 +572,7 @@
                 which the assumption is inadequate. Further investigation is
                 required.</p>
 
-            <h2>An example application using the Tinfour alpha-shape API</h2>
+            <h2>An example application using the Tinfour alpha shape API</h2>
             <p>Finally, the illustrations included in this article were
                 created using applications built on top of the Tinfour
                 software library.  Tinfour includes an example

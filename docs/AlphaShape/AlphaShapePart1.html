@@ -39,17 +39,18 @@
                 <p>Recently, the Tinfour software project introduced a utility for creating 2D
                     alpha shapes based on the Delaunay triangulation<sup><a href="#Note1">[1]</a></sup>.
                     These notes provide a brief introduction to the alpha shape concept and describe
-                    implementation details for the utility. That information is intended to help developers use any
-                    alpha shape implementation to its best advantage (any implementation, not just ours).
-                    Also, our discussion of the techniques used in the Tinfour software should provide insights for
-                    developers who wish to extend the software or apply its ideas to their own application development.
+                    implementation details for the utility. That information is intended to help developers 
+					use any alpha shape implementation to its best advantage, regardless of implementation
+					details or origin. Also, our discussion of the techniques used in the Tinfour software 
+					should provide insights for developers who wish to extend the software
+					or apply its ideas to their own application development.
                 </p>
 
                 <h2 id="AboutTheAlphaShape">About the alpha shape</h2>
                 <p>
                     The figure below shows a set of scattered points that form a recognizable shape
-                    in the form of the letters "C" and "O".
-                    Human beings are adept at picking out shapes
+                    in the form of the letters C and O.
+                    Human beings are adept at identifying shapes
                     from visual cues, particularly when an image
                     presents planar data. For some applications, it may be useful to give a
                     computer a similar ability to construct a digital outline of a shape
@@ -76,7 +77,7 @@
                 <p>
                     So how do we select which edges belong to the underlying shape?
                     Intuitively, it seems that we can separate features based on the
-                    local density of the sample points.  Where points are massed close
+                    local density of the sample points.  Where points are densely clustered
                     together, we assume they belong to the same structure. Where points are
                     widely spaced, we assume they represent separate features.
                     Edelsbrunner's introduction of the alpha shape concept formalizes that
@@ -87,11 +88,11 @@
                     that intersect the endpoint vertices of the edge. The figure below
                     illustrates the geometry of the twin alpha circles.  In the alpha shape
                     specification, edges are classified as being “α-exposed” or “α-unexposed”
-                    depending on whether neighboring vertices appear within the alpha circles.
-                    If at least one of the circles associated with an edge is empty,
+                    depending on whether neighboring vertices lie within the alpha circles.
+                    If at least one of the circles associated with an edge is empty of neighboring vertices,
                     the edge is classified as α-exposed. If both circles contain neighboring
                     vertices, the edge is classified as α-unexposed. When the alpha shape is
-                    constructed, exposed edges are treated as being exterior to the alpha shape.
+                    constructed, exposed edges are treated as exterior to the alpha shape.
                     Unexposed edges are selected as belonging to the interior of the alpha shape.
                 </p>
 
@@ -136,7 +137,7 @@
                     For alpha values 1.0 and 0.5, the radius is small enough that many of
                     the points in the sample set are not incorporated into the alpha polygons.
                     Technically, these orphan vertices are also part of the alpha shape,
-                    but they do represent a slightly different implementation challenge.
+                    but they present a somewhat different implementation challenge.
                     The Tinfour AlphaShape logic collects these orphan vertices
                     into a separate list that can be accessed once the alpha
                     shape is constructed.
@@ -173,7 +174,7 @@
 
                 <h3 id="TinfourModifications">Tinfour modifications for border identification</h3>
                 <p>The Tinfour implementation modifies the classic alpha shape rule for identifying borders.
-                    In the classic alpha-shape definition, an edge is considered a border
+                    In the classic alpha shape definition, an edge is considered a border
 					if one alpha circle contains an input point and the other is empty.
                     In the Tinfour modification, an edge is treated as a border if one or both of the associated alpha
                     circles contain an input sample point, but all the contained points lie
@@ -186,7 +187,7 @@
                     alpha radius value, the difference between the results is not substantial.
                     But for smaller radius values, it can become significant.
                 </p>
-                <p>The figure below illustrates a case in which the classic alpha-shape
+                <p>The figure below illustrates a case in which the classic alpha shape
                     technique gives rise to small holes along the inside of the edges in the letter form.
                     These cavity features could be eliminated by increasing the radius,
                     but doing so would tend to fill in some of the tight corners in the shape.
@@ -200,13 +201,13 @@
 
                 <h3 id="SpecialConsiderations">Special consideration</h3>
                 <p>There are a few special considerations when applying the alpha-circle selection process.
-                    First off, for a reasonable choice of α, some edges in the Delaunay triangulation
+                    First, for a reasonable choice of α, some edges in the Delaunay triangulation
                     may be longer than the diameter of the alpha circle, 2α.  Long edges often
                     appear along the perimeter of the Delaunay triangulation, but as we saw in the figures
                     above they can also occur in empty or sparsely populated
                     areas in the data. The implementation described
                     in these notes specifies that edges of length greater than the diameter of the alpha circles
-                    are treated as exposed. Additionally, the classic alpha-shape specification treats the
+                    are treated as exposed. Additionally, the classic alpha shape specification treats the
                     alpha circles as open circles. So, a vertex lies within an alpha circle only
                     if its distance from the circle center is less than the radius.
                 </p>
@@ -293,14 +294,20 @@
                         https://graphics.stanford.edu/courses/cs268-11-spring/handouts/AlphaShapes/as_fisher.pdf</a>
                 </p>
                 <p>
-                    Hou, Jiawei & Yuan, Yijun & Schwertfeger, Sören. (2019). Area Graph: Generation of topological maps using the Voronoi diagram. 509-515. 10.1109/ICAR46387.2019.8981588.
+                    Hou, Jiawei & Yuan, Yijun & Schwertfeger, Sören. (2019). 
+					Area Graph: Generation of topological maps using the Voronoi diagram. 509-515.
+					10.1109/ICAR46387.2019.8981588.
                     Accessed July 2025 from <a href="https://doi.org/10.48550/arXiv.1910.01019">https://doi.org/10.48550/arXiv.1910.01019</a>
                 </p>
                 <p>
-                    Trevor, Alexander & III, Rogers & Christensen, Henrik. (2012). Planar surface SLAM with 3D and 2D sensors. Proceedings - IEEE International Conference on Robotics and Automation. 10.1109/ICRA.2012.6225287.
+                    Trevor, Alexander & III, Rogers & Christensen, Henrik. (2012). 
+					Planar surface SLAM with 3D and 2D sensors. 
+					Proceedings - IEEE International Conference on Robotics and Automation. 10.1109/ICRA.2012.6225287.
                 </p>
                 <p>
-                    Weingarten, J. & Siegwart, R. (2006).  “3D SLAM using planar segments”. In: 2006 IEEE/RSJ International Conference on Intelligent Robots and Systems. October 2006, pp. 3062–3067. DOI: 10.1109/IROS.2006.282245.
+                    Weingarten, J. & Siegwart, R. (2006).  “3D SLAM using planar segments”. 
+					In: 2006 IEEE/RSJ International Conference on Intelligent Robots and Systems.
+					October 2006, pp. 3062–3067. DOI: 10.1109/IROS.2006.282245.
                 </p>
         </div>
     </div>

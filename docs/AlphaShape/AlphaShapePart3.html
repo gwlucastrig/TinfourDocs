@@ -54,13 +54,15 @@
                         alpha circle selection criterion</a>.</p>
 
                 <h1 id="AlphaCircleCalculation">The alpha circle calculation</h1>
-                <p>The key calculation needed to construct an alpha circle is to find the centers
+                <p>The key calculation needed to determine whether an edge is alpha exposed is
+    				is to compute the geometry of the alpha circles associated with that edge.
+					To do so, we find the centers
                     for two circles of radius <i>r</i> that intersect a line segment of length
                     <i>2r</i> or less. This calculation can be accomplished using basic algebra,
                     though a software implementation needs to make a few adjustments to compensate
                     for the limits of floating-point arithmetic.  In particular, when processing
                     geospatial data, we are often faced with coordinates that are separated by small
-                    distances but have a large magnitude. And, under some circumstances, calculations
+                    distances but have a large magnitude. Under some circumstances, calculations
                     with large-magnitude values suffer a loss of precision when low-order digits
                     drop out of addition or subtraction operations. So the calculation
                     below uses a simple offsetting transformation to reduce the magnitude
@@ -169,12 +171,14 @@
                 </table>
                 <p>Designating the values of <i>x</i> as <i>x<sub>0</sub></i> and <i>x<sub>1</sub></i>,
                     compute  <i>y<sub>0</sub></i> and <i>y<sub>1</sub></i> using formula [2].
-                    Then for each coordinate pair, we have circle centers
+                    Then for each coordinate pair, we have circle centers</p>
+					
                 <table class="math">
                     <tr>
                         <td class="math1"><img src="math2/image019.png"></td>
                     </tr>
                 </table>
+				
                 <p>Special cases exist when the line segment is of length <i>2r</i>
                     (the quadratic has a single solution), length greater than <i>2r</i>
                     (the quadratic has no solution), and the line segment is of zero length
@@ -203,7 +207,7 @@
                 <p>
                     This expression closely resembles expression [2] which gave
                     us <i>y</i> as a function of <i>x</i>.
-                    The rest of the alpha-circle calculation follows in a manner similar
+                    The rest of the alpha circle calculation follows in a manner similar
                     to the steps above: solve the quadratic equation for <i>y</i>
                     and compute the two values
                     <i>x<sub>0</sub></i> and <i>x<sub>1</sub></i>
@@ -230,8 +234,8 @@
                 information as part of its logic for constructing the alpha shape.
                 So, when computing the alpha circle centers,
                 Tinfour ensures that the solutions are given in order
-                so that  the circle center to the left of the line segment is given first
-                and the circle center to the right of the line segment is given second.</p>
+                so that the circle center to the left of the line segment is listed first
+                and the circle center to the right of the line segment is listed second.</p>
 
         </div>
     </div>
