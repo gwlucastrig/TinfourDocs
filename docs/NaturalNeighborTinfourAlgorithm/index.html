@@ -7,6 +7,7 @@
         <title>A Fast Algorithm for Natural Neighbor Interpolation</title>
         <link rel="stylesheet" href="../css/text.css">
         <link rel="stylesheet" href="../css/layout.css">
+        <link rel="stylesheet" href="../css/sidebar.css">
     </head>
 
 
@@ -21,6 +22,46 @@
                 </ul>
             </div>
 
+            <aside id="sidebar" aria-labelledby="contents-heading">
+                <h2 id="contents-heading">Contents</h2>
+                <nav aria-label="Document sections">
+                    <ul>
+                        <li><a href="#Introduction">Introduction</a></li>
+                        <li><a href="#AboutNaturalNeighborInterpolation">About Natural Neighbor Interpolation</a></li>
+                        <li><a href="#HowNaturalNeighborInterpolationWorks">How Natural Neighbor Interpolation works</a>
+                            <ul>
+                                <li><a href="#SibsonsTechnique">Sibson's technique</a></li>
+                                <li><a href="#ChallengesOfTheVoronoiDiagram">Challenges of the Voronoi diagram</a></li>
+                                <li><a href="#SolutionUsingTheDelaunayTriangulation">A solution using the Delaunay triangulation</a></li>
+                                <li><a href="#HowTheDelaunayTriangulationModelsTheVoronoiDiagram">How the Delaunay triangulation models the Voronoi diagram</a></li>
+                                <li><a href="#ModelingAVoronoiInsertion">Modeling a Voronoi insertion</a></li>
+                                <li><a href="#TheAreaCalculations">The area calculations</a>
+                                    <ul>
+                                        <li><a href="#CalculatingThePreInsertionAreaComponent">Pre-insertion area component</a></li>
+                                        <li><a href="#CalculatingThePostInsertionAreaComponent">Post-insertion area component</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#TheInterpolatedResult">The Interpolated Result</a></li>
+                                <li><a href="#HandlingCircumcentersOutsideTheEnvelope">Circumcenters outside the envelope</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#DoesItWork">Does it work?</a>
+                            <ul>
+                                <li><a href="#IsItFast">Is it fast?</a></li>
+                                <li><a href="#IsItAccurate">Is it accurate?</a>
+                                    <ul>
+                                        <li><a href="#TestForCorrectness">Test for correctness</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a href="#FutureWork">Future work</a></li>
+                        <li><a href="#Conclusion">Conclusion</a></li>
+                        <li><a href="#References">References</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
             <div id="notescontent">
 
                 <div class="titleblock">
@@ -31,7 +72,7 @@
                 </div>
 
 
-                <h1>Introduction</h1>
+                <h1 id="Introduction">Introduction</h1>
 
                 <p>The Tinfour open-source software library implements a fast and accurate  algorithm
                     for Natural Neighbor Interpolation. These
@@ -47,7 +88,7 @@
                     The discussion below draws heavily on the concepts, terminology, and conventions introduced in that
                     article.</p>
 
-                <h2>About Natural Neighbor Interpolation</h2>
+                <h2 id="AboutNaturalNeighborInterpolation">About Natural Neighbor Interpolation</h2>
 
                 <p>Natural Neighbor Interpolation (NNI) estimates values for a
                     surface constructed from a collection of irregularly distributed sample points.
@@ -58,7 +99,7 @@
                     visually pleasing representation of a surface that faithfully preserves data
                     values at sample points.</p>
 
-                <h2>How Natural Neighbor Interpolation works</h2>
+                <h2 id="HowNaturalNeighborInterpolationWorks">How Natural Neighbor Interpolation works</h2>
 
                 <p>The Natural Neighbor concept was introduced by Robin Sibson in an article published
                     in 1981 (Sibson, 1981). At the time, Sibson was exploring the properties of
@@ -79,7 +120,7 @@
 
                 <p> </p>
 
-                <h3>Sibson's technique</h3>
+                <h3 id="SibsonsTechnique">Sibson's technique</h3>
 
                 <p>In his 1981 article, Sibson considers what happens when a new point
                     is inserted into the Voronoi diagram at the position where one wishes to obtain
@@ -104,7 +145,7 @@
 
                 <p class="mathtext"><img width=418 height=69 src="images/image005.png"></p>
 
-                <h3>Challenges of the Voronoi diagram</h3>
+                <h3 id="ChallengesOfTheVoronoiDiagram">Challenges of the Voronoi diagram</h3>
 
                 <p>One of the drawbacks of Sibson's original proposal was the
                     large computational overhead required to perform an interpolation. The
@@ -118,7 +159,7 @@
                     replacing the Voronoi diagram with a related structure, the
                     <a href="../DelaunayIntro/index.html">Delaunay triangulation</a>.</p>
 
-                <h3>A solution using the Delaunay triangulation</h3>
+                <h3 id="SolutionUsingTheDelaunayTriangulation">A solution using the Delaunay triangulation</h3>
 
                 <p>Because of its relative simplicity and ease of
                     implementation, the Delaunay provides an attractive alternative to the Voronoi
@@ -152,7 +193,7 @@
                     a good historical overview a number of different implementations of the Natural
                     Neighbor concept.</p>
 
-                <h3>How the Delaunay triangulation models the Voronoi diagram</h3>
+                <h3 id="HowTheDelaunayTriangulationModelsTheVoronoiDiagram">How the Delaunay triangulation models the Voronoi diagram</h3>
 
                 <p>To show how the Delaunay is used to model the Voronoi, it is
                     necessary to introduce the concept of a <i>circumcircle</i>. For any properly formed
@@ -190,7 +231,7 @@
                     overlaid in the composite image shown below.</p>
                     <img border=0  width=410 height=514 src="images/VoronoiAndDelaunayOverlay.png">
 
-                <h3>Modeling a Voronoi insertion</h3>
+                <h3 id="ModelingAVoronoiInsertion">Modeling a Voronoi insertion</h3>
 
                 <p>Having introduced the relationship between the Voronoi and
                     Delaunay, we can now consider how the Delaunay triangulation can be used to model
@@ -263,7 +304,7 @@
                 </ol>
 
 
-                <h3>The area calculations</h3>
+                <h3 id="TheAreaCalculations">The area calculations</h3>
 
                 <p>For each vertex in the Bowyer-Watson envelope, we
                     compute area values for the pre-insertion and post-insertion states of the Voronoi
@@ -279,7 +320,7 @@
                     the contribution of a single line segment. In the case of the last segment in
                     the polygon, where <i>i</i> equals <i>n</i>, the index <i>n+1</i> wraps around to 1.</p>
 
-                <h3>Calculating the pre-insertion area component</h3>
+                <h3 id="CalculatingThePreInsertionAreaComponent">Calculating the pre-insertion area component</h3>
 
                 <p>The figure below illustrates the geometry for a calculation
                     of the pre-insertion area. We label the vertices from the Bowyer-Watson
@@ -319,7 +360,7 @@
                     assignment of indices, the computation can be applied for each of the vertices
                     in the Bowyer-Watson envelope.</p>
 
-                <h3>Calculating the post-insertion area component</h3>
+                <h3 id="CalculatingThePostInsertionAreaComponent">Calculating the post-insertion area component</h3>
 
                 <p>The figure below illustrates the geometry for a calculation
                     of the post-insertion area for vertex <i>B<sub>2</sub></i>. Again, we note that
@@ -353,7 +394,7 @@
                     the expression results in a small but measurable improvement in the accuracy
                     of the arithmetic calculations performed by the interpolator.</p>
 
-                <h3>The Interpolated Result</h3>
+                <h3 id="TheInterpolatedResult">The Interpolated Result</h3>
 
                 <p>When the weights for all vertices in the Bowyer-Watson envelope
                     are computed, then the weights for each vertex can be normalized as:</p>
@@ -368,7 +409,7 @@
 
                 <p class="mathtext"><img width=129 height=69 src="images/image018.png"></p>
 
-                <h3>Handling Circumcenters that are Outside the Envelope</h3>
+                <h3 id="HandlingCircumcentersOutsideTheEnvelope">Handling Circumcenters that are Outside the Envelope</h3>
 
                 <p>The figures shown above illustrate a case where all the
                     circumcenters required for the area calculations were inside the envelope. In
@@ -380,12 +421,12 @@
                     the area computation. Thus, they make no contribution to the overall sum. No special
                     handling is required.</p>
 
-                <h1>Does it work?</h1>
+                <h1 id="DoesItWork">Does it work?</h1>
 
                 <p>At the beginning of this article, I claimed that the algorithm it presents is fast and accurate.
                     Let's see if the implementation works as advertised.</p>
 
-                <h2>Is it fast?</h2>
+                <h2 id="IsItFast">Is it fast?</h2>
                 <p>We can test the speed of the implementation by taking a substantial input data set
                     and performing a large number of interpolations. For these notes, I used a Lidar-based elevation survey
                     (Pennsylvania, 2006, file 15001220PAS.las). This file contained a set of 1873220
@@ -443,7 +484,7 @@
                     interpolator is sufficiently fast for many geospatial and geophysical analysis
                     applications.</p>
 
-                <h2 id="is-it-accurate">Is it accurate?</h2>
+                <h2 id="IsItAccurate">Is it accurate?</h2>
 
                 <p>Given a set of unstructured sample points collected at
                     arbitrary positions over a surface (elevation, temperature, electric potential,
@@ -456,7 +497,7 @@
                     of a Natural Neighbor Interpolation software system, we require some means to verify
                     the correctness of the implementation.</p>
 
-                <h3 id="test-for-correctness">A test for the correctness of the implementation</h3>
+                <h3 id="TestForCorrectness">A test for the correctness of the implementation</h3>
                 <p>Fortunately, Sibson's original work leads to a
                     straightforward and unambiguous test that allows us to judge whether an implementation
                     is correct. Although this test has been largely overlooked in the published
@@ -522,7 +563,7 @@
                     it has not been applied elsewhere. But it has the potential for use beyond the Tinfour project.</p>
 
 
-                <h1>Future work</h1>
+                <h1 id="FutureWork">Future work</h1>
 
                 <p>Although the Tinfour Natural
                     Neighbor Interpolator is useful as implemented, there are opportunities for
@@ -553,7 +594,7 @@
                     for this issue is an open problem in the investigation of Natural Neighbor
                     Interpolation.</p>
 
-                <h1>Conclusion</h1>
+                <h1 id="Conclusion">Conclusion</h1>
 
                 <p>These notes covered the major elements of the algorithm used
                     by the Tinfour software library. Additional details are described by the
@@ -563,7 +604,7 @@
                     <a href="http://tinfour.org">http://tinfour.org</a></p>
 
 
-                <h1>References</h1>
+                <h1 id="References">References</h1>
 
                 <p>Bourke, P. (1989). Triangulate &mdash; Efficient triangulation algorithm suitable for terrain modeling.<br>
                     Accessed February 2021 from <a href="http://paulbourke.net/papers/triangulate/">
