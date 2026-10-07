@@ -74,7 +74,7 @@
 			<img class="center" src="images/UniformDensityTessellation.png" 
 			alt="Delaunay triangulation from points with uniform spacing" 
 			width="600" height="259" border="2" >
-			<figcaption align="center">Figure 1 - Triangular mesh with uniform spacing..</figcaption>
+			<figcaption>Figure 1 - Triangular mesh with uniform spacing..</figcaption>
 		    </figure>
 
 		    <p>
@@ -109,7 +109,7 @@
 
 		    <figure>
 			<img src="images/SideBySide.png" alt="Circumcircles for the Delaunay criterion" width="800" height="400" >
-			<figcaption align="center">Figure 2 - Circumcircles for the Delaunay criterion.</figcaption>
+			<figcaption>Figure 2 - Circumcircles for the Delaunay criterion.</figcaption>
 		    </figure>
 
 		    <p>There are a number of algorithms for constructing a Delaunay triangulation.
@@ -124,8 +124,8 @@
 			    minimum average angle. Thus, the Delaunay tends to avoid skinny triangles.</li>
 		    </ol>
 
-		    <p>The closest pair property tells us that the Delaunay supports the common-sense idea that
-			a sample is always treated as the neighbor of the sample that lies closest to it.
+		    <p>The closest pair property tells us that the Delaunay supports the common-sense idea
+			that a sample is always treated as a neighbor of the nearest sample.
 			For our purposes, that characteristic is reassuring.
 			The second property tells us that the Delaunay tends to form a set of triangles that are as robust
 			as possible (<i>i.e.</i> will have as a large a minimum angle as possible).
@@ -155,12 +155,13 @@
 			<figure>
 			<img src="images/DelaunayForGulfOfMexico.png" alt="Delaunay triangulation for the Golfo de México" 
 			border="1" width="800" height="462">
-			<figcaption align="center">Figure 3 - Delaunay triangulation for weather stations located over the Gulf of Mexico.</figcaption>
+			<figcaption>Figure 3 - Delaunay triangulation for weather stations located over the Gulf of Mexico.</figcaption>
 		    </figure>
 
 
 		    <h1 id="application">Applying the Delaunay to a sample spacing calculation</h1>
-		    Most software packages that construct a Delaunay triangulation include some method
+			
+		    <p>Most software packages that construct a Delaunay triangulation include some method
 		    for iterating through its component edges. There is, however, one complication when
 		    using the lengths of edges in the Delaunay triangulation as a way of evaluating sample
 		    spacing. Some of the edges near the perimeter of the triangulation do not follow the
@@ -178,13 +179,13 @@
 		    <p>In tabulating the distances between points in a Delaunay triangulation, it
 			is useful to omit those triangles that are associated with exterior edges.
 			Looking at the upper left of the figure, we see that the perimeter edge from vertex 4
-			down to vertex 0 is labled with edge-index 18. Edge 18 forms a triangle using vertex 10
+			down to vertex 0 is labeled with edge index 18. Edge 18 forms a triangle using vertex 10
 			with edges 58 and 10. Because the triangle with vertices 4, 0, and 10 is not strictly Delaunay conforming,
 			we exclude its three edges (18, 58, and 10) from the sample-distance tabulation.</p>
 
 		    <figure>
 			<img class="center" src="images/SampleSpacingPerimeter.png" alt="Delaunay triangulation with long edges near perimeter" width="540" height="499">
-			<figcaption align="center">Figure 4 - Delaunay triangulation with long edges near perimeter.</figcaption>
+			<figcaption>Figure 4 - Delaunay triangulation with long edges near perimeter.</figcaption>
 		    </figure>
 
 		    <p>The light blue polygon in the figure below covers the edges that would be added to the tabulation.
@@ -195,7 +196,7 @@
 
 		    <figure>
 			<img class="center" src="images/SampleSpacingInterior.png" alt="Relevant interior area" width="540" height="499">
-			<figcaption align="center">Figure 5 - Area included in sample-size tabulation.</figcaption>
+			<figcaption>Figure 5 - Area included in sample-size tabulation.</figcaption>
 		    </figure>
 
 			<h2>Constraint edges</h2>
@@ -204,7 +205,7 @@
 			When tabulating sample spacing for constrained Delaunay triangulations, constraint edges are generally
 			treated the same way as the perimeter edges described above. For more information on the use of constraints
 			in the Delaunay, see the Tinfour article<br><a href="../DelaunayIntroCDT/index.html">What is the
-			constrained Delaunay trianglation and why would you care?</a></p>
+			constrained Delaunay triangulation and why would you care?</a></p>
 			
 		    <h1>A real-world example</h1>
 
@@ -218,7 +219,7 @@
 
 		    <figure>
 			<img class="center" src="images/LakeOfTheArbuckles.jpg" alt="Lake of the Arbuckles" width="800" height="807">
-			<figcaption align="center">Figure 6 - Lake of the Arbuckles.</figcaption>
+			<figcaption>Figure 6 - Lake of the Arbuckles.</figcaption>
 		    </figure>
 
 			<p>Based on the information provided by the data publisher, we expect the distribution of
@@ -230,7 +231,7 @@
 
 		    <figure>
 			<img class="center" src="images/SampleSpacing.png" alt="Sample spacing for Lake of the Arbuckles" width="617" height="334">
-			<figcaption align="center">Figure 7 - Frequency of samples for distances from Lake of the Arbuckles survey.</figcaption>
+			<figcaption>Figure 7 - Frequency of samples for distances from Lake of the Arbuckles survey.</figcaption>
 		    </figure>
 
 		    <h1>Conclusion</h1>
