@@ -70,7 +70,7 @@
 
                 <p>Estimating the surface area for a body of water is straightforward. All we have to do is digitize
             the shoreline (accounting for islands, dams, inlets, and coves) and compute the area of the
-            enclosing polygons. Estimating volume is a harder because it requires information about
+            enclosing polygons. Estimating volume is harder because it requires information about
             the depth (or bottom elevation) at a large number of locations across the body of water.
             Information about depth (bathymetry) is usually collected using a differential global
             positioning system (DGPS) coupled to a sonar-based fathometer to perform bottom-depth
@@ -152,7 +152,7 @@
             the geometry of the shoreline when the reservoir is filled to capacity.
             The model uses the enclosing polygons to restrict the analysis to the part
             of the triangle mesh that covers the body of water
-            (see Lucas 2018,<a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html#WhyWeNeedConstraints" >
+            (see Lucas 2018, <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html#WhyWeNeedConstraints" >
             Why we need constraints</a>.</p>
 
                 <p>As the reservoir volume declines, the shoreline elevation follows. The amount of water in the column
@@ -181,7 +181,7 @@
                     However, the discrepancy in the results suggests that there may be opportunities for improving the SVM.
                     Let&#8217;s consider the differences in the two results and see if we find out what those opportunities may be.</p>
 
-                <table border=0 cellspacing=0 cellpadding=0>
+                <table  class="tight-table">
                     <thead>
                     <tr>
                         <th width=300 valign=top>&nbsp;</th>
@@ -239,7 +239,7 @@
                     our model requires some means of adjusting for the flat triangles.</p>
 
                 <p>We can gain insight into ways to improve the flat-triangle features by looking at the geometry of the mesh
-                    in areas where they form. The figure below illustrates the layout of flat triangles for a the southeast
+                    in areas where they form. The figure below illustrates the layout of flat triangles for the southeast
                     section of the reservoir. The dark line in the middle of the section consists of samples collected
                     by the survey vessel. The outline of the area is obtained from the digitized shoreline polygons.</p>
 
@@ -257,7 +257,7 @@
                     Adding those supplementary samples to the collection substantially reduces the overall area of
                     flat triangles in the mesh.</p>
 
-                <table border=0 cellspacing=0 cellpadding=0>
+                <table class="tight-table">
                     <thead>
                     <tr>
                         <th width=300 valign=top>&nbsp;</th>
@@ -306,14 +306,14 @@
                     bathymetry point D to M and S<sub>2</sub> from the shoreline vertex C to M. Inserting the new midpoint
                     vertex into the triangulation replaces the flat triangle ABC with two non-flat triangles.
                     It also has the benefit of slightly increasing the computed volume contribution for the area
-                    covered by the original triangle DBA.</p>
+                    covered by the original triangle ABC.</p>
 
                 <p>The flat-triangle remediation technique is a multi-pass process in which non-zero depth values gradually
                     diffuse into the near-shore area. Each iteration of the interpolation has a performance cost.
                     So the flat-triangle remediation increases the overall runtime for the SVM software. The results are shown below.
                     While the computed volume is still not a perfect match for the TWDB values, the interpolation did close the gap.</p>
 
-                <table border=0 cellspacing=0 cellpadding=0>
+                <table class="tight-table">
                     <thead>
                     <tr>
                         <th width=300 valign=top>&nbsp;</th>
@@ -358,7 +358,7 @@
                 <p>An interpolation process such as the one used in SVM necessarily makes assumptions about how the bottom behaves.
             In applying a linear interpolation, SVM treats the bottom as if it transitioned from shore elevation
             to bottom elevations at a fixed rate, with a constant slope. In real-world scenarios, that is sometimes true.
-            Sometimes, though, the bottom falls off quite steeply from the shore. And, in fact, one of the steepest drop offs
+            Sometimes, though, the bottom falls off quite steeply from the shore. And, in fact, one of the steepest drop-offs
             in Alan Henry Reservoir is in the immediate vicinity of the Montford Dam. It is probably not an accident,
             then, that one of the track lines for the survey vessel closely parallels the dam itself. By collecting
             soundings along the edge of the dam, the TWDB&#8217;s survey improved the fit of the bathymetry data to the
@@ -467,11 +467,11 @@
 
                 <h1 id="References">References</h1>
 
-                <p>GIS Geography (2018). Inverse Distance Weighting (IDW) Interpolation. Accessed May, 2019 from
+                <p>GIS Geography (2018). Inverse Distance Weighting (IDW) Interpolation. Accessed May 2019 from
                     <a href="https://gisgeography.com/inverse-distance-weighting-idw-interpolation">
                     https://gisgeography.com/inverse-distance-weighting-idw-interpolation</a></p>
 
-                <p>Lucas, G. (2018). Using the Delaunay to compute lake volume &#8211; Part 1: Concepts. Retrieved May, 2019 from
+                <p>Lucas, G. (2018). Using the Delaunay to compute lake volume &#8211; Part 1: Concepts. Retrieved May 2019 from
                     <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html">
                     https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html</a></p>
 
