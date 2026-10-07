@@ -90,10 +90,14 @@ ul,
 pre,
 table,
 address,
-fieldset,
-figure {
+fieldset  {
     margin-top: 5px;
     margin-bottom: 15px;
+}
+
+figure {
+	margin-top:    20px;
+	margin-bottom: 20px;
 }
 
 h1,
