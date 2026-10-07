@@ -93,8 +93,8 @@
                     is no identifiable structure in the placement of the sample positions.</p>
 					
 				<figure>
-                <img src="images/image001.png" alt="Natural Neighbor Interpolation of Surface Temperature" >
-				<figcaption>Figure 1 &ndash; Interpolation of surface temperature reports over the Mediterranean Basin.</figcaption>
+					<img src="images/image001.png" alt="Natural Neighbor Interpolation of Surface Temperature" >
+					<figcaption>Figure 1 &ndash; Interpolation of surface temperature reports over the Mediterranean Basin.</figcaption>
 				</figure>
 				
                 <p>To create the figure, I used the Tinfour implementation of
@@ -292,7 +292,7 @@
                     correspond to the areas in the contributed fragments from each sample. If you
                     add up the lambda weighting factors, you will find they total up 1. The sum of
                     the products gives us the interpolated temperature of 12.720 degrees, which is
-                    the natural-neighbor interpolant at the query points shown in Figure 4.</p>
+                    the natural-neighbor interpolant at the query points shown in Figure 4 below.</p>
  
 					<figure>
 						<img src="images/image009.png" alt="Natural Neighbor Interpolant" >
@@ -521,6 +521,38 @@
 
             </div>
         </div>
+ 
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sections = Array.from(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]'));
+                const links = Array.from(document.querySelectorAll('#sidebar a[href^="#"]'));
+
+                function activateCurrentSection() {
+                    const offset = window.scrollY + 120;
+                    let current = links[0] || null;
+
+                    for (const section of sections) {
+                        const sectionTop = section.offsetTop;
+                        if (sectionTop <= offset) {
+                            const matchingLink = document.querySelector('#sidebar a[href="#' + section.id + '"]');
+                            if (matchingLink) {
+                                current = matchingLink;
+                            }
+                        }
+                    }
+
+                    links.forEach(link => link.classList.toggle('active', link === current));
+                }
+
+                if (links.length) {
+                    activateCurrentSection();
+                    window.addEventListener('scroll', activateCurrentSection, { passive: true });
+                    window.addEventListener('hashchange', activateCurrentSection);
+                }
+            });
+        </script>
+ 
     </body>
 
 </html>

@@ -18,6 +18,8 @@
                     <li>|</li>
                     <li><a href="https://github.com/gwlucastrig/Tinfour">Code (GitHub)</a></li>
                     <li>|</li>
+                    <li><a href="../NaturalNeighborIntro/index.html">Introduction to Natural Neighbors</a></li>
+                    <li>|</li>
                 </ul>
             </div>
 
@@ -114,12 +116,17 @@
                     points that are closer to the defining sample point than any other sample. The
                     resulting structure covers the entire plane. The polygons in the interior
                     region of the Voronoi are closed and have finite area. Those to the outside of
-                    the structure are unbounded and have an infinite area. The figure below shows
+                    the structure are unbounded and have an infinite area. Figure 1 below shows
                     an example of a Voronoi diagram formed from a set of unstructured data
                     points.</p>
 
-                <img border=0 width=780 height=521 src="images/VoronoiAndSamples.png" alt="Voronoi diagram and samples" 
-                title="Sample points used to construct a Voronoi diagram">
+                <figure>
+                     <img width="780" height="521" src="images/VoronoiAndSamples.png" 
+					 alt="Voronoi diagram and samples" 
+                    title="Sample points used to construct a Voronoi diagram">
+                    <figcaption>Figure 1 &ndash; Voronoi diagram constructed from scattered data points.</figcaption>
+                </figure>
+                
 
                 <p> </p>
 
@@ -127,15 +134,19 @@
 
                 <p>In his 1981 article, Sibson considers what happens when a new point
                     is inserted into the Voronoi diagram at the position where one wishes to obtain
-                    an interpolated value. As the figure below shows, when a point is added to the
+                    an interpolated value. As Figure 2 below shows, when a point is added to the
                     set of unstructured samples, it leads to the creation of a new containing polygon.
                     The new polygon captures some of the area that was previously covered by its
                     neighbors. In Sibson's terminology, these neighboring polygons and their
                     associated sample points are the <i>natural neighbors</i> of the interpolation
-                    point. The process is illustrated in the figure below.</p>
+                    point. The process is illustrated in Figure 2 below.</p>
 
-                <img border=0 width=780 height=196  src="images/image002.png" 
-                alt="Insertion sequence" title="Inserting a query point into a Voronoi diagram">
+                <figure>
+                    <img width="780" height="196"  src="images/image002.png" 
+                    alt="Insertion sequence" title="Inserting a query point into a Voronoi diagram">
+                    <figcaption>Figure 2 &ndash; Inserting the query point into a Voronoi diagram.</figcaption>
+                </figure>
+ 
 
                 <p>Sibson's technique estimates a value for the interpolation point
                     by considering the relative area contributed by each polygon associated with the
@@ -202,15 +213,18 @@
                     necessary to introduce the concept of a <i>circumcircle</i>. For any properly formed
                     triangle, there exists a unique circle called the circumcircle that
                     passes through its three vertices. The center of the circumcircle is referred
-                    to as its <i>circumcenter</i>. The figure below illustrates two characteristics
+                    to as its <i>circumcenter</i>. Figure 3 below illustrates two characteristics
                     of a circumcircle that will be relevant later in these notes. First, the
                     circumcenter can lie outside the bounds of its defining triangle. And, second,
                     the circumcenter lies at the intersection of the three perpendicular bisectors
                     of the triangle edges (Weisstein, 2021).</p>
-
-                <p><img border=0 width=780 height=390 src="images/image006.jpg" 
-                alt="Sample points and corresponding circumcircle"
-                title="Sample points, triangles, and corresponding circumcircles"></p>
+                    
+                <figure>
+                    <img width="780" height="390" src="images/image006.jpg" 
+                    alt="Sample points and corresponding circumcircle"
+                    title="Circumcircles constructed from triangle vertices">
+                    <figcaption>Figure 3 &ndash; Circumcircles constructed from triangle vertices.</figcaption>
+                </figure>
 
                 <p>Circumcircles play an essential role in the creation of a
                     Delaunay triangulation. The characteristic that distinguishes the Delaunay from
@@ -225,14 +239,30 @@
 
                 <p>If a triangulation is properly Delaunay, then the
                     circumcenters defined by its members correspond directly to the vertices that
-                    form the Voronoi diagram. The images below illustrate the relationships between
+                    form the Voronoi diagram. The images in Figures 4 and 5 illustrate the relationships between
                     two representative graphs.</p>
+                <figure>
+                    <img width="830" height="554" alt="Voronoi and Delaunay" 
+                    title = "Delaunay triangulation and corresponding Voronoi diagram"
+                    src="images/VoronoiAndDelaunay.png">
+                    <figcaption>Figure 4 &ndash; Delaunay triangulation and corresponding Voronoi diagram.</figcaption>
+                </figure>
 
-                <img border=0 width=830 height=554 src="images/VoronoiAndDelaunay.png">
+                <br>
+                <br>
 
                 <p>These relationships become even more apparent when the two structures are
-                    overlaid in the composite image shown below.</p>
-                    <img border=0  width=410 height=514 src="images/VoronoiAndDelaunayOverlay.png">
+                    overlaid in the composite image shown in Figure 5 below.</p>
+                    
+                <figure>
+                     <img width="410" height="514" title = "Voronoi overlaid on Delaunay"
+                     alt = "Voronoi overlaid on Delaunay"
+                     src="images/VoronoiAndDelaunayOverlay.png">
+                    <figcaption>Figure 5 &ndash; Voronoi diagram overlaid on corresponding Delaunay triangulation.</figcaption>
+                </figure>
+
+                    
+                   
 
                 <h3 id="ModelingAVoronoiInsertion">Modeling a Voronoi insertion</h3>
 
@@ -250,7 +280,7 @@
                     based on two well-known papers that were published simultaneously in issue 24(2) of <i>The Computer Journal</i>
                     by Bowyer (1981) and Watson (1981). The key feature in this algorithm is the construction of a
                     structure that the Tinfour implementation calls the <i>Bowyer-Watson envelope</i>.
-                    The process is illustrated in the figure below. If a new vertex were introduced at the
+                    The process is illustrated in Figure 6 below. If a new vertex were introduced at the
                     interpolation point (shown as crosshairs in panel A), it would fall within the
                     bounds of one or more existing circumcircles. Because this situation would
                     violate the empty-circle property, edges are removed to create a cavity around
@@ -260,8 +290,14 @@
                     inserted vertex to the vertices in the Bowyer-Watson envelope as shown in panel
                     C. The empty-circle property is restored and the triangulation is, once again,
                     properly Delaunay.</p>
+                    
+                                        
+                <figure>
+                      <img width="770" height="313" alt="Delaunay insertion sequence" title="Delaunay insertion sequence"
+                      src="images/image009.png"> 
+                    <figcaption>Figure 6 &ndash; Inserting a new vertex into a Delaunay triangulation.</figcaption>
+                </figure>
 
-                <p><img border=0 width=770 height=313 src="images/image009.png"></p>
 
                 <p>To model the effects of the insertion process, the Natural
                     Neighbor Interpolator does not need to perform an actual insertion. All it
@@ -272,7 +308,7 @@
                     Voronoi diagram. This construction becomes a short-persistence data object that
                     is used for the Natural Neighbor calculation and then discarded.</p>
 
-                <p>The figure below shows the Bowyer-Watson envelope overlaid
+                <p>Figure 7 below shows the Bowyer-Watson envelope overlaid
                     on the depiction of the triangulation. The area in blue is the new polygon. The
                     region in pink covers the parts of the neighboring Voronoi cells that fall
                     within the envelope. Since the region of the Delaunay that lies outside the
@@ -282,8 +318,14 @@
                     Voronoi diagram are always outside the envelope, the interpolation code never
                     has to deal with infinite quantities (something that is often cumbersome in
                     software implementations).</p>
+                    
+                <figure>
+                    <img width="770" height="313" alt="New polygon insertion" 
+                    title="A new polygon (blue) inserted within the Bowyer-Watson envelope (pink)"
+                    src="images/image010.png">
+                    <figcaption>Figure 7 &ndash; A new polygon (blue) inserted within the Bowyer-Watson envelope (pink).</figcaption>
+                </figure>
 
-                <p><img border=0 width=770 height=313 src="images/image010.png"></p>
 
                 <p>With the underlying concepts in place, the interpolation
                     process can now be summarized as follows:</p>
@@ -310,7 +352,7 @@
 
                 <p>For each vertex in the Bowyer-Watson envelope, we
                     compute area values for the pre-insertion and post-insertion states of the Voronoi
-                    diagram using the <i>shoelace</i> formula which is also known as Gauss's area
+                    diagram using the <i>shoelace formula</i> which is also known as Gauss's area
                     formula. Given the Cartesian coordinates for a potentially irregular but
                     not self-intersecting polygon consisting of 3 or more vertices, the area is
                     computed as:</p>
@@ -324,7 +366,7 @@
 
                 <h3 id="CalculatingThePreInsertionAreaComponent">Calculating the pre-insertion area component</h3>
 
-                <p>The figure below illustrates the geometry for a calculation
+                <p>Figure 8 below illustrates the geometry for a calculation
                     of the pre-insertion area. We label the vertices from the Bowyer-Watson
                     envelope using the uppercase letter B. Vertex <i>B<sub>2 </sub></i>connects
                     to four other vertices within the bounds of the Bowyer-Watson envelope <i>B<sub>1</sub></i>,
@@ -346,7 +388,13 @@
                     differences of the pre and post-insertion areas, the constant values
                     drop out of the calculations.</p>
 
-                <img border=0 width=840 height=559 src="images/PreInsertionArea.png">
+                <figure>
+                    <img width="768" height="511" alt="Elements for pre-insertion area" 
+                    title="Elements for pre-insertion area"
+                        src="images/PreInsertionArea768.png">
+                        <figcaption>Figure 8 &ndash; Elements for pre-insertion area calculation.</figcaption>
+                </figure>
+             
 
                 <p>With these specifications, the pre-insertion
                     area for the vertex of interest is computed as</p>
@@ -357,14 +405,14 @@
                     triangles associated with vertex <i>B<sub>2</sub></i>. In the special case
                     where there is only a single interior triangle, the summation term is omitted.</p>
 
-                <p>The geometry shown in the figure above illustrates the
+                <p>The geometry shown in Figure 8 above illustrates the
                     computation for the Voronoi cell containing vertex B<sub>2</sub>. With the appropriate
                     assignment of indices, the computation can be applied for each of the vertices
                     in the Bowyer-Watson envelope.</p>
 
                 <h3 id="CalculatingThePostInsertionAreaComponent">Calculating the post-insertion area component</h3>
 
-                <p>The figure below illustrates the geometry for a calculation
+                <p>Figure 9 below illustrates the geometry for a calculation
                     of the post-insertion area for vertex <i>B<sub>2</sub></i>. Again, we note that
                     the Delaunay mesh is not actually modified. The computations are based on the
                     geometry that would result if vertex <i>U</i> were inserted at the
@@ -376,7 +424,13 @@
                     <i>G<sub>2</sub> = circumcenter(U, B<sub>2</sub>, B<sub>3</sub>)</i>.
                 </p>
 
-                <img border=0 width=840 height=559 src="images/PostInsertionArea.png">
+                <figure>
+                    <img width="768" height="511" alt="Elements for post-insertion area"
+                    title="Elements for post-insertion area"
+                    src="images/PostInsertionArea768.png">
+                        <figcaption>Figure 9 &ndash; Elements for post-insertion area calculation.</figcaption>
+                </figure>
+
 
                 <p>The post-insertion area component is computed as: </p>
 
@@ -413,7 +467,7 @@
 
                 <h3 id="HandlingCircumcentersOutsideTheEnvelope">Handling Circumcenters that are Outside the Envelope</h3>
 
-                <p>The figures shown above illustrate a case where all the
+                <p>Figures 8 and 9 shown above illustrate a case where all the
                     circumcenters required for the area calculations were inside the envelope. In
                     cases where they lie outside the envelope, the same formulation applies. The
                     fact that the edges of the Voronoi are perpendicular bisectors of the Delaunay
