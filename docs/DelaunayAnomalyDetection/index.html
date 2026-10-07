@@ -8,10 +8,29 @@
         <title>Anomaly detection using the Delaunay triangulation</title>
         <link rel="stylesheet" href="../css/text.css" >
         <link rel="stylesheet" href="../css/layout.css" >
+        <link rel="stylesheet" href="../css/sidebar.css" >
     </head>
 
 
     <body>
+        <div id="sidebar">
+            <nav>
+                <h2>Contents</h2>
+                <ul>
+                    <li><a href="#Introduction">Introduction</a></li>
+                    <li><a href="#Example">A real-world example</a></li>
+                    <li><a href="#TheTechnique">The Technique</a>
+                        <ul>
+                            <li><a href="#AcceptanceThresholds">Determining acceptance thresholds</a></li>
+                            <li><a href="#ElevationRefinement">Refining the test score to consider elevation</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#Conclusion">Conclusion</a></li>
+                    <li><a href="#Notes">Notes</a></li>
+                </ul>
+            </nav>
+        </div>
+
         <div id="notescontainer">
             <div id="notesheader">
                 <ul class="link-bar">
@@ -386,16 +405,15 @@ Washington goes from 0.4642 to -0.1922 °C/km.  </p>
 
 <table class="tight">
 <thead>
-<th>Station</th><th>E<sub>i,j</sub> (m)</th><th>T<sub>i,j</sub> (°C)</th><th>S<sub>i,j</sub> (m)</th><th>R<sub>i,j</sub> (°C/km)</th><th>T<sub>Γ i,j</sub> (°C)</th><th>R<sub>Γ i,j</sub> (°C/km)</th><th>Weighted<br>Contribution</th>
+<th>Station</th><th>E<sub>i,j</sub> (m)</th><th>T<sub>i,j</sub> (°C)</th><th>S<sub>i,j</sub> (m)</th><th>R<sub>i,j</sub> (°C/km)</th><th>T<sub>Γ i,j</sub> (°C)</th><th>R<sub>Γ i,j</sub> (°C/km)</th><th>λ<sub>i,j</sub></th><th>Contribution</th>
 </thead>
 <tbody>
-<tr><td class="tight">KMWN</td><td class="num">1909</td><td class="num">-11</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td></tr>
-
-<tr><td class="tight">KHIE</td><td class="num">327</td><td class="num">3</td><td class="num">22.8</td><td class="num">-0.6147</td><td class="num">-4.9</td><td class="num">-0.2674</td><td class="num">-0.1242</td></tr>
-<tr><td class="tight">K1P1</td><td class="num">154</td><td class="num">3</td><td class="num">65.2</td><td class="num">-0.2148</td><td class="num">-5.8</td><td class="num">-0.0802</td><td class="num">-0.0028</td></tr>
-<tr><td class="tight">KIZG</td><td class="num">138</td><td class="num">2</td><td class="num">42.1</td><td class="num">-0.3326</td><td class="num">-5.9</td><td class="num">-0.1222</td><td class="num">-0.0384</td></tr>
-<tr><td class="tight">KBML</td><td class="num">353</td><td class="num">3</td><td class="num">36.4</td><td class="num">-0.3573</td><td class="num">-5.8</td><td class="num">-0.1435</td><td class="num">-0.0268</td></tr>
-<tr><td class="tight">Test score</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">-0.1922</td></tr>
+<tr><td class="tight">KMWN</td><td class="num">1909</td><td class="num">-11</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td><td class="cen">---</td></tr>
+<tr><td class="tight">KHIE</td><td class="num">327</td><td class="num">3</td><td class="num">22.8</td><td class="num">-0.6147</td><td class="num">-4.9</td><td class="num">-0.2674</td><td class="num">0.3461</td><td class="num">-0.0925</td></tr>
+<tr><td class="tight">K1P1</td><td class="num">154</td><td class="num">3</td><td class="num">65.2</td><td class="num">-0.2148</td><td class="num">-5.8</td><td class="num">-0.0802</td><td class="num">0.3383</td><td class="num">-0.0271</td></tr>
+<tr><td class="tight">KIZG</td><td class="num">138</td><td class="num">2</td><td class="num">42.1</td><td class="num">-0.3326</td><td class="num">-5.9</td><td class="num">-0.1222</td><td class="num">0.2522</td><td class="num">-0.0308</td></tr>
+<tr><td class="tight">KBML</td><td class="num">353</td><td class="num">3</td><td class="num">36.4</td><td class="num">-0.3573</td><td class="num">-5.8</td><td class="num">-0.1435</td><td class="num">0.0634</td><td class="num">-0.0091</td></tr>
+<tr><td class="tight">Test score</td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num"></td><td class="num">-0.1922</td></tr>
 </tbody>
 </table>
 
