@@ -467,6 +467,44 @@ Accessed 17 Dec 2025 from <a href=" https://doi.org/10.26023/YHA4-K6FJ-W005 ">ht
 
 		 </div>
         </div>
+
+        <script>
+            (function() {
+                const sectionIds = Array.from(document.querySelectorAll('h1[id], h2[id]'))
+                    .map(node => node.id)
+                    .filter(Boolean);
+                const navLinks = Array.from(document.querySelectorAll('#sidebar nav a[href^="#"]'));
+
+                function setActiveLink(id) {
+                    navLinks.forEach(link => {
+                        const isActive = link.getAttribute('href') === '#' + id;
+                        link.classList.toggle('active', isActive);
+                    });
+                }
+
+                if (sectionIds.length > 0) {
+                    const initialId = location.hash ? location.hash.substring(1) : sectionIds[0];
+                    if (sectionIds.includes(initialId)) {
+                        setActiveLink(initialId);
+                    }
+                }
+
+                const observer = new IntersectionObserver(function(entries) {
+                    const visibleEntry = entries
+                        .filter(entry => entry.isIntersecting)
+                        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+                    if (visibleEntry) {
+                        setActiveLink(visibleEntry.target.id);
+                    }
+                }, {
+                    rootMargin: '-20% 0px -55% 0px',
+                    threshold: [0, 0.25, 0.5, 0.75, 1]
+                });
+
+                document.querySelectorAll('h1[id], h2[id]').forEach(section => observer.observe(section));
+            })();
+        </script>
     </body>
 
 </html>
