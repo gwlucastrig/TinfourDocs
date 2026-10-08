@@ -7,10 +7,35 @@
         <title>Estimating sample spacing using the Delaunay</title>
         <link rel="stylesheet" href="../css/text.css" />
         <link rel="stylesheet" href="../css/layout.css" />
+        <link rel="stylesheet" href="../css/sidebar.css" />
     </head>
 
 
     <body>
+        <div id="sidebar">
+            <nav>
+                <h2>Contents</h2>
+                <ul>
+                    <li><a href="#Introduction">Introduction</a></li>
+                    <li><a href="#Preliminaries">Preliminaries</a>
+                        <ul>
+                            <li><a href="#uniformcase">The uniform density case</a></li>
+                            <li><a href="#delaunay-criterion">The Delaunay criterion</a></li>
+                            <li><a href="#nonuniform">Non-uniform spacing</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#application">Applying the Delaunay</a>
+                        <ul>
+                            <li><a href="#constraints">Constraint edges</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#real-world">Real-world example</a></li>
+                    <li><a href="#Conclusion">Conclusion</a></li>
+                    <li><a href="#References">References</a></li>
+                </ul>
+            </nav>
+        </div>
+
         <div id="notescontainer">
             <div id="notesheader">
                 <ul class="link-bar">
@@ -58,7 +83,7 @@
 			which samples are treated neighbors and can be used to compute sample spacing.
 		    </p>
 
-		    <h1>Preliminaries</h1>
+		    <h1 id="Preliminaries">Preliminaries</h1>
 			<p>To see how the Delaunay triangulation is used to identify neighboring sample pairs,
 			we will take a look at a few underlying ideas for the technique. Specific issues in using
 			the Delaunay will be discussed in the section <a href="#application">Applying the Delaunay to a sample spacing calculation</a> below.</p>
@@ -92,7 +117,7 @@
 			So the Delaunay-based technique that works for a collection of non-uniformly spaced samples also
 			applies to the uniform and nearly uniform cases.</p>
 
-		    <h2>The Delaunay criterion</h2>
+		    <h2 id="delaunay-criterion">The Delaunay criterion</h2>
 		    <p>A Delaunay triangulation links pairs of sample points to form triangles that conform
 			to the Delaunay criterion. The criterion itself is based on the idea that if we were to construct
 			a circumcircle from the three vertices of the triangle, no other vertices in the triangulation
@@ -135,7 +160,7 @@
 			will be as close to a uniform density as is feasible for a set of points.</p>
 
 
-		    <h2>The Delaunay triangulation with non-uniform spacing</h2>
+		    <h2 id="nonuniform">The Delaunay triangulation with non-uniform spacing</h2>
 
 		    <p>The figure below shows an example of a Delaunay triangulation constructed from
 			the locations of weather-reporting stations in the Gulf of Mexico region.
@@ -199,7 +224,7 @@
 			<figcaption>Figure 5 - Area included in sample-size tabulation.</figcaption>
 		    </figure>
 
-			<h2>Constraint edges</h2>
+			<h2 id="constraints">Constraint edges</h2>
 			<p>In some cases, a software application that uses a Delaunay triangulation may specify <i>constraints</i>
 			on the way edges are constructed. When that happens, some of the resulting edges may be non-Delaunay.
 			When tabulating sample spacing for constrained Delaunay triangulations, constraint edges are generally
@@ -207,7 +232,7 @@
 			in the Delaunay, see the Tinfour article<br><a href="../DelaunayIntroCDT/index.html">What is the
 			constrained Delaunay triangulation and why would you care?</a></p>
 			
-		    <h1>A real-world example</h1>
+		    <h1 id="real-world">A real-world example</h1>
 
 		    <p>Let's take a look at a real-world data set and compare how sample spacing computed using the Delaunay method compares
 			to specifications provided by the data's publisher. The figure below shows a map of the Lake of the Arbuckles,
@@ -235,7 +260,7 @@
 			<figcaption>Figure 7 - Frequency of samples for distances from Lake of the Arbuckles survey.</figcaption>
 		    </figure>
 
-		    <h1>Conclusion</h1>
+		    <h1 id="Conclusion">Conclusion</h1>
 		    To evaluate the distances between samples in a point-value data set, we
 		    need a method of determining which pairs of samples can be treated as neighbors.
 		    The properties of the Delaunay triangulation make it a good tool for that purpose.
@@ -246,7 +271,7 @@
 
 
 
-		    <h1>References</h1>
+		    <h1 id="References">References</h1>
 
 		    <p>Lucas, G. (2016). An introduction to the Delaunay triangulation.<br>
 			<a href="https://gwlucastrig.github.io/TinfourDocs/DelaunayIntro/index.html">
