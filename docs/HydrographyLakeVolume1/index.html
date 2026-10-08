@@ -16,7 +16,7 @@
                 <ul class="link-bar">
                     <li> <a href="https://gwlucastrig.github.io/TinfourDocs/">Home</a> </li>
                     <li>|</li>
-                    <li><a href="https://github.com/gwlucastrig/Tinfour">Code (Github)</a></li>
+                    <li><a href="https://github.com/gwlucastrig/Tinfour">Code (GitHub)</a></li>
                     <li>|</li>
                     <li><a href="../HydrographyLakeVolume2/index.html">Part 2</a></li>
                     <li>|</li>
@@ -39,7 +39,7 @@
                     to compute the volume of an enclosed body of water such as a lake or reservoir.
                     While computations of this type are usually performed using other methods,
                     the approach described below provides a good illustration of the uses and versatility
-                    of the Delaunay. As a test subject for this discussion, I will use two sets depth soundings and
+                    of the Delaunay. As a test subject for this discussion, I will use two sets of depth soundings and
                     digitized shoreline data for Lake Victoria in Africa. The first data set was posted by Greg Silsbe (Silsbe, 2015)
                     at the website <a href="https://figshare.com/articles/Lake_Victoria_Shapefiles/1494839/1" >Lake Victoria Shapefiles</a>.
                     It contains just over 12 thousand depth soundings.
@@ -47,7 +47,7 @@
                     <a href="https://www.salisbury.edu/academic-offices/science-and-technology/geography-and-geosciences/">Salisbury University</a>
                     and includes over 4 million soundings.</p>
 
-                    <p>The example code that I use in this article is available in the Tinfour software distribution
+                    <p>The example code used in this article is available in the Tinfour software distribution
                     in the class LakeVolumeExample.java.</p>
 
                 <p class="blocknote"><b>Note:</b> This article makes frequent references to the <i>Delaunay Triangulation</i>
@@ -93,7 +93,7 @@
                     these two products, it turns out that we need both kinds of data to make an effective
                     estimate of lake volume. I'll provide more details about that below.</p>
 
-                <img src="images/LakeVictoriaSoundings.png"/>
+                <img src="images/LakeVictoriaSoundings.png" alt="Distribution of Lake Victoria soundings">
 
                 <p>Both the soundings and the shoreline data for this project were extracted from <i>Shapefiles</i>,
                     an industry standard widely used in Geographic Information Systems (GIS).
@@ -110,21 +110,23 @@
                     calculations such as volume and surface area using simple algebra with no
                     special scaling or spherical geometry considerations.</p>
 
-                <p><a name="why_we_need_constraints"></a></p>
-
                 <h2 id="WhyWeNeedConstraints">Why we need constraints</h2>
+
+
 
                 <p>While we can build a Delaunay Triangulation using just the soundings as an
                     input, the soundings by themselves are not sufficient to make a good
                     estimate of lake volume. To see why this is so, consider the two images
                     shown below. The image on the left shows a Delaunay Triangulation
                     constructed from a subset of the bathymetry samples. As you can see,
-                    the outer bounds of the triangulation is a convex polygon. But, as the
+                    the outer boundary of the triangulation is a convex polygon. But, as the
                     image on the right shows, the shape of the shoreline polygon is emphatically
                     not convex. The image on the right was produced by adding "constraints"
                     to the triangulation before the image was rendered.</p>
 
-                <img src="images/ConstrainedDelaunayComparison.png"/>
+                <img src="images/ConstrainedDelaunayComparison.png" 
+				alt="Constraints establish lake boundaries" 
+				title="Constraints establish lake boundaries">
 
                 <h2 id="WhatTheConstraintsDo">What the constraints do</h2>
 
@@ -146,7 +148,7 @@
                     shown in gray. If you look closely, you will see that the edges that
                     show up inside islands are also drawn in gray.</p>
 
-                <img src="images/TinWithConstrainedEdges.png"/>
+                <img src="images/TinWithConstrainedEdges.png" alt="TIN with constrained edges" title="TIN with constrained edges">
 
                 <p>The shoreline also plays an important role because the area covered by
                     the soundings seldom reaches all the way to the shore. Survey vessels
@@ -264,14 +266,14 @@
                 <p>In 2020, investigators at <a href="https://www.salisbury.edu/" >Salisbury University</a> working under NSF Award 1518532
                     assembled a much higher resolution collection of sounding
                     data based on more recent survey information and map data (Hamilton, 2021).
-                    The data, contains "approximately" 4087217 million soundings as well as several analysis
+                    The data, contains 4087217 million soundings as well as several analysis
                     results. It is provided at <a href="https://dataverse.harvard.edu/dataverse/LakeVicFish" >LakeVicFish -- Harvard Dataverse</a>.
                     The investigators used a grid-based method (interpolation by Ordinary Kriging) to estimate the lake volume
                     rather than the Constrained Delaunay Triangulation method. To do so, they divided the lake area
-                    into grid with a 100-by-100 meter cell size. One of the design decisions an investigator makes
+                    into a grid with a 100-by-100 meter cell size. One of the design decisions an investigator makes
                     when using a grid-based technique is picking a grid-cell size that gives sufficiently fine
                     resolution to make a good estimate of the phenomenon being studied. In view of the fact
-                    that the cell size used for the Salisbury calculation was about one six-millionth of the overall area
+                    that the cell size used for the Salisbury calculation was about one six millionth of the overall area
                     of the lake, I'd say that their methodology is much, much more than adequate.</p>
 
                 <p>For their project, the Salisbury University team applied a revised methodology for digitizing
@@ -289,7 +291,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Lake Surface Area(water)</td>
+                            <td>Lake Surface Area (water)</td>
                             <td>57,886.42 km<sup>2</sup></td>
                         </tr>
                         <tr>
@@ -420,11 +422,12 @@
                     accessed April, 2021 from
                     <a href="https://www.mathpages.com/home/kmath393/kmath393.htm">https://www.mathpages.com/home/kmath393/kmath393.htm</a></p>
 
-                <p>Hamilton, S. (2021). High-resolution bathymetries and shorelines for the Great Lakes of the White Nile Basin (HRBS-GLWNB). Harvard Dataverse. 
+                <p>Hamilton, S. (2021). High-resolution bathymetries and shorelines for the Great Lakes of the White Nile Basin (HRBS-GLWNB).
+				Harvard Dataverse. 
                 Accessed November 2025 from
                 <a href="https://dataverse.harvard.edu/dataverse/GLWNB-2020">
                 https://dataverse.harvard.edu/dataverse/GLWNB-2020</a></p>
-                </a></p>
+              
                 
                 <p>Silsbe, Greg (2015). <i>Lake Victoria Shapefiles.</i> Web site accessed April, 2021 from
                     <a href="https://figshare.com/articles/Lake_Victoria_Shapefiles/1494839/1">https://figshare.com/articles/Lake_Victoria_Shapefiles/1494839/1</a></p>
