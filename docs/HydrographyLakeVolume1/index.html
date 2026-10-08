@@ -7,10 +7,31 @@
         <title>Lake Volume Part 1</title>
         <link rel="stylesheet" href="../css/text.css">
         <link rel="stylesheet" href="../css/layout.css">
+        <link rel="stylesheet" href="../css/sidebar.css">
     </head>
 
-
     <body>
+        <div id="sidebar">
+            <nav>
+                <h2>Contents</h2>
+                <ul>
+                    <li><a href="#Introduction">Introduction</a></li>
+                    <li><a href="#Data">The Data</a>
+                        <ul>
+                            <li><a href="#WhyWeNeedConstraints">Why we need constraints</a></li>
+                            <li><a href="#WhatTheConstraintsDo">What the constraints do</a></li>
+                            <li><a href="#IslandConstraints">Island constraints</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#ComputingVolume">Computing volume</a></li>
+                    <li><a href="#SalisburyUniversityBathymetrySetForLakeVictoria">Salisbury University data</a></li>
+                    <li><a href="#Conclusion">Conclusion</a></li>
+                    <li><a href="#Afterword">Afterword</a></li>
+                    <li><a href="#References">References</a></li>
+                </ul>
+            </nav>
+        </div>
+
         <div id="notescontainer">
             <div id="notesheader">
                 <ul class="link-bar">
@@ -31,7 +52,6 @@
                     </p>
                     <p class="author">by G.W. Lucas</p>
                 </div>
-
 
                 <h1 id="Introduction">Introduction</h1>
 
@@ -112,8 +132,6 @@
 
                 <h2 id="WhyWeNeedConstraints">Why we need constraints</h2>
 
-
-
                 <p>While we can build a Delaunay Triangulation using just the soundings as an
                     input, the soundings by themselves are not sufficient to make a good
                     estimate of lake volume. To see why this is so, consider the two images
@@ -124,9 +142,7 @@
                     not convex. The image on the right was produced by adding "constraints"
                     to the triangulation before the image was rendered.</p>
 
-                <img src="images/ConstrainedDelaunayComparison.png" 
-				alt="Constraints establish lake boundaries" 
-				title="Constraints establish lake boundaries">
+                <img src="images/ConstrainedDelaunayComparison.png" alt="Constraints establish lake boundaries" title="Constraints establish lake boundaries">
 
                 <h2 id="WhatTheConstraintsDo">What the constraints do</h2>
 
@@ -423,15 +439,13 @@
                     <a href="https://www.mathpages.com/home/kmath393/kmath393.htm">https://www.mathpages.com/home/kmath393/kmath393.htm</a></p>
 
                 <p>Hamilton, S. (2021). High-resolution bathymetries and shorelines for the Great Lakes of the White Nile Basin (HRBS-GLWNB).
-				Harvard Dataverse. 
+                Harvard Dataverse.
                 Accessed November 2025 from
                 <a href="https://dataverse.harvard.edu/dataverse/GLWNB-2020">
                 https://dataverse.harvard.edu/dataverse/GLWNB-2020</a></p>
-              
-                
+
                 <p>Silsbe, Greg (2015). <i>Lake Victoria Shapefiles.</i> Web site accessed April, 2021 from
                     <a href="https://figshare.com/articles/Lake_Victoria_Shapefiles/1494839/1">https://figshare.com/articles/Lake_Victoria_Shapefiles/1494839/1</a></p>
-
 
             </div>
         </div>
