@@ -17,28 +17,28 @@
                 <h2>Contents</h2>
                 <ul>
                     <li><a href="#Introduction">Introduction</a></li>
-                    <li><a href="#SVMProcess">The SVM Process</a></li>
-                    <li><a href="#OutputAndAnalysisProducts">Analysis Products and Exporting Data</a></li>
-                    <li><a href="#GettingStarted">Getting Started</a></li>
-                    <li><a href="#SVMPropertiesFile">The SVM Properties File</a></li>
-                    <li><a href="#ConfiguringTheSVMPropertiesFileStepByStep">Configuring the Properties File</a>
+                    <li><a href="#SVMProcess">The SVM process</a></li>
+                    <li><a href="#OutputAndAnalysisProducts">Analysis products and exporting data</a></li>
+                    <li><a href="#GettingStarted">Getting started</a></li>
+                    <li><a href="#SVMPropertiesFile">The SVM properties file</a></li>
+                    <li><a href="#ConfiguringTheSVMPropertiesFileStepByStep">Configuring the properties file</a>
                         <ul>
-                            <li><a href="#InputDataSources">Input Data Sources</a></li>
+                            <li><a href="#InputDataSources">Input data sources</a></li>
                             <li><a href="#Step1Inspection">Step 1: Inspection</a></li>
-                            <li><a href="#Step2CorrectForFlatTriangles">Step 2: Correct for Flat Triangles</a></li>
-                            <li><a href="#Step3OutputSettings">Step 3: Output Settings</a>
+                            <li><a href="#Step2CorrectForFlatTriangles">Step 2: Correct for flat triangles</a></li>
+                            <li><a href="#Step3OutputSettings">Step 3: Output settings</a>
                                 <ul>
-                                    <li><a href="#Step3ASpecifyUnitsOfMeasure">Step 3.a: Units of Measure</a></li>
-                                    <li><a href="#Step3BSpecifyOutputFiles">Step 3.b: Output Files</a></li>
+                                    <li><a href="#Step3ASpecifyUnitsOfMeasure">Step 3.a: Units of measure</a></li>
+                                    <li><a href="#Step3BSpecifyOutputFiles">Step 3.b: Output files</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </li>
-                    <li><a href="#Results">The Results</a></li>
-                    <li><a href="#AnAlternateApproachUsingDepthInsteadOfElevation">Alternate Approach: Depth vs Elevation</a></li>
-                    <li><a href="#AdditionalOutputProducts">Additional Output Products</a></li>
-                    <li><a href="#UsingTextBasedFiles">Text-based Files</a></li>
-                    <li><a href="#FutureWork">Future Work</a></li>
+                    <li><a href="#Results">The results</a></li>
+                    <li><a href="#AnAlternateApproachUsingDepthInsteadOfElevation">Alternate approach: Depth vs elevation</a></li>
+                    <li><a href="#AdditionalOutputProducts">Additional output products</a></li>
+                    <li><a href="#UsingTextBasedFiles">Text-based files</a></li>
+                    <li><a href="#FutureWork">Future work</a></li>
                     <li><a href="#References">References</a></li>
                 </ul>
             </nav>
@@ -60,9 +60,9 @@
 
                 <div class="titleblock">
                     <p class="title">
-                        Using the Simple Volumetric Model
+                        Using the Simple Volumetric Model (SVM)
                     </p>
-                    <p class="author">by G.W. Lucas</p>
+                    <p class="author">by G.W. Lucas (Posted August 2019. Updated October 2026)</p>
                 </div>
 
 
@@ -71,13 +71,13 @@
                 <p>The previous article in this series introduced the Simple Volumetric Model (SVM),
                     an application that computes the capacity, volume, and surface area for a lake or reservoir
                     based on variations in water level
-                    (see <a href="https://gwlucastrig.github.io/TinfourDocs/HydrographyLakeVolume1/index.html">Lucas, 2019</a>).
+                    (see <a href="../HydrographyReservoirLevelAndVolume/index.html">Lucas, 2019</a>).
                     That article focused on the general principles and algorithms used in the model.
                     This article will offer practical guidance on how to configure and use the application
                     for your own data analysis purposes. If you are interested in running the SVM, this
                     article will show you how.</p>
 
-                <h2 id="SVMProcess">The SVM Process</h2>
+                <h2 id="SVMProcess">The SVM process</h2>
 
                 <p>During a drought, the most readily apparent indicator of a shrinking water volume
                     for a lake or reservoir is the elevation of the surface and shoreline.
@@ -107,7 +107,7 @@
                     the surface level. SVM also provides a similar result for surface area
                     with a similar relationship to water level.</p>
 
-                <h2 id="OutputAndAnalysisProducts">Analysis Products and Exporting Data to GIS Applications</h2>
+                <h2 id="OutputAndAnalysisProducts">Analysis products and exporting data to GIS applications</h2>
 
                 <p>The main analysis product for SVM is a text-based summary of overall metadata for the
                     body of water being studied and a table of water-level versus volume/area computations
@@ -202,7 +202,7 @@
                     <a href="https://github.com/gwlucastrig/Tinfour/wiki/Tinfour-Execution-from-the-Command-Line" >Tinfour Execution from the Command Line</a>
                     and <a href="https://github.com/gwlucastrig/Tinfour/wiki/Tinfour-Execution-Shortcut-for-Windows" >Tinfour Execution Shortcut for Windows</a>.</p>
 
-                <h2 id="GettingStarted">Getting Started</h2>
+                <h2 id="GettingStarted">Getting started</h2>
 
                 <p>Once Tinfour is set up, you should be able to launch the Simple Volumetric Model using the
                     "fat jar" file <i>TinfourSvm-2.2.0-jar-with-dependencies.jar</i> (making appropriate adjustments
@@ -240,7 +240,7 @@
     java -jar SVM.jar -help
                 </pre>
 
-                <h2 id="SVMPropertiesFile">The SVM Properties File</h2>
+                <h2 id="SVMPropertiesFile">The SVM properties file</h2>
 
                 <p>SVM uses the specifications in a properties file to determine where to obtain
                     input bathymetry data and options for performing its analysis. The -properties
@@ -290,12 +290,12 @@
                     inspection results in our discussion below to help configure a properties file
                     for processing.</p>
 
-                <h2 id="ConfiguringTheSVMPropertiesFileStepByStep">Configuring the SVM Properties File &ndash; Step-by-Step</h2>
+                <h2 id="ConfiguringTheSVMPropertiesFileStepByStep">Configuring the SVM properties file &ndash; step-by-step</h2>
 
                 <p>Now that we've introduced the basic operation of the Simple Volumetric Model,
                     let's trace through the steps of configuring a properties file for processing data.</p>
 
-                <h3 id="InputDataSources">Input Data Sources</h3>
+                <h3 id="InputDataSources">Input data sources</h3>
                 <p>Of course, before we can use SVM, we need some data to work with. SVM supports two kinds of
                     input data files:</p>
                 <ol>
@@ -477,7 +477,7 @@
     #shorelineReferenceElevation = 872.2
                 </pre>
 
-                <h2 id="Step2CorrectForFlatTriangles">Step 2: Correct for Flat Triangles</h2>
+                <h2 id="Step2CorrectForFlatTriangles">Step 2: Correct for flat triangles</h2>
 
                 <p>The next element we will look at is the remediation setting for flat triangles.
                     This setting tells SVM to make adjustments for the near-shore areas where
@@ -485,9 +485,9 @@
                     This issue was discussed at length in <a href="https://github.com/gwlucastrig/Tinfour/wiki/Using-the-Delaunay-to-Create-a-Reservoir-Volume-Model" >Using-the-Delaunay-to-Create-a-Reservoir-Volume-Model</a>.
                     Except for testing purposes, it should always be set to true.</p>
 
-                <h2 id="Step3OutputSettings">Step 3: Output Settings</h2>
+                <h2 id="Step3OutputSettings">Step 3: Output settings</h2>
 
-                <h3 id="Step3ASpecifyUnitsOfMeasure">Step 3.a: Specify Units of Measure</h3>
+                <h3 id="Step3ASpecifyUnitsOfMeasure">Step 3.a: Specify units of measure</h3>
 
                 <p>The raw data for the Lake of the Arbuckles is given in feet. While this unit system is
                     convenient for measuring depth (at least if you happen to be an American),
@@ -519,7 +519,7 @@
                     smaller pieces, whether it be thirds, halves, quarters, tenths, or even elevenths (okay, the last
                     one is a bit unlikely).</p>
 
-                <h3 id="Step3BSpecifyOutputFiles">Step 3.b: Specify Output Files</h3>
+                <h3 id="Step3BSpecifyOutputFiles">Step 3.b: Specify output files</h3>
 
                 <p>By default, SVM will write its results to standard output. However, if we wish, we can instruct it
                     to write its output to permanent data files such as SvmArbuckle.txt and SvmArbuckle.csv.
@@ -536,7 +536,7 @@
     tableInterval = 0.5
                 </pre>
 
-                <h2 id="Results">The Results</h2>
+                <h2 id="Results">The results</h2>
 
                 <p>Here's a look at the results from SVM's analysis of the Lake of the Arbuckles using the
                     settings described above:</p>
@@ -583,7 +583,7 @@
                     An additional collection of text in comma-separated-value form was written
                     to the <i>table</i> file "SvmArbuckle.csv".</p>
 
-                <h2 id="AnAlternateApproachUsingDepthInsteadOfElevation">An Alternate Approach: Using Depth Instead of Elevation</h2>
+                <h2 id="AnAlternateApproachUsingDepthInsteadOfElevation">An alternate approach: Using depth instead of elevation</h2>
 
                 <p>Not all bathymetry data sets supply the elevations of the lake bottom. Some provide
                     depth values instead. One of the reasons that I selected the Arbuckle data
@@ -620,7 +620,7 @@
     bounds = LakeVictoriaShoreline.shp | 0
                 </pre>
 
-                <h2 id="AdditionalOutputProducts">Additional Output Products</h2>
+                <h2 id="AdditionalOutputProducts">Additional output products</h2>
 
                 <p>As of release 2.1.2, two additional output products are available from the SVM: a capacity graph,
                     and a contour graph. Both of these produce image files.</p>
@@ -691,7 +691,7 @@
                     The choice of delimiter for the file is deduced at run-time based on the file name extension and an inspection of the first
                     line of text in the file.</p>
 
-                <h1 id="FutureWork">Future Work</h1>
+                <h1 id="FutureWork">Future work</h1>
 
                 <p>Future work on the Simple Volumetric Model will focus on performing additional
                     interpolation and statistical analysis operations. Future work may also expand the range
@@ -711,11 +711,42 @@
                 <p>Oklahoma Water Resource Board [OWRB]. (2016). Lake of the Arbuckles, Collected Bathymetric Survey Points. Accessed July, 2019 from https://www.owrb.ok.gov/studies/surface/bathymetry.php</p>
 
                 <p>Texas Water Development Board &ndash; Hydrographic Survey Program [TWDB]. (2018). 
-				Volumetric and Sedimentation Survey of Alan Henry Reservoir, August 2017 Survey. Austin, TX.
-				Retrieved May, 2019 from http://www.twdb.texas.gov/hydro_survey/alanhenry/2017-08/AlanHenry2017_FinalReport.pdf</p>
+                Volumetric and Sedimentation Survey of Alan Henry Reservoir, August 2017 Survey. Austin, TX.
+                Retrieved May, 2019 from http://www.twdb.texas.gov/hydro_survey/alanhenry/2017-08/AlanHenry2017_FinalReport.pdf</p>
 
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const sections = Array.from(document.querySelectorAll('h1[id], h2[id], h3[id], h4[id]'));
+                const links = Array.from(document.querySelectorAll('#sidebar a[href^="#"]'));
+
+                function activateCurrentSection() {
+                    const offset = window.scrollY + 120;
+                    let current = links[0] || null;
+
+                    for (const section of sections) {
+                        const sectionTop = section.offsetTop;
+                        if (sectionTop <= offset) {
+                            const matchingLink = document.querySelector('#sidebar a[href="#' + section.id + '"]');
+                            if (matchingLink) {
+                                current = matchingLink;
+                            }
+                        }
+                    }
+
+                    links.forEach(link => link.classList.toggle('active', link === current));
+                }
+
+                if (links.length) {
+                    activateCurrentSection();
+                    window.addEventListener('scroll', activateCurrentSection, { passive: true });
+                    window.addEventListener('hashchange', activateCurrentSection);
+                }
+            });
+        </script>
+ 
     </body>
 
 </html>
