@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="G.W. Lucas">
         <title>Lake Volume Part 2</title>
-        <link rel="stylesheet" href="../css/text.css" />
-        <link rel="stylesheet" href="../css/layout.css" />
+        <link rel="stylesheet" href="../css/text.css" >
+        <link rel="stylesheet" href="../css/layout.css" >
     </head>
 
 
@@ -27,7 +27,7 @@
 
                 <div class="titleblock">
                     <p class="title">
-                        Using the Delaunay to compute lake volume<br>Part 2: Implementation
+                        Using the Delaunay triangulation to compute lake volume<br>Part 2: Implementation
                     </p>
                     <p class="author">by G.W. Lucas</p>
                 </div>
@@ -80,7 +80,7 @@
                 <p>The logic for these operations is implemented in the class BathymetryData in
                     the Tinfour example code.</p>
 
-                <h1 id="Process">The Process</h1>
+                <h1 id="Process">The process</h1>
 
                 <p>As described in Part 1 of this tutorial, the calculation used the outline of the lake and
                     the island polygons as constraints on the Delaunay Triangulation. These elements were needed
@@ -157,7 +157,7 @@
     TriangleCollector.visitSimpleTriangles(tin, results);
                 </pre>
 
-                <h2 id="LakeData">Lake Data</h2>
+                <h2 id="LakeData">Lake data</h2>
 
                 <p>Now we come to the heart of the calculation. As you can see in the
                     code below, LakeData implements a Java Consumer that accepts objects
