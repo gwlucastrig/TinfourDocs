@@ -18,7 +18,12 @@
                     <li><a href="#Problem">The problem</a></li>
                     <li><a href="#WhatTheSimpleVolumetricModelDoes">What the Simple Volumetric Model does</a></li>
                     <li><a href="#Procedure">The procedure</a></li>
-                    <li><a href="#RefiningTheModel">Refining the model</a></li>
+                    <li><a href="#RefiningTheModel">Refining the model</a>
+                        <ul>
+                            <li><a href="#flat-triangle-areas">Flat triangles</a></li>
+                            <li><a href="#reducing-flat-triangle">Reducing flat areas</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#TWDBSImprovementsToLakeBottomRepresentations">TWDB improvements</a></li>
                     <li>
                         <ul>
@@ -233,6 +238,8 @@
                     </tr>
                     </tbody>
                 </table>
+                
+                <h2 id="flat-triangle-areas">Flat triangles</h2>
                 <p>The first step in improving the SVM results is to address the issue of &#8220;flat triangles.&#8221; As mentioned above,
                     survey vessels can only collect bathymetry data in navigable waters. This restriction leads to a scarcity of data
                     in shallow, near-shore regions of the reservoir. Near the boundaries of the reservoir, the Delaunay triangulation
@@ -287,6 +294,8 @@
                     </tr>
                     </tbody>
                 </table>
+                
+                <h2 id="reducing-flat-triangle">Reducing flat triangles by inserting interpolated vertices</h2>
                 <p>Although the supplemental bathymetry points bring the SVM results closer to the
                     96,207 figure cited by the TWDB, they do not eliminate all of the flat triangles.
                     To remediate the remaining flat triangles, we turn to a triangle-modification approach.
@@ -308,8 +317,8 @@
                 <p>The depth value for M is computed using a weighted average based on the distances S<sub>1</sub> from the
                     bathymetry point D to M and S<sub>2</sub> from the shoreline vertex C to M. Inserting the new midpoint
                     vertex into the triangulation replaces the flat triangle ABC with two non-flat triangles.
-                    It also has the benefit of slightly increasing the computed volume contribution for the area
-                    covered by the original triangle ABC.</p>
+                    It also has the benefit of dividing triangle DBA into two subtriangles, DBM and DMA, that contribute
+                    a slightly greater volume than that computed for the original.</p>
                 <p>The flat-triangle remediation technique is a multi-pass process in which non-zero depth values gradually
                     diffuse into the near-shore area. Each iteration of the interpolation has a performance cost.
                     So the flat-triangle remediation increases the overall runtime for the SVM software.
