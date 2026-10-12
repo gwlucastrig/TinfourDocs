@@ -27,14 +27,14 @@
                     <p class="title">
                         What is the constrained Delaunay triangulation<br>and why would you care?
                     </p>
-                    <p class="author">by G.W. Lucas<br>Posted December 2016</p>
+                    <p class="author">by G.W. Lucas<br>Posted December 2016. Updated October 2026.</p>
                 </div>
 
 
                 <h1 id="Introduction">Introduction</h1>
 
                 <p>When I began developing the Constrained Delaunay triangulation (CDT) for the
-				<a href="https://github.com/gwlucastrig/Tinfour" >Tinfour software project</a>, I didn't realize
+                <a href="https://github.com/gwlucastrig/Tinfour" >Tinfour software project</a>, I didn't realize
                     that there would be a need to explain what the CDT was. I thought that the subject would
                     be so well covered on the Internet that there would be nothing I could possibly
                     add to the conversation. But it turned out that while some of the material on the web was quite good,
@@ -70,15 +70,18 @@
                     the Delaunay criterion and constrain the way vertices are
                     connected in the mesh.</p>
 
-                <p>The figure below illustrates the concept. The data shown occurs in two
+                <p>Figure 1 below illustrates the concept. The data shown occurs in two
                     separate regions. The ordinary Delaunay triangulation creates connections between
                     the separate vertices strictly on the basis of what is needed to ensure compliance
-					to the Delaunay criterion. The constrained Delaunay adds more
+                    to the Delaunay criterion. The constrained Delaunay adds more
                     information to the system in the form of edges that define the limits
                     of the data regions. In the figure, the constraint is shown as the
                     vertical edge at the center of the triangulation.</p>
 
+                <figure>
                 <img src="images/CDT_Example_0.png" alt="Ordinary and constrained triangulations" title="Ordinary and constrained triangulations">
+                <figcaption>Figure 1 &ndash; Adding a constraint limits prevents connections across a boundary</figcaption>
+                </figure>
 
                 <p>One of the drawbacks of adding constraints to the triangulation is that not
                     all the triangles in the mesh will necessarily conform to the Delaunay criterion. In particular,
@@ -91,11 +94,14 @@
 
                 <p>One way to restore Delaunay optimality was described by Rognant, et al. (see below), who also
                     offered a brief mathematical proof of the technique. Rognant's technique adds synthetic points
-                    along the constraint edges as illustrated in the figure below. The constraint edges are
+                    along the constraint edges as illustrated in Figure 2 below. The constraint edges are
                     subdivided into smaller edges and the resulting triangles all conform to the Delaunay criterion.
                     Optimality is restored.</p>
 
+                <figure>
                 <img src="images/CDT_Example_3.png" alt="Conforming triangulation" title="Conforming triangulation">
+                <figcaption>Figure 2 &ndash; Synthetic vertices added to restore conformance to the Delaunay criterion</figcaption>
+                </figure>
 
                 <p>Rognant described a number of methods for selecting where to add points to the constraint edges
                     in order to restore Delaunay conformance. Tinfour implements a method in which constraint edges
@@ -105,20 +111,23 @@
 
                 <h3 id="Examples">Examples</h3>
 
-                <p>The image below shows triangulations based on the outline of the letters C, D, and T. 
-				    It was created using the LogoCDT application which is included with the example code 
-					in the Tinfour distribution. The first triangulation is an ordinary Delaunay triangulation. 
-					Because the back of the letter D is not a Delaunay compliant edge,
+                <p>The image in Figure 3 below shows triangulations based on the outline of the letters C, D, and T. 
+                    It was created using the LogoCDT application which is included with the example code 
+                    in the Tinfour distribution. The first triangulation is an ordinary Delaunay triangulation. 
+                    Because the back of the letter D is not a Delaunay compliant edge,
                     it was omitted from the mesh by the vertex-connection logic. In the second triangulation,
                     the outlines were added as a series of constrained edges, so the missing edge
                     was restored. The outer bounds of a Delaunay triangulation is always a convex polygon, 
-					so the first two triangulations include edges that are exterior to the letters. 
-					The LogoCDT application specified the letter shapes using Tinfour's PolygonContraint class. 
-					The polygon-based constraint provides a way of dividing the overall TIN extent into separate 
-					sub regions (the data and non-data areas). The rendering logic in LogoCDT used this 
-					information to decide which edges to suppress when it drew the image.</p>
+                    so the first two triangulations include edges that are exterior to the letters. 
+                    The LogoCDT application specified the letter shapes using Tinfour's PolygonContraint class. 
+                    The polygon-based constraint provides a way of dividing the overall TIN extent into separate 
+                    sub regions (the data and non-data areas). The rendering logic in LogoCDT used this 
+                    information to decide which edges to suppress when it drew the image.</p>
 
+                <figure>
                 <img src="images/ConstrainedDelaunaytriangulation.png" alt="CDT variations" title="Results from LogoCDT application">
+                <figcaption>Figure 3 &ndash; Using polygon constraints to partition a triangulation into distinct areas</figcaption>
+                </figure>
 
                 <p>Let's conclude this article with a practical example. Geographic
                     Information Systems (GIS) use constraints to support a feature
@@ -132,7 +141,7 @@
                     called <a href="http://www.sonalysts.com/products/wxstation/" title="wXstation" >wXstation</a>.
                     I did a quick hack to integrate the Tinfour libraries
                     into the application to demonstrate bathymetry (water depth) modeling.
-                    The numbers shown in the nautical image to the left below indicate _soundings_
+                    The numbers shown in the nautical image to the left in Figure 4 below indicate <i>soundings</i>
                     collected at scattered points over the harbor. The soundings
                     give water depth in feet. If they are connected in an
                     ordinary Delaunay triangulation, the edges cross land and the
@@ -140,12 +149,19 @@
                     of the terrestrial areas are underwater as shown in the picture
                     to the right.</p>
 
-                <img src="images/PearlSoundings01b.jpg" alt="Pearl Harbor example 1" title="Ordinary triangulation from soundings for Pearl Harbor" >
+                <figure>
+                    <img src="images/PearlSoundings01b.jpg" alt="Pearl Harbor example 1" 
+                    title="Ordinary triangulation from soundings for Pearl Harbor" >
+                    <figcaption>Figure 4 &ndash; Ordinary Delaunay triangulation from soundings for Pearl Harbor</figcaption>
+                </figure>
 
                 <p>We can correct this misrepresentation by adding
-                    the shoreline as a set of constraint edges. The result is shown below.</p>
+                    the shoreline as a set of constraint edges. The result is shown in Figure 5 below.</p>
 
-                <img src="images/PearlSoundings02b.jpg"  alt="Pearl Harbor example 2" title="Constrained triangulation from soundings for Pearl Harbor" >
+                <figure>
+                    <img src="images/PearlSoundings02b.jpg"  alt="Pearl Harbor example 2" title="Constrained triangulation from soundings for Pearl Harbor" >
+                    <figcaption>Figure 5 &ndash; Using constraints to separate land and water regions in a Delaunay triangulation</figcaption>
+                </figure>
 
                 <h3 id="References">References</h3>
 
