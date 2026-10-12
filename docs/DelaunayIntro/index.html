@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="G.W. Lucas">
-        <title>Delaunay Triangulation</title>
+        <title>Delaunay triangulation</title>
         <link rel="stylesheet" href="../css/text.css" >
         <link rel="stylesheet" href="../css/layout.css" >
     </head>
@@ -27,20 +27,20 @@
                     <p class="title">
                         An introduction to the Delaunay triangulation
                     </p>
-                    <p class="author">by G.W. Lucas<br>Posted November 2016</p>
+                    <p class="author">by G.W. Lucas<br>Posted November 2016. Updated October 2026.</p>
                 </div>
 
 
                 <h1 id="Introduction">Introduction</h1>
 
                 <p>The primary structure created by the Tinfour software project
-                    is the <i>Delaunay Triangulation</i>. Because it is helpful to have a high-level understanding
-                    of the Delaunay Triangulation when using the Tinfour software, this article
-                    will provide a brief discussion of the subject. The Delaunay Triangulation is an important
+                    is the <i>Delaunay triangulation</i>. Because it is helpful to have a high-level understanding
+                    of the Delaunay triangulation when using the Tinfour software, this article
+                    will provide a brief discussion of the subject. The Delaunay triangulation is an important
                     topic in graph theory and widely documented in published literature and on the Web.
                     Readers desiring more detail will find that additional information is readily available.</p>
 
-                <h1 id="AnOptimalTriangulation">An Optimal Triangulation</h1>
+                <h1 id="AnOptimalTriangulation">An optimal triangulation</h1>
 
                 <p>Given a set of arbitrarily distributed data points, there are many ways
                     to organize them in a triangular mesh. But not all possible triangle meshes provide
@@ -65,11 +65,11 @@
                 </figure>
 
                 <p>To many people, the arrangement on the right appears more pleasing than the one on the left.
-                    The image on the right is an example of a Delaunay Triangulation. In addition to its aesthetic appeal,
+                    The image on the right is an example of a Delaunay triangulation. In addition to its aesthetic appeal,
                     the Delaunay has a number of favorable properties that were demonstrated by Boris Delaunay
                     in 1934 and other researchers since.</p>
 
-                <h2 id="AdvantagesOfTheDelaunayTriangulation">Advantages of the Delaunay Triangulation</h2>
+                <h2 id="AdvantagesOfTheDelaunayTriangulation">Advantages of the Delaunay triangulation</h2>
 
                 <p>One important characteristic of the Delaunay is that it tends to make "good" choices about which
                     vertices are connected to each other. In both the examples above, vertices were produced using
@@ -92,12 +92,12 @@
 
                 <h2 id="UnderstandingTheDelaunayCriterion">Understanding the Delaunay criterion</h2>
 
-                <p>It is perfectly fine to use software tools based on the Delaunay Triangulation
+                <p>It is perfectly fine to use software tools based on the Delaunay triangulation
                     without being overly concerned about the nature of the underlying Delaunay criterion.
                     But, for those who are interested, let's take a look at the principles at the
                     foundation of the technique.</p>
 
-                <h3 id="Circumcircle">The Circumcircle</h3>
+                <h3 id="Circumcircle">The circumcircle</h3>
 
                 <p>From a proof in geometry, we know that three non-collinear points,
                     such as those that compose a triangle, define a unique circle. Thus each triangle in a TIN is associated
@@ -136,7 +136,7 @@
                     </li>
                 </ol>
 
-                <p>The second item is the key to the Delaunay Triangulation. Consider Figure 3 below
+                <p>The second item is the key to the Delaunay triangulation. Consider Figure 3 below
                     which shows triangle with vertices A, B, and C, with vertex D lying outside the
                     circumcircle of Triangle ABC. If we link together vertices to add triangle CBD,
                     the resulting network will be optimal from the perspective of the Delaunay criterion.</p>
@@ -157,7 +157,7 @@
                 <figcaption>Figure 4 &ndash; Vertex D inside circumcircle violates the Delaunay criterion</figcaption>
                 </figure>
 
-                <h3 id="RestoringDelaunayOptimality">Restoring Delaunay Optimality</h3>
+                <h3 id="RestoringDelaunayOptimality">Restoring Delaunay optimality</h3>
 
                 <p>So how can we correct the network to restore Delaunay Optimality? In the figure above,
                     the edge CB seems to be the source of the problem. What if we were to break the link
@@ -171,7 +171,7 @@
                 </figure>
 
                 <p>The operation that switches the common edge between two adjacent triangles
-                    is sometimes called a "flip". The earliest Delaunay Triangulation
+                    is sometimes called a "flip". The earliest Delaunay triangulation
                     algorithms were all based on using flip operations (see Lawson 1977).
                     Since then, more sophisticated approaches have been developed (see Su 1996).</p>
 
@@ -192,11 +192,11 @@
 
                 <h1 id="Conclusion">Conclusion</h1>
 
-                <p>The Delaunay Triangulation provides the foundation for the Tinfour software library
+                <p>The Delaunay triangulation provides the foundation for the Tinfour software library
                     and many other software packages that perform surface analysis applications.
                     In this paper we briefly considered some of the underlying ideas of the
-                    Delaunay Triangulation and gave a high-level view of how it is specified.
-                    A complete discussion of the uses and extensions of the Delaunay Triangulation
+                    Delaunay triangulation and gave a high-level view of how it is specified.
+                    A complete discussion of the uses and extensions of the Delaunay triangulation
                     is beyond the scope of this wiki. If you are interested in learning more,
                     I encourage you to search the web for more information about this
                     truly remarkable structure.</p>
