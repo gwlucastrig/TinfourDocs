@@ -5,8 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="author" content="G.W. Lucas">
         <title>Delaunay Triangulation</title>
-        <link rel="stylesheet" href="../css/text.css" />
-        <link rel="stylesheet" href="../css/layout.css" />
+        <link rel="stylesheet" href="../css/text.css" >
+        <link rel="stylesheet" href="../css/layout.css" >
     </head>
 
 
@@ -55,11 +55,14 @@
                     meet the Delaunay criterion. In the end, the process creates a mesh that has
                     a number of attractive and useful features and is optimal in many regards.</p>
 
-                <p>To illustrate this idea, the figure below shows an example of what happens
+                <p>To illustrate this idea, Figure 1 below shows an example of what happens
                     when a set of points is connected in an arbitrary manner versus one that
                     conforms to the Delaunay criterion.</p>
 
-                <img src="images/DelaunayOptimality.png"/>
+                <figure>
+                <img src="images/DelaunayOptimality.png" alt="Non-Delaunay and Delaunay-conforming triangulations">
+                <figcaption>Figure 1 &ndash; Non-Delaunay and Delaunay-conforming triangulations</figcaption>
+                </figure>
 
                 <p>To many people, the arrangement on the right appears more pleasing than the one on the left.
                     The image on the right is an example of a Delaunay Triangulation. In addition to its aesthetic appeal,
@@ -99,9 +102,12 @@
                 <p>From a proof in geometry, we know that three non-collinear points,
                     such as those that compose a triangle, define a unique circle. Thus each triangle in a TIN is associated
                     with a figure called the circumcircle. Two examples of triangles with corresponding
-                    circumcircles are shown in the figure below.</p>
+                    circumcircles are shown in Figure 2 below.</p>
 
-                <img src="images/CircumcircleSizes.png"/>
+                <figure>
+                    <img src="images/CircumcircleSizes.png" alt="Circumcircles with centers inside and outside enclosed triangles">
+                    <figcaption>Figure 2 &ndash; Circumcircles with centers inside and outside enclosed triangles</figcaption>
+                </figure>
 
                 <p>From the figure, a few characteristics of the circumcircle are immediately apparent:</p>
 
@@ -130,20 +136,26 @@
                     </li>
                 </ol>
 
-                <p>The second item is the key to the Delaunay Triangulation. Consider the figure below
+                <p>The second item is the key to the Delaunay Triangulation. Consider Figure 3 below
                     which shows triangle with vertices A, B, and C, with vertex D lying outside the
                     circumcircle of Triangle ABC. If we link together vertices to add triangle CBD,
                     the resulting network will be optimal from the perspective of the Delaunay criterion.</p>
 
-                <img src="images/VertexOutsideCircumcircle.png"/>
+<figure>
+                <img src="images/VertexOutsideCircumcircle.png" alt="Vertex D outside circumcircle does not violate Delaunay criterion">
+                <figcaption>Figure 3 &ndash; Vertex D outside circumcircle does not violate the Delaunay criterion</figcaption>
+                </figure>
 
                 <p>If, however, we were to position vertex D so that it was inside the circumcircle
                     of Triangle ABC, the resulting triangulated network would not be Delaunay
-                    optimal. As the figure below illustrates, not only would vertex D be inside
+                    optimal. As Figure 4 below illustrates, not only would vertex D be inside
                     the circumcircle for ABC, but vertex A would be inside the circumcircle for
                     triangle CBD.</p>
 
-                <img src="images/VertexInsideCircumcircle.png"/>
+                <figure>
+                <img src="images/VertexInsideCircumcircle.png" alt="Vertex D violates Delaunay criterion">
+                <figcaption>Figure 4 &ndash; Vertex D inside circumcircle violates the Delaunay criterion</figcaption>
+                </figure>
 
                 <h3 id="RestoringDelaunayOptimality">Restoring Delaunay Optimality</h3>
 
@@ -153,7 +165,10 @@
                     Delaunay optimality is restored. Vertex C does not fall with the circumcircle of triangle
                     ABD nor does vertex B fall with the circumcircle of triangle CAD.</p>
 
-                <img src="images/VertexRelinked.png"/>
+                <figure>
+                    <img src="images/VertexRelinked.png" alt="Vertex links modified to restore the Delaunay criterion">
+                    <figcaption>Figure 5 &ndash; Vertex links modified to restore the Delaunay criterion</figcaption>
+                </figure>
 
                 <p>The operation that switches the common edge between two adjacent triangles
                     is sometimes called a "flip". The earliest Delaunay Triangulation
@@ -163,14 +178,17 @@
                 <p>When a vertex is inserted into a TIN, there is nothing preventing it from
                     falling into more than one circumcircle. In such cases, more than
                     one edge may require flipping. An example of a case where a single
-                    insertion requires multiple edge modifications is provided below.
+                    insertion requires multiple edge modifications is provided in Figure 6 below.
                     The image on the left shows the original TIN before the insertion point
                     was added to the structure. The image on the right shows the resulting
                     network with both additional and modified edges. The light green line segments in the
                     image show where edges from the original structure were flipped
                     to create the new structure.</p>
 
-                <img src="images/TinModified.png"/>
+                <figure>
+                    <img src="images/TinModified.png" alt="Multiple edge flips">
+                    <figcaption>Figure 6 &ndash; Inserting a point may result in multiple edge-flip operations</figcaption>
+                </figure>
 
                 <h1 id="Conclusion">Conclusion</h1>
 
